@@ -1,0 +1,94 @@
+<template>
+  <div class="top_header">
+  <header class="heade">
+    <div class="menu" @click="toggleSlideBar">
+     <div class="img_logo"></div>
+    </div>
+    <div class="title">
+      <span>{{headertitle}}</span>
+    </div>
+    <div class="me_set">
+      <div class="img_me_set"></div>
+    </div>
+  </header>
+  <topnav></topnav>
+  </div>
+</template>
+
+<script>
+import VueRouter from '../../router/routes.js'
+import { mapGetters, mapActions } from 'vuex'
+import Nav from '../nav/Nav.vue'
+export default {
+  components: {
+    "topnav":Nav
+  },
+  computed: mapGetters({
+    headertitle: 'headerTitle',
+  }),
+  methods: {
+    toggleSlideBar () {
+      this.$store.dispatch('toggleSlideBar')
+    }
+  }
+}
+</script>
+
+<style lang="less">
+  @header-height:134px;
+  @icon-font-size:22px;
+  @title-font-size: 18px;
+  @baseBorderColor:#3B3B3B;
+  .top_header{
+    position: fixed;
+    width: 1080px;
+    z-index: 10;
+    top:0px;
+    margin-top: 0px;
+    height: 268px;
+  }
+  .heade {
+    position: relative;
+    display: flex;
+    justify-content:space-between;
+    width: 100%;
+    height: @header-height;
+    background: rgba(51, 51, 51, 1);
+    text-align: center;
+    line-height: @header-height;
+    top:0;
+    left: 0;
+    .menu {
+      flex: 0 0 @header-height;
+      font-size: @icon-font-size;
+      .img_logo {
+        background: url(../../assets/image/img_logo.png) no-repeat 0px 0px;
+        margin-left: 40px;
+        margin-top: 40px;
+        background-size: 348px 75px;
+        width: 348px;
+        height: 75px;
+    }
+    }
+    .title {
+      //flex: 0;
+      color: white;
+      align-items: center;
+      font-size: @title-font-size;
+    }
+    .me_set {
+      //flex: 0 0 @header-height;
+      font-size: @icon-font-size;
+      .img_me_set {
+        background: url(../../assets/image/img_me_set.png) no-repeat 0px 0px;
+        margin-right: 40px;
+        margin-top: 40px;
+        background-size: 60px 43px;
+        width: 60px;
+        height: 43px;
+    }
+    }
+
+
+  }
+</style>
