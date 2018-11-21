@@ -1,2 +1,0 @@
-# playerfrontend
-player front-end
