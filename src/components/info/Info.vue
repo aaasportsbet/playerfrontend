@@ -1,11 +1,20 @@
 <template>
 <div class="info">
-  <div class="count_down">
+  <div class="count_down" :class="[$route.name === 'personal' ? 'count_down_display_none' : '']">
     <div class="count_down_top_flex">
       <div class="icon-clock count_down_top_clock"></div>
       <div class="count_down_top">Count Down</div>
     </div>
     <div class="count_down_bottom">{{info.play_count_down_time}}</div>
+  </div>
+  <div class="game_win_status" :class="[$route.name === 'home' ? 'game_win_status_display_none' : '']">
+    <div class="game_win_status_win" v-if="info.game_win_status === 'win'">
+      <div class="game_win_status_win_text">Win</div>
+    </div>
+    <div class="game_win_status_lose" v-if="info.game_win_status === 'lose'">
+      <div class="game_win_status_lose_text">Lose</div>
+    </div>
+
   </div>
   <div class="box">
     <div class="vs_play">
@@ -39,38 +48,30 @@
        <span class="box_bottom_l">{{info.play_join_news}}</span>
        <span class="box_bottom_r">{{info.play_join_news_num}}</span>
     </div>
-  </div>
-  <div class="bottom_more">
-    <el-row>
-      <el-col :span="24" >
-        <el-menu default-active="2" @open="handleOpen" @close="handleClose" >
-          <el-submenu index="1" >
-            <template slot="title">
-              <span>更多</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="1-1">
-                <div class="box_bottom">
-                   <span class="box_bottom_l">{{info.play_join_news}}</span>
-                   <span class="box_bottom_r">{{info.play_join_news_num}}</span>
+    <div class="bottom_more" v-clickoutside="handleClose">
+       <div class="el-icon-caret-bottom dropdown_menu" @click="show = !show">&nbsp;More</div>
+                <div class="dropdown_show"  v-show = "show">
+                    <div class="dropdown_list" v-for="item in list_playmore">
+                      <span class="dropdown_list_l">{{item.text}}</span>
+                      <span class="dropdown_list_r">{{item.num}}</span>
+                    </div>
                 </div>
-              </el-menu-item>
-              <el-menu-item index="1-2"><div class="box_bottom">
-       <span class="box_bottom_l">{{info.play_join_news}}</span>
-       <span class="box_bottom_r">{{info.play_join_news_num}}</span>
-    </div></el-menu-item>
-            </el-menu-item-group>
-            </el-submenu>
-            </el-menu>
-      </el-col>
-    </el-row>
+    </div>
   </div>
+
 
 </div>
 </template>
 
 <script>
 export default {
+  data() {
+        return {
+
+            show:false,
+            list_playmore:  this.info.play_more,
+        };
+    },
   props: {
     info: {
       type: Object
@@ -85,15 +86,41 @@ export default {
     goDetailPage: function (info) {
         this.$store.dispatch('goDetailPage',{id:info.id})
         this.$store.dispatch('toggleheader',{nickname:info.nickname})
+    },
+    handleClose(){
+            this.show = false;
+        },
+
+  },
+     directives:{
+        clickoutside:{
+            bind:function(el,binding,vnode){
+                function documentHandler(e){
+                    if(el.contains(e.target)){
+                        return false;
+                    }
+                    if(binding.expression){
+                        binding.value(e)
+                    }
+                }
+                el._vueClickOutside_ = documentHandler;
+                document.addEventListener('click',documentHandler);
+            },
+            unbind:function(el,binding){
+                document.removeEventListener('click',el._vueClickOutside_);
+                delete el._vueClickOutside_;
+            }
+        }
     }
-  }
 }
 </script>
 
 <style lang="less">
 @baseBackgroundColor:#333333;
 @baseBorderColor:#777777;
-
+[v-cloak] {
+        display: none;
+    }
 .info {
     position: relative;
     width: 1080px;
@@ -112,6 +139,9 @@ export default {
     background: url(../../assets/image/img_top_flag.png) no-repeat 0px 0px;
     background-size: 200px 113px;
     text-align: center;
+    &.count_down_display_none {
+      display: none;
+    }
 
     .count_down_top_flex{
       display: flex;
@@ -151,9 +181,47 @@ export default {
        }
 
   }
+  .game_win_status{
+    position:absolute;
+    top:0px;
+    left:40px;
+    width: 150px;
+    height: 150px;
+    font-size: 36px;
+    color: #FFFFFF;
+    font-family: "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,Tahoma,Verdana,STHeiTi,simsun,sans-serif;
+    &.game_win_status_display_none{
+      display: none;
+    }
+    .game_win_status_win{
+        background: url(../../assets/image/img_win.png) no-repeat 0px 0px;
+        background-size: 150px 150px;
+        width: 150px;
+        height: 150px;
+        .game_win_status_win_text{
+          transform: rotate(315deg);
+          font-weight: bolder;
+          text-align: bottom;
+          }
+    }
+    .game_win_status_lose{
+        background: url(../../assets/image/img_lose.png) no-repeat 0px 0px;
+        background-size: 150px 150px;
+        width: 150px;
+        height: 150px;
+        .game_win_status_lose_text{
+          transform: rotate(315deg);
+          font-weight: bolder;
+          text-align: bottom;
+        }
+    }
+
+
+
+  }
   .box {
       width: 1000px;
-      height: 570px;
+      //height: 570px;
       background: inherit;
       background-color: rgba(39, 39, 39, 1);
       box-sizing: border-box;
@@ -313,53 +381,75 @@ export default {
           }
         }
        .box_bottom{
-        display: flex;
-        justify-content:space-between;
-        align-items: center;
-        flex-direction: row;
-        font-size: 30px;
-        font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-        color:#FFFFFF;
-        margin-top: 40px;
-        border-width: 1px 0px 0px 0px;
-        border-style: solid;
-        border-color: rgba(119, 119, 119, 1);
-        height: 86px;
+          display: flex;
+          justify-content:space-between;
+          align-items: center;
+          flex-direction: row;
+          font-size: 30px;
+          font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+          color:#FFFFFF;
+          margin-top: 40px;
+          border-width: 1px 0px 0px 0px;
+          border-style: solid;
+          border-color: rgba(119, 119, 119, 1);
+          height: 86px;
 
-        .box_bottom_l{
-          margin-left: 40px;
+          .box_bottom_l{
+            margin-left: 40px;
 
+          }
+          .box_bottom_r{
+            margin-right: 40px;
+
+          }
         }
-        .box_bottom_r{
-          margin-right: 40px;
-
-        }
+        .bottom_more{
+          position: relative;
+          display: flex;
+          justify-content:space-between;
+          align-items: center;
+          flex-direction: column;
+          font-size: 30px;
+          font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+          color:#FFFFFF;
+          border-width: 1px 0px 0px 0px;
+          border-style: solid;
+          border-color: rgba(119, 119, 119, 1);
+          .dropdown_menu{
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
+            flex-direction: row;
+            font-size: 36px;
+            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+            color:#FFFFFF;
+            height: 80px;
+            user-select: none;
+            line-height: 80px;
+          }
+          .dropdown_show{
+            width: 100%;
+            .dropdown_list{
+              display: flex;
+              justify-content:space-between;
+              align-items: center;
+              flex-direction: row;
+              height: 80px;
+              border-width: 1px 0px 0px 0px;
+              border-style: solid;
+              border-color: rgba(119, 119, 119, 1);
+              .dropdown_list_l{
+                margin-left: 40px;
+              }
+              .dropdown_list_r{
+                margin-right: 40px;
+              }
+            }
+          }
         }
 
     }
-    .bottom_more{
-      width: 1000px;
-      height: auto;
-      background: inherit;
-      background-color: rgba(39, 39, 39, 1);
-      box-sizing: border-box;
-      border-width: 0 2px 2px 2px;
-      border-style: solid;
-      border-color: rgba(119, 119, 119, 1);
-      border-radius: 4px;
-      box-shadow: none;
-      margin-left: 40px;
-      .bottom_more_menu{
-        background-color:  rgba(39, 39, 39, 1);;
-        text-color:#FFFFFF;
-        active-text-color:"#ffd04b";
-        height: 80px;
-      }
-      .bottom_more_text{
-        height: 40px;
-      }
 
-    }
 
 }
 </style>

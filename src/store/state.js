@@ -4,6 +4,7 @@ const state = {
   pageIndex: 0,
   pageArray: [
     {headerTitle: "我是广告", routename: "home"},
+    {headerTitle: "我是个人页面", routename: "Personal"},
   ],
   isSlideBarShow: false,
   isDetailHeader: false,

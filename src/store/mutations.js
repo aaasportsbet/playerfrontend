@@ -14,8 +14,14 @@ export default {
 
   },
 
+  [types.GO_HOME_PAGE](state) {
+    VueRouter.push({name: 'home'})
+    // name: 'personal', params: { userId: userId }
+  },
+
   [types.GO_PERSONAL_PAGES](state, {userId}) {
-    VueRouter.push({ name: 'personal', params: { userId: userId }})
+    VueRouter.push({name: 'personal', params: { userId: userId } })
+    // name: 'personal', params: { userId: userId }
   },
 
   [types.TOGGLE_FOLLOW_PERSON](state) {

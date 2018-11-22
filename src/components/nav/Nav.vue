@@ -6,8 +6,8 @@
     <div class="nav_S" tabindex="2">
       <div class="nav_text" :class="[$route.name === 'schedule' ? 'curpage_color' : '']">Rules</div>
     </div>
-    <div class="nav_M" @click="goPersonalPages" tabindex="3">
-      <div class="nav_text" :class="[$route.name === 'me' ? 'curpage_color' : '']">Me{{info.id}}</div>
+    <div class="nav_M" @click="goPersonalPages(9)" tabindex="3">
+      <div class="nav_text" :class="[$route.name === 'personal' ? 'curpage_color' : '']">Me</div>
     </div>
   </div>
 </template>
@@ -18,14 +18,6 @@ import VueRouter from '../../router/routes.js'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
- data () {
-   return {
-     info: {
-        id: '11111'
-    }
-    }
-
-  },
   computed: mapGetters({
     testscatterEOS:'scatterEOS',
   }),
@@ -33,15 +25,21 @@ export default {
     toggleSlideBar () {
       this.$store.dispatch('toggleSlideBar')
     },
-    goPersonalPages: function (info) {
-      this.$store.dispatch('goPersonalPages', {id:info.id})
-      console.log(this.info)
+    goPersonalPages (uid) {
+      if (this.$route.name !== 'personal'){
+        console.log(this.$route.name)
+        if (uid) {
+          this.$store.dispatch('goPersonalPages',{userId:uid})
+        }
+      }
     },
 
     goHomePage(){
-      this.$store.dispatch('updatePage')
-      console.log(this.$route.path)
-      console.log(this.$route.name)
+      if (this.$route.name !== 'home'){
+      this.$store.dispatch('goHomePage')
+      //console.log(this.$route.path)
+      //console.log(this.$route.name)
+    }
     }
   }
 }

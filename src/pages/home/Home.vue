@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <div>{{homelists}}</div>
     <div class="info-container" v-for="item in homelist">
       <info :info="item" class="info"></info>
     </div>
@@ -15,7 +14,6 @@ import Info from 'components/info/Info.vue'
 import SwitchButton from 'components/switchbutton/SwitchButton.vue'
 import { mapGetters, mapActions } from 'vuex'
 import {fetchRoundList} from "../../scatter/scatter.js"
-import {getScatterEOS} from "../../scatter/scatter.js"
 
 const ERR_OK = 0
 export default {
@@ -30,13 +28,14 @@ export default {
       res = res.data
       if (res.errno === ERR_OK) {
         this.homelist = res.data
+       // console.log(this.homelist)
       }
     }).catch((error) => {
       console.warn(error)
     });
     fetchRoundList().then(response => {
      this.homelists = response
-     console.log(this.homelists)
+     //console.log(this.homelists)
      })
     //this.$store.dispatch('setScatterEOS');
   },
@@ -44,7 +43,7 @@ export default {
     "info": Info,
     "switch-button": SwitchButton
   },
-  methos:{
+  methods:{
 
   }
 }

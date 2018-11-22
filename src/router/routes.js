@@ -8,7 +8,6 @@ import Vuex from 'vuex'
 // 引入自定义单文件组件
 import Home from 'pages/home/Home'
 import Personal from 'pages/personal/Personal'
-import ChooseTheme from 'pages/choosetheme/ChooseTheme'
 
 
 // 注册插件

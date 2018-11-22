@@ -6,13 +6,18 @@ import * as types from './mutation-types.js'
 export const  updatePage = ({commit}) => {
   commit(types.UPDATE_NEXT_PAGE)
 }
+//跳转home页
+export const  goHomePage = ({commit}) => {
+  commit(types.GO_HOME_PAGE)
+}
+
 //设置EOS值
 export const  setScatterEOS = ({commit}, eos) => {
     commit(types.SET_SCATTER_EOS, eos)
 }
 
 
-// 点击用户头像进入个人页面
+// 点击用户进入个人页面
 export const  goPersonalPages = ({commit},payload) => {
   if(payload.userId){
     commit(types.GO_PERSONAL_PAGES,{
