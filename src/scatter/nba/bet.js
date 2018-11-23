@@ -2,8 +2,9 @@ import Eos from 'eosjs';
 import {contract, eosOptions, getScatterEOS, network} from '../scatter';
 
 // get bet list
-export async function getBetListByPlayer(player) {
-  if (player) {
+export async function getBetListByPlayer(playerIdentity) {
+  if (playerIdentity) {
+    const player = playerIdentity.name;
     const scatter = await getScatterEOS();
     if (scatter != null && scatter.identity) {
       const eos = scatter.eos(network, Eos, eosOptions);
@@ -14,14 +15,4 @@ export async function getBetListByPlayer(player) {
     }
     }
   return [];
-  }
-
-// filter player bets in a round
-export async function filterPlayerBetListByRound(bets, player, round) {
-  let betlist = [];
-  for (var b in bets) {
-    if (b.player == player && b.round_id == round) {
-      betlist.push(b);
-    }
-  }
-}
+};
