@@ -1,10 +1,11 @@
-import {getBetListByPlayer} from 'bet';
 import Eos from 'eosjs';
-import {filterPlayerBetListByRound, getPlayerRoundBetLatest, getPlayerRoundBets, playerJoinStatus, roundtypeKeyValue, teamKeyLang, teamKeyShort} from 'filter';
 import * as moment from 'moment';
-import {getPlayerIdentity} from 'player';
 
 import {contract, eosOptions, getScatterEOS, network} from '../scatter';
+
+import {getBetListByPlayer} from './bet';
+import {filterPlayerBetListByRound, getPlayerRoundBetLatest, getPlayerRoundBets, playerJoinStatus, roundtypeKeyValue, teamKeyLang, teamKeyShort} from './filter';
+import {getPlayerIdentity} from './player';
 
 // get round list
 async function getRoundList() {
