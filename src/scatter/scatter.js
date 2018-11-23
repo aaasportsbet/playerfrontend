@@ -31,13 +31,11 @@ export const equiredFields = {
 // is scatter installed
 async function isscatterInstalled() {
   // connect
-  return await ScatterJS
-    .scatter
-    .connect('aaasportsbet')
-    .then(connected => {
-      // User does not have Scatter Desktop, Mobile or Classic installed.
-      return connected;
-    });;
+  return await ScatterJS.scatter.connect('aaasportsbet').then(connected => {
+    // User does not have Scatter Desktop, Mobile or Classic installed.
+    return connected;
+  });
+  ;
 }
 
 // get scatter eos
@@ -45,9 +43,8 @@ export async function getScatterEOS() {
   let scatter = store.getters.scatterEOS;
   if (scatter == null) {
     await isscatterInstalled().then(installed => {
-      if (!installed) 
-        return null;
-      
+      if (!installed) return null;
+
       scatter = ScatterJS.scatter;
       // Vuex ( when using a setScatter action on your store )
       store.dispatch('setScatterEOS', ScatterJS.scatter);
@@ -57,16 +54,4 @@ export async function getScatterEOS() {
 
   console.log('scatter: ', scatter);
   return scatter;
-}
-
-// fetchRoundList
-export async function fetchRoundList(query) {
-  const scatter = await getScatterEOS();
-  if (scatter != null && scatter.identity) {
-    const eos = scatter.eos(network, Eos, eosOptions);
-    const result = await eos.getTableRows(true, 'aaasportsnba', 'aaasportsnba', 'rounds', 'rounds', 0, -1, 100, 'i64', 1);
-    return result;
-  }
-
-  return {};
 }
