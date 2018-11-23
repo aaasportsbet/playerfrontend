@@ -5,7 +5,10 @@
       <div class="icon-clock count_down_top_clock"></div>
       <div class="count_down_top">Count Down</div>
     </div>
-    <div class="count_down_bottom">{{info.play_count_down_time}}</div>
+    <div class="count_down_bottom">
+      {{message}}
+      <count-down class="count_down_time" v-on:start_callback="countDownS_cb(1)" v-on:end_callback="countDownE_cb(1)" :startTime="startTime" :endTime="endTime"   :tipText="'距离开始'" :tipTextEnd="'距离结束'" :endText="'已经结束'" :dayTxt="':'" :hourTxt="':'" :minutesTxt="':'" :secondsTxt="''"  ></count-down>
+    </div>
   </div>
   <div class="game_win_status" :class="[$route.name === 'home' ? 'game_win_status_display_none' : '']">
     <div class="game_win_status_win" v-if="info.game_win_status === 'win'">
@@ -19,40 +22,45 @@
   <div class="box">
     <div class="vs_play">
       <div class="left_vs_play">
-        <span class="left_text_en">{{info.play_info_left_en}}</span>
-        <span class="left_text_cn">({{info.play_info_left_cn}})</span>
+        <span class="left_text_i18n">{{info.game_info_left_i18n_serv_awayteam}}</span>
+        <span class="left_text_abbr">({{info.game_info_left_abbr}})</span>
       </div>
       <div class="icon_vs_play">VS</div>
       <div class="right_vs_play">
-        <span class="right_text_en">{{info.play_info_right_en}}</span>
-        <span class="right_text_cn">({{info.play_info_right_cn}})</span>
+        <span class="right_text_i18n">{{info.game_info_right_i18n_serv_hometeam}}</span>
+        <span class="right_text_abbr">({{info.game_info_right_abbr}})</span>
       </div>
     </div>
     <div class="info_play" >
       <div class="detail_play">
-        <span class="detail_play_top">[{{info.play_contract_type}}]</span>
-        <span class="detail_play_bottom">Match Time: {{info.play_match_time}}</span>
-        <span class="detail_play_bottom">Join with {{info.play_join_ad}}</span>
+        <span class="detail_play_top">[{{info.game_contract_type}}&nbsp;{{info.game_round_type_i18n_serv_type}}]</span>
+        <span class="detail_play_bottom">Match Time: {{info.game_count_down_time_serv_bet_end_time}}</span>
+        <span class="detail_play_bottom">Join with {{info.game_join_bet_serv_bet_unit}}</span>
       </div>
-      <div class="joined_info" :class="[info.joined === 'false' ? 'joined_info_f' : '']">
-        <div class="joined_info_top">{{info.play_join_num}} Joined</div>
-        <div class="joined_info_bottom" v-if="info.joined === 'true'">
-          You Joined
+      <div class="joined_info joined_info_detail" v-if="info.game_joined_status === 'View Detail'">
+          {{info.game_joined_status}}
+      </div>
+
+      <div class="joined_info" :class="[info.game_joined_status === 'Join Now' ? 'joined_info_f' : '']" v-else>
+        <div class="joined_info_top">{{info.game_joied_num_serv_shares}} Joined</div>
+        <div class="joined_info_bottom" v-if="info.game_joined_status !== 'Join Now'">
+          {{info.game_joined_status}}
         </div>
         <div class="joined_info_bottom joined_info_bottom_f" v-else>
-          Join Now
+          {{info.game_joined_status}}
         </div>
       </div>
     </div>
-    <div class="box_bottom">
-       <span class="box_bottom_l">{{info.play_join_news}}</span>
-       <span class="box_bottom_r">{{info.play_join_news_num}}</span>
+    <div class="box_bottom" v-if="info.game_joined_latest !== 0 && info.game_joined_status !== 'View Detail'">
+       <span class="box_bottom_l">{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}} Score </span>
+       <span class="box_bottom_r">{{info.game_joined_latest.num}}</span>
     </div>
-    <div class="bottom_more" v-clickoutside="handleClose">
+    <div style="height:16px;" v-else></div>
+    <div class="bottom_more" v-clickoutside="handleClose" v-if="info.game_joined_more_display === 'true'">
        <div class="el-icon-caret-bottom dropdown_menu" @click="show = !show">&nbsp;More</div>
                 <div class="dropdown_show"  v-show = "show">
                     <div class="dropdown_list" v-for="item in list_playmore">
-                      <span class="dropdown_list_l">{{item.text}}</span>
+                      <span class="dropdown_list_l">{{item.team_name}} Win {{item.team_score}} Score </span>
                       <span class="dropdown_list_r">{{item.num}}</span>
                     </div>
                 </div>
@@ -64,13 +72,16 @@
 </template>
 
 <script>
+import CountDown from 'vue2-countdown'
 export default {
   data() {
         return {
-
             show:false,
-            list_playmore:  this.info.play_more,
-        };
+            list_playmore:  this.info.game_joined_more,
+            startTime:( new Date() ).getTime()+(100*100),
+            endTime:( new Date() ).getTime()+(100*100),
+            message:''
+        }
     },
   props: {
     info: {
@@ -81,6 +92,7 @@ export default {
 
   },
   components: {
+    CountDown
   },
   methods: {
     goDetailPage: function (info) {
@@ -88,8 +100,16 @@ export default {
         this.$store.dispatch('toggleheader',{nickname:info.nickname})
     },
     handleClose(){
-            this.show = false;
-        },
+        this.show = false;
+      },
+    countDownS_cb: function (x) {
+        this.message = 'Stop Betting'
+        console.log(x)
+      },
+    countDownE_cb: function (x) {
+        this.message = 'Stop Betting'
+        console.log(x)
+      }
 
   },
      directives:{
@@ -171,12 +191,21 @@ export default {
 
     }
       .count_down_bottom{
-      width: 90%;
-      font-size: 36px;
-      font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+        width: 90%;
+      font-size: 28px;
+      font-family: "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,Tahoma,Verdana,STHeiTi,simsun,sans-serif;
       font-weight: bold;
-      color: #ECC22F;
-      line-height: 60px;
+      color: gray;
+      line-height: 50px;
+      //font-style: normal;
+      .count_down_time{
+        font-size: 28px;
+        font-family: "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,Tahoma,Verdana,STHeiTi,simsun,sans-serif;
+        font-weight: bold;
+        color: #ECC22F;
+        line-height: 50px;
+        font-style: normal;
+      }
       //background-color: #FFFFFE;
        }
 
@@ -255,12 +284,12 @@ export default {
               box-shadow: none;
               margin-top: 60px;
               color: #FFFFFE;
-              .left_text_en{
+              .left_text_i18n{
                     font-size: 40px;
                     font-weight: bold;
                     font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
               }
-              .left_text_cn{
+              .left_text_abbr{
                 margin-top: 30px;
                 font-size: 36px;
                 font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
@@ -296,12 +325,12 @@ export default {
               box-shadow: none;
               margin-top: 60px;
               color: #FFFFFE;
-              .right_text_en{
+              .right_text_i18n{
                     font-size: 40px;
                     font-weight: bold;
                     font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
               }
-              .right_text_cn{
+              .right_text_abbr{
                 margin-top: 30px;
                 font-size: 36px;
                 font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
@@ -350,6 +379,14 @@ export default {
             border-width: 2px;
             border-style: solid;
             overflow: hidden;
+            &.joined_info_detail{
+              border-color: #ECC22F;
+              background-color:#ECC22F;
+              font-size: 30px;
+              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+              color:#2B2B2B;
+              font-weight: bold;
+            }
             .joined_info_top{
               background-color: rgba(43, 43, 43, 1);
               font-size: 25px;
