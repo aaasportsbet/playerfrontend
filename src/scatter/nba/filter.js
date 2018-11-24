@@ -172,6 +172,7 @@ export function filterPlayerBetListByRound(bets, playerIdentity, round_id) {
       }
     }
   }
+  return betlist;
 };
 
 function roundBetValue(bet, round) {
