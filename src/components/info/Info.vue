@@ -37,31 +37,31 @@
         <span class="detail_play_bottom">Match Time: {{info.game_count_down_time_serv_bet_end_time}}</span>
         <span class="detail_play_bottom">Join with {{info.game_join_bet_serv_bet_unit}}</span>
       </div>
-      <div class="joined_info joined_info_detail" v-if="info.game_joined_status === 'View Detail'">
-          {{info.game_joined_status}}
+      <div class="joined_info joined_info_detail" v-if="info.game_joined_status.index === 'View Detail'">
+          {{info.game_joined_status.value}}
       </div>
 
-      <div class="joined_info" :class="[info.game_joined_status === 'Join Now' ? 'joined_info_f' : '']" v-else>
+      <div class="joined_info" :class="[info.game_joined_status.index === 0 ? 'joined_info_f' : '']" v-else>
         <div class="joined_info_top">{{info.game_joied_num_serv_shares}} Joined</div>
-        <div class="joined_info_bottom" v-if="info.game_joined_status !== 'Join Now'">
-          {{info.game_joined_status}}
+        <div class="joined_info_bottom" v-if="info.game_joined_status.index !== 0">
+          {{info.game_joined_status.value}}
         </div>
         <div class="joined_info_bottom joined_info_bottom_f" v-else>
-          {{info.game_joined_status}}
+          {{info.game_joined_status.value}}
         </div>
       </div>
     </div>
-    <div class="box_bottom" v-if="info.game_joined_latest === null && info.game_joined_status !== 'View Detail'">
+    <div class="box_bottom" v-show="info.game_joined_latest !== 0">
        <span class="box_bottom_l">{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}} Score </span>
-       <span class="box_bottom_r">{{info.game_joined_latest.num}}</span>
+       <span class="box_bottom_r">{{info.game_joined_latest.share}}</span>
     </div>
-    <div style="height:16px;" v-else></div>
-    <div class="bottom_more" v-clickoutside="handleClose" v-if="info.game_joined_more_display === 'true'">
+    <div style="height:16px;" v-show="info.game_joined_latest === 0"></div>
+    <div class="bottom_more" v-clickoutside="handleClose" v-if="info.game_joined_more_display === true">
        <div class="el-icon-caret-bottom dropdown_menu" @click="show = !show">&nbsp;More</div>
                 <div class="dropdown_show"  v-show = "show">
                     <div class="dropdown_list" v-for="item in list_playmore">
                       <span class="dropdown_list_l">{{item.team_name}} Win {{item.team_score}} Score </span>
-                      <span class="dropdown_list_r">{{item.num}}</span>
+                      <span class="dropdown_list_r">{{item.share}}</span>
                     </div>
                 </div>
     </div>
