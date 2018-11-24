@@ -4,69 +4,76 @@ import * as moment from 'moment';
 import {contract, eosOptions, getScatterEOS, network} from '../scatter';
 
 import {getBetListByPlayer} from './bet';
-import {filterPlayerBetListByRound, getPlayerRoundBetLatest, getPlayerRoundBets, playerJoinStatus, roundtypeKeyValue, teamKeyLang, teamKeyShort} from './filter';
+import {
+  filterPlayerBetListByRound,
+  getPlayerRoundBetLatest,
+  getPlayerRoundBets,
+  playerJoinStatus,
+  roundtypeKeyValue,
+  teamKeyLang,
+  teamKeyShort
+} from './filter';
 import {getPlayerIdentity} from './player';
 
 // get round list
 async function getRoundList() {
   const scatter = await getScatterEOS();
-  if (scatter != null ) {
+  if (scatter != null) {
     const eos = scatter.eos(network, Eos, eosOptions);
     const result = await eos.getTableRows(true, contract, contract, 'rounds', 'rounds', 0, -1, 10000, 'i64', 1);
-    console.log("aaa", result.rows)
+    console.log('aaa', result.rows);
     return result.rows;
-    }
+  }
 
-  return [{"err":"Not get roundlist"}];
+  return [];
 }
 
 // sort algo
 function sortby(time) {
-  return function(a, b) {
-    return (a.bet_end_time - time) > (b.bet_end_time - time) ? 1 : -1
+  return function (a, b) {
+    return (a.bet_end_time - time) > (b.bet_end_time - time)
+      ? 1
+      : -1
   };
-  }
+}
 
 // filter delete rounds that already drawed or returned
 function filterFinishedRounds(rounds) {
   let retrounds = [];
-  console.log("rounds: ",rounds);
-  for (var r in rounds) {
+  rounds.forEach(r => {
+    console.log(r);
     if (r.status == 3 || r.status == 4 || r.status == 5) {
-      console.log("tf");
-      continue;
-
+      return;
     }
 
     retrounds.push(r);
-    console.log("af: ",retrounds);
-    return retrounds;
-  }
-  }
+  });
+
+  return retrounds;
+}
 
 // get home round list
 export async function getHomeRoundList() {
   // filter finished rounds
-  const awaitdata=await getRoundList()
+  const awaitdata = await getRoundList();
   const filteredrounds = filterFinishedRounds(awaitdata);
   // sort by time
-  console.log("filteredrounds:",awaitdata)
-  const sortedrounds =filteredrounds.sort(sortby(moment().millisecond() * 1000));
-        console.log("df");
+  const sortedrounds = filteredrounds.sort(sortby(moment().millisecond() * 1000));
+  console.log(sortedrounds);
   const playerIdentity = getPlayerIdentity();
   // get player bet list
   const playerbets = await getBetListByPlayer(playerIdentity);
 
   let displayrounds = [];
-  for (var r in sortedrounds) {
-    const playerRoundBets =filterPlayerBetListByRound(playerbets, playerIdentity, r.id);
+  sortedrounds.forEach((r, idx, arr) => {
+    const playerRoundBets = filterPlayerBetListByRound(playerbets, playerIdentity, r.id);
 
     displayrounds.push({
       game_serv_id: r.id,
-      game_count_down_time_serv_bet_end_time:
-          moment.unix(r.bet_end_time / 1000000)
-              .utc()
-              .format('YYYY.MM.DD HH:mm'),
+      game_count_down_time_serv_bet_end_time: moment
+        .unix(r.bet_end_time / 1000000)
+        .utc()
+        .format('YYYY.MM.DD HH:mm'),
       game_count_down_time_display: true,
       game_win_status: 'win',
       game_win_status_display: false,
@@ -83,7 +90,12 @@ export async function getHomeRoundList() {
       game_joined_more_display: playerRoundBets.length > 0,
       game_joined_more: getPlayerRoundBets(playerRoundBets, r)
     });
-    }
+  });
 
-  return {errno: displayrounds.length > 0 ? 200 : 404, data: displayrounds};
+  return {
+    errno: displayrounds.length > 0
+      ? 200
+      : 404,
+    data: displayrounds
+  };
 }
