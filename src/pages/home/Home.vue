@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <div>{{homelists}}</div>
     <div class="info-container" v-for="item in homelist">
       <info :info="item" class="info"></info>
     </div>
@@ -13,7 +14,7 @@ import axios from 'axios'
 import Info from 'components/info/Info.vue'
 import SwitchButton from 'components/switchbutton/SwitchButton.vue'
 import { mapGetters, mapActions } from 'vuex'
-import {fetchRoundList} from "../../scatter/scatter.js"
+import {getHomeRoundList} from "../../scatter/nba/round.js"
 
 const ERR_OK = 0
 export default {
@@ -27,17 +28,17 @@ export default {
     axios.get('/api/home').then((res) => {
       res = res.data
       if (res.errno === ERR_OK) {
-        this.homelist = res.data
-       // console.log(this.homelist)
+        this.homelist = res.data;
+        console.log("homelist :",res.data);
       }
     }).catch((error) => {
       console.warn(error)
     });
-    fetchRoundList().then(response => {
-     this.homelists = response
-     //console.log(this.homelists)
-     })
-    //this.$store.dispatch('setScatterEOS');
+    getHomeRoundList().then(response => {
+     this.homelists = response;
+     console.log("homelists :",response);
+     });
+
   },
   components: {
     "info": Info,

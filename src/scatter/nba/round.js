@@ -10,14 +10,14 @@ import {getPlayerIdentity} from './player';
 // get round list
 async function getRoundList() {
   const scatter = await getScatterEOS();
-  if (scatter != null && scatter.identity) {
+  if (scatter != null ) {
     const eos = scatter.eos(network, Eos, eosOptions);
-    const result = await eos.getTableRows(
-        true, contract, contract, 'rounds', 'rounds', 0, -1, 10000, 'i64', 1);
+    const result = await eos.getTableRows(true, contract, contract, 'rounds', 'rounds', 0, -1, 10000, 'i64', 1);
+    console.log("aaa", result.rows)
     return result.rows;
     }
 
-  return [];
+  return [{"err":"Not get roundlist"}];
 }
 
 // sort algo
@@ -30,31 +30,34 @@ function sortby(time) {
 // filter delete rounds that already drawed or returned
 function filterFinishedRounds(rounds) {
   let retrounds = [];
+  console.log(rounds);
   for (var r in rounds) {
     if (r.status == 3 || r.status == 4 || r.status == 5) {
+      console.log("tf");
       continue;
+
     }
 
     retrounds.push(r);
+    console.log("af")
   }
   }
 
 // get home round list
 export async function getHomeRoundList() {
   // filter finished rounds
-  const filteredrounds = filterFinishedRounds(await getRoundList());
+  const awaitdata=await getRoundList()
+  const filteredrounds = filterFinishedRounds(awaitdata);
   // sort by time
-  const sortedrounds =
-      filteredrounds.sort(sortby(moment().millisecond() * 1000));
-
+  const sortedrounds =filteredrounds.sort(sortby(moment().millisecond() * 1000));
+        console.log("df");
   const playerIdentity = getPlayerIdentity();
   // get player bet list
   const playerbets = await getBetListByPlayer(playerIdentity);
 
   let displayrounds = [];
   for (var r in sortedrounds) {
-    const playerRoundBets =
-        filterPlayerBetListByRound(playerbets, playerIdentity, r.id);
+    const playerRoundBets =filterPlayerBetListByRound(playerbets, playerIdentity, r.id);
 
     displayrounds.push({
       game_serv_id: r.id,

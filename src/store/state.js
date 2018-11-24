@@ -1,6 +1,6 @@
 // 定义初始状态
 const state = {
-  scatter: {eos: null},
+  scatter: null,
   pageIndex: 0,
   pageArray: [
     {headerTitle: "我是广告", routename: "home"},

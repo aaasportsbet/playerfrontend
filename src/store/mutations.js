@@ -38,9 +38,9 @@ export default {
     state.isSlideBarShow = !state.isSlideBarShow
   },
 //EOS
-[types.SET_SCATTER_EOS](state,eos) {
-  state.eos = eos;
-},
+  [types.SET_SCATTER_EOS](state,eos) {
+    state.scatter = eos;
+  },
 
   [types.TOGGLE_HEADER](state) {
     state.isDetailHeader = !state.isDetailHeader

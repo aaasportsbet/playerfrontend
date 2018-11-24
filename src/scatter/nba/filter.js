@@ -236,7 +236,7 @@ export async function playerJoinStatus(playerRoundBets, round) {
   switch (round.status) {
     case 0: // betting
       return playerRoundBets.length > 0
-        ? 'Join again'
+        ? 'Join Again'
         : 'Join Now';
     case 1: // wait publish result
       return 'Gaming';

@@ -5,7 +5,7 @@ export const detailHeaderNickName = state => state.detailHeaderNickName
 export const isAudioPlay = state => state.isAudioPlay
 export const currentPlayerUrl = state => state.currentPlayerUrl
 //EOS
-export const scatterEOS = state => state.eos
+export const scatterEOS = state => state.scatter
 
 export const isfollow = state => state.isfollow
 export const followcount = state => state.followcount

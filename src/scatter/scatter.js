@@ -41,6 +41,7 @@ async function isscatterInstalled() {
 // get scatter eos
 export async function getScatterEOS() {
   let scatter = store.getters.scatterEOS;
+  console.log("store.getters.scatterEOS:", store.getters.scatterEOS);
   if (scatter == null) {
     await isscatterInstalled().then(installed => {
       if (!installed) return null;
