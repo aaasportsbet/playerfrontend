@@ -30,7 +30,7 @@ function sortby(time) {
 // filter delete rounds that already drawed or returned
 function filterFinishedRounds(rounds) {
   let retrounds = [];
-  console.log(rounds);
+  console.log("rounds: ",rounds);
   for (var r in rounds) {
     if (r.status == 3 || r.status == 4 || r.status == 5) {
       console.log("tf");
@@ -39,7 +39,8 @@ function filterFinishedRounds(rounds) {
     }
 
     retrounds.push(r);
-    console.log("af")
+    console.log("af: ",retrounds);
+    return retrounds;
   }
   }
 
@@ -49,6 +50,7 @@ export async function getHomeRoundList() {
   const awaitdata=await getRoundList()
   const filteredrounds = filterFinishedRounds(awaitdata);
   // sort by time
+  console.log("filteredrounds:",awaitdata)
   const sortedrounds =filteredrounds.sort(sortby(moment().millisecond() * 1000));
         console.log("df");
   const playerIdentity = getPlayerIdentity();
