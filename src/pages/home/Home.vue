@@ -3,6 +3,7 @@
     <div class="info-container" v-for="item in homelists">
       <info :info="item" class="info"></info>
     </div>
+    <div style="height:16px;"></div>
 		<switch-button></switch-button>
   </div>
 </template>

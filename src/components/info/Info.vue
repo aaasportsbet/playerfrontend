@@ -46,9 +46,21 @@
         <div class="joined_info_bottom" v-if="info.game_joined_status.index !== 0">
           {{info.game_joined_status.value}}
         </div>
-        <div class="joined_info_bottom joined_info_bottom_f" v-else>
+        <div @click="dialogVisible = true" class="joined_info_bottom joined_info_bottom_f" v-else>
           {{info.game_joined_status.value}}
         </div>
+
+          <el-dialog
+            title="Join Info"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :before-close="handleClose">
+            <span>这是投注信息</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">Cancle</el-button>
+              <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+            </span>
+          </el-dialog>
       </div>
     </div>
     <div class="box_bottom" v-show="info.game_joined_latest !== 0">
@@ -56,7 +68,7 @@
        <span class="box_bottom_r">{{info.game_joined_latest.share}}</span>
     </div>
     <div style="height:16px;" v-show="info.game_joined_latest === 0"></div>
-    <div class="bottom_more" v-clickoutside="handleClose" v-if="info.game_joined_more_display === true">
+    <div class="bottom_more" v-show="info.game_joined_latest !== 0 && info.game_joined_more_display === true" v-clickoutside="handleClose">
        <div class="el-icon-caret-bottom dropdown_menu" @click="show = !show">&nbsp;More</div>
                 <div class="dropdown_show"  v-show = "show">
                     <div class="dropdown_list" v-for="item in list_playmore">
@@ -80,7 +92,8 @@ export default {
             list_playmore:  this.info.game_joined_more,
             startTime:( new Date() ).getTime()+(100*100),
             endTime:( new Date() ).getTime()+(100*100),
-            message:''
+            message:'',
+            dialogVisible: false
         }
     },
   props: {
@@ -101,6 +114,13 @@ export default {
     },
     handleClose(){
         this.show = false;
+      },
+      handleCloseJoin(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
       },
     countDownS_cb: function (x) {
         this.message = 'Stop Betting'
