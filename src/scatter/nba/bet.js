@@ -1,4 +1,6 @@
+import {BigNumber} from 'bignumber.js';
 import Eos from 'eosjs';
+
 import {eosOptions, getScatterEOS, network} from '../scatter';
 
 const contract = process.env.EOS.CONTRACTNBA;
@@ -10,10 +12,17 @@ export async function getBetListByPlayer(playerIdentity) {
     const scatter = await getScatterEOS();
     if (scatter != null && scatter.identity) {
       const eos = scatter.eos(network, Eos, eosOptions);
-      const result = await eos.getTableRows(true, contract, contract, 'bets', 'byplayer', 0, -1, 1000, 'i64', 1);
-      const hasmore = result.more;
+      const playerkey = new BigNumber(Eos.modules.format.encodeName(player, false));
+      console.log('player: ', player, ', table_key: ', playerkey.toString());
+      const result = await eos.getTableRows({
+        json: true, code: contract, scope: contract, table: 'bets',
+        // table_key: 'bets', lower_bound: playerkey.toString(), upper_bound: playerkey
+        // .plus(1)   .toString(),
+        limit: 10000,
+        key_type: 'i64',
+        index_position: '1'
+      });
 
-      console.log('player bets: ', result);
       let rows = [];
       result
         .rows
@@ -22,10 +31,9 @@ export async function getBetListByPlayer(playerIdentity) {
             return;
           }
 
+          console.log('player bets: ', r);
           rows.push(r);
         });
-
-      if (hasmore) {}
 
       return rows;
     }
