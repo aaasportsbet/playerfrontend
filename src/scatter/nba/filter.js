@@ -110,7 +110,7 @@ function roundBetValue(bet, round) {
 
 export function getPlayerRoundBetLatest(playerRoundBets, round) {
   return playerRoundBets.length > 0 ? roundBetValue(playerRoundBets[0], round) :
-                                      {};
+                                      null;
 };
 
 export function getPlayerRoundBets(playerRoundBets, round) {
