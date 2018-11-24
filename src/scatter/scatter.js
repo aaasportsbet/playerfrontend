@@ -15,8 +15,6 @@ export const network = {
   chainId: process.env.EOS.CHAINID
 };
 
-export const contract = process.env.EOS.CONTRACT;
-
 // options you want into the eosjs reference.
 export const eosOptions = {
   expireInSeconds: 60,
@@ -31,11 +29,13 @@ export const requiredFields = {
 // is scatter installed
 async function isscatterInstalled() {
   // connect
-  return await ScatterJS.scatter.connect('aaasportsbet').then(connected => {
-    // User does not have Scatter Desktop, Mobile or Classic installed.
-    return connected;
-  });
-  ;
+  return await ScatterJS
+    .scatter
+    .connect('aaasportsbet')
+    .then(connected => {
+      // User does not have Scatter Desktop, Mobile or Classic installed.
+      return connected;
+    });;
 }
 
 // get scatter eos
@@ -44,8 +44,9 @@ export async function getScatterEOS() {
   console.log('store.getters.scatterEOS:', store.getters.scatterEOS);
   if (scatter == null) {
     await isscatterInstalled().then(installed => {
-      if (!installed) return null;
-
+      if (!installed) 
+        return null;
+      
       scatter = ScatterJS.scatter;
       // Vuex ( when using a setScatter action on your store )
       store.dispatch('setScatterEOS', ScatterJS.scatter);
