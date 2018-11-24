@@ -43,13 +43,9 @@ export default {
       this.homelists = response.data;
       console.log("homelists :", response.data);
     });
-    login().then(flag => {
-      if (!flag) return;
-
-      getPlayerIdentity().then(identity => {
-        betRound(identity, 0, "1.0000 EOS", 4, "+10").then(response => {
-          console.log("response", response);
-        });
+    getPlayerIdentity().then(identity => {
+      betRound(identity, 0, "1.0000 EOS", 4, "+10").then(response => {
+        console.log("response", response);
       });
     });
   },
