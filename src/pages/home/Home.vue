@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <div>{{homelists}}</div>
-    <div class="info-container" v-for="item in homelist">
+    <div class="info-container" v-for="item in homelists">
       <info :info="item" class="info"></info>
     </div>
 		<switch-button></switch-button>
@@ -35,8 +34,8 @@ export default {
       console.warn(error)
     });
     getHomeRoundList().then(response => {
-     this.homelists = response;
-     console.log("homelists :",response);
+     this.homelists = response.data;
+     console.log("homelists :",response.data);
      });
 
   },

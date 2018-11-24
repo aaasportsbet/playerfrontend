@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <div class="box_bottom" v-if="info.game_joined_latest !== 0 && info.game_joined_status !== 'View Detail'">
+    <div class="box_bottom" v-if="info.game_joined_latest === null && info.game_joined_status !== 'View Detail'">
        <span class="box_bottom_l">{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}} Score </span>
        <span class="box_bottom_r">{{info.game_joined_latest.num}}</span>
     </div>

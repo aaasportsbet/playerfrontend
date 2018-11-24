@@ -122,7 +122,7 @@ export function getPlayerRoundBets(playerRoundBets, round) {
   return bets;
 };
 
-export async function playerJoinStatus(playerRoundBets, round) {
+export function playerJoinStatus(playerRoundBets, round) {
   switch (round.status) {
     case 0:  // betting
       return playerRoundBets.length > 0 ? 'Join Again' : 'Join Now';
