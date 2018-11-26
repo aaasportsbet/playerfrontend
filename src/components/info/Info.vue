@@ -46,23 +46,56 @@
         <div class="joined_info_bottom" v-if="info.game_joined_status.index !== 0">
           {{info.game_joined_status.value}}
         </div>
-        <div @click="dialogVisible = true" class="joined_info_bottom joined_info_bottom_f" v-else>
+        <div class="joined_info_bottom joined_info_bottom_f" v-else>
           {{info.game_joined_status.value}}
         </div>
-
-          <el-dialog
-            title="Join Info"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleClose">
-            <span>这是投注信息</span>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">Cancle</el-button>
-              <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
-            </span>
-          </el-dialog>
       </div>
     </div>
+
+
+
+    <div class="bet_act">
+      <el-form ref="form" :model="form">
+        <el-form-item class="bet_act_Betting_Multiple">Betting Multiple:
+          <el-input-number   v-model="num1" size="small"  @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
+        </el-form-item>
+        <el-form-item class="bet_act_Betting_Multiple" size="small">Bet Interval:
+          <el-select v-model="form.region" placeholder="Please Choose">
+          <el-option label="DAL VS MEM for 1-3" value="1-3"></el-option>
+          <el-option label="DAL VS MEM for  5-7" value="5-7"></el-option>
+          <el-option label="DAL VS MEM for  6-8" value="6-8"></el-option>
+          <el-option label="DAL VS MEM for  9-10" value="9-10"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-form-item class="bet_act_Betting_Multiple">Betting Multiple: 10</el-form-item>
+          <el-form-item class="bet_act_Betting_Multiple">Bet Interval: DAL VS MEM for 1-3</el-form-item>
+          <el-form-item class="bet_act_Betting_Multiple">Pay Toltal: 50EOS</el-form-item>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('form')">Submit</el-button>
+          <el-button @click="resetForm('form')">Reset</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+
+  <div class="bet_act">
+    <div class="bet_act_BM">
+      <div class="bet_act_BM_label"></div>
+      <div class="bet_act_BM_num"></div>
+    </div>
+    <div class="bet_act_BI">
+      <div class="bet_act_BI_label"></div>
+    </div>
+    <div class="bet_act_BWF"></div>
+    <div class="bet_act_BP"></div>
+    <div class="bet_act_betinfo"></div>
+    <div class="bet_act_confirm"></div>
+  </div>
+
+
+
     <div class="box_bottom" v-show="info.game_joined_latest !== 0">
        <span class="box_bottom_l">{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}} Score </span>
        <span class="box_bottom_r">{{info.game_joined_latest.share}}</span>
@@ -93,7 +126,18 @@ export default {
             startTime:( new Date() ).getTime()+(100*100),
             endTime:( new Date() ).getTime()+(100*100),
             message:'',
-            dialogVisible: false
+            dialogVisible: false,
+            form: {
+              name: '',
+              region: '',
+              date1: '',
+              date2: '',
+              delivery: false,
+              type: [],
+              resource: '',
+              desc: ''
+            },
+            num1: 1
         }
     },
   props: {
@@ -115,13 +159,6 @@ export default {
     handleClose(){
         this.show = false;
       },
-      handleCloseJoin(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      },
     countDownS_cb: function (x) {
         this.message = 'Stop Betting'
         console.log(x)
@@ -129,28 +166,42 @@ export default {
     countDownE_cb: function (x) {
         this.message = 'Stop Betting'
         console.log(x)
+      },
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
       }
 
+
   },
-     directives:{
-        clickoutside:{
-            bind:function(el,binding,vnode){
-                function documentHandler(e){
-                    if(el.contains(e.target)){
-                        return false;
-                    }
-                    if(binding.expression){
-                        binding.value(e)
-                    }
+  directives:{
+    clickoutside:{
+        bind:function(el,binding,vnode){
+            function documentHandler(e){
+                if(el.contains(e.target)){
+                    return false;
                 }
-                el._vueClickOutside_ = documentHandler;
-                document.addEventListener('click',documentHandler);
-            },
-            unbind:function(el,binding){
-                document.removeEventListener('click',el._vueClickOutside_);
-                delete el._vueClickOutside_;
+                if(binding.expression){
+                    binding.value(e)
+                }
             }
+            el._vueClickOutside_ = documentHandler;
+            document.addEventListener('click',documentHandler);
+        },
+        unbind:function(el,binding){
+            document.removeEventListener('click',el._vueClickOutside_);
+            delete el._vueClickOutside_;
         }
+    }
     }
 }
 </script>
@@ -436,6 +487,21 @@ export default {
 
             }
           }
+        }
+        .bet_act{
+          display: flex;
+          justify-content:space-around;
+          align-items: start;
+          width: 100%;
+          flex-direction: column;
+          .bet_act_Betting_Multiple{
+
+            width: 100%;
+            margin-left: 40px;
+            color: #ffffff;
+            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+          }
+
         }
        .box_bottom{
           display: flex;
