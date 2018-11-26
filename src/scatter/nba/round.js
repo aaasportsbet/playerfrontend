@@ -76,14 +76,17 @@ export async function getHomeRoundList() {
       game_count_down_time_serv_bet_end_time: moment
         .unix(r.bet_end_time / 1000000)
         .utc()
+        .local()
         .format('YYYY.MM.DD HH:mm'),
       game_count_down_time_display: true,
       game_win_status: 'win',
       game_win_status_display: false,
       game_info_left_i18n_serv_awayteam: teamKeyLang[r.awayteam],
       game_info_left_abbr: teamKeyShort[r.awayteam],
+      game_info_left_id: r.awayteam,
       game_info_right_i18n_serv_hometeam: teamKeyLang[r.hometeam],
       game_info_right_abbr: teamKeyShort[r.hometeam],
+      game_info_right_id: r.hometeam,
       game_contract_type: 'NBA',
       game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
       game_join_bet_serv_bet_unit: r.bet_unit,
