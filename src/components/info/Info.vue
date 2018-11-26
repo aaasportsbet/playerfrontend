@@ -51,48 +51,46 @@
         </div>
       </div>
     </div>
-
-
-
     <div class="bet_act">
-      <el-form ref="form" :model="form">
-        <el-form-item class="bet_act_Betting_Multiple">Betting Multiple:
-          <el-input-number   v-model="num1" size="small"  @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
-        </el-form-item>
-        <el-form-item class="bet_act_Betting_Multiple" size="small">Bet Interval:
-          <el-select v-model="form.region" placeholder="Please Choose">
-          <el-option label="DAL VS MEM for 1-3" value="1-3"></el-option>
-          <el-option label="DAL VS MEM for  5-7" value="5-7"></el-option>
-          <el-option label="DAL VS MEM for  6-8" value="6-8"></el-option>
-          <el-option label="DAL VS MEM for  9-10" value="9-10"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-form-item class="bet_act_Betting_Multiple">Betting Multiple: 10</el-form-item>
-          <el-form-item class="bet_act_Betting_Multiple">Bet Interval: DAL VS MEM for 1-3</el-form-item>
-          <el-form-item class="bet_act_Betting_Multiple">Pay Toltal: 50EOS</el-form-item>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('form')">Submit</el-button>
-          <el-button @click="resetForm('form')">Reset</el-button>
-        </el-form-item>
-      </el-form>
+      <div class="bet_act_BM">
+        <div class="bet_act_BM_label">Betting Multiple</div>
+        <div class="bet_act_BM_value">
+           <button class="bet_act_BM_value_minus">-</button>
+           <span class="bet_act_BM_value_num">5</span>
+           <button class="bet_act_BM_value_plus">+</button>
+        </div>
+      </div>
+      <div class="bet_act_ChooseWin">
+        <div class="bet_act_ChooseWin_label">Choose Win Team</div>
+        <div class="bet_act_ChooseWin_value">
+           <button class="bet_act_ChooseWin_value_left">DAL</button>
+           <button class="bet_act_ChooseWin_value_right">MEM</button>
+        </div>
+      </div>
+      <div class="bet_act_BI">
+        <div class="bet_act_BI_label">Bet Interval</div>
+        <div class="bet_act_BI_value">
+          <button class="bet_act_BI_value_num">1-3</button>
+          <button class="bet_act_BI_value_num">4-7</button>
+          <button class="bet_act_BI_value_num">8-12</button>
+          <button class="bet_act_BI_value_num">13-20</button>
+          <button class="bet_act_BI_value_num">20+</button>
+        </div>
+      </div>
+      <div class="bet_act_BP">
+        <div class="bet_act_BP_label">Choose Win Points</div>
+        <div class="bet_act_BP_value">
+            <button class="bet_act_BP_value_minus">-</button>
+            <span class="bet_act_BP_value_num">5</span>
+            <button class="bet_act_BP_value_plus">+</button>
+        </div>
+      </div>
+      <div class="bet_act_BP_betinfo">
+        <div class="bet_act_BP_beinfo_label">Bet Detail</div>
+        <div class="bet_act_BP_beinfo_value">[DAL Win] [Range] [1-3] [Pay 50EOS]</div>
+      </div>
+      <div class="bet_act_BP_confirm">confirm</div>
     </div>
-
-
-  <div class="bet_act">
-    <div class="bet_act_BM">
-      <div class="bet_act_BM_label"></div>
-      <div class="bet_act_BM_num"></div>
-    </div>
-    <div class="bet_act_BI">
-      <div class="bet_act_BI_label"></div>
-    </div>
-    <div class="bet_act_BWF"></div>
-    <div class="bet_act_BP"></div>
-    <div class="bet_act_betinfo"></div>
-    <div class="bet_act_confirm"></div>
-  </div>
 
 
 
@@ -491,15 +489,240 @@ export default {
         .bet_act{
           display: flex;
           justify-content:space-around;
-          align-items: start;
-          width: 100%;
+          align-items: stretch;
           flex-direction: column;
-          .bet_act_Betting_Multiple{
 
-            width: 100%;
-            margin-left: 40px;
-            color: #ffffff;
-            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+          .bet_act_BM{
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
+            flex-direction: row;
+            font-size: 30px;
+            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+            color:#FFFFFF;
+            margin-top: 40px;
+            border-width: 1px 0px 0px 0px;
+            border-style: solid;
+            border-color: rgba(119, 119, 119, 1);
+            height: 86px;
+              .bet_act_BM_label{
+                margin-left: 40px;
+
+              }
+              .bet_act_BM_value{
+                margin-right: 40px;
+                .bet_act_BM_value_plus{
+                  color:#FFFFFE;
+                  background-color: rgb(131, 104, 5);
+                  border-color: rgb(131, 104, 5);
+                  border-radius: 4px;
+                  border-width: 2px;
+                  border-style: solid;
+                  font-size: 36px;
+                  font-weight: bolder;
+                  text-align: center;
+                  width: 60px;
+                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+                }
+                .bet_act_BM_value_num{
+                  margin-left: 15px;
+                  margin-right: 15px;
+                  color:#FFFFFE;
+                  font-size: 36px;
+                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+                  //font-weight: bold;
+
+                }
+                .bet_act_BM_value_minus{
+                  color:#FFFFFE;
+                  background-color: rgb(131, 104, 5);
+                  border-color: rgb(131, 104, 5);
+                  border-radius: 4px;
+                  border-width: 2px;
+                  border-style: solid;
+                  font-size: 36px;
+                  font-weight: bolder;
+                  text-align: center;
+                  width: 60px;
+                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+                }
+              }
+            }
+          .bet_act_ChooseWin{
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
+            flex-direction: row;
+            font-size: 30px;
+            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+            color:#FFFFFF;
+            border-width: 1px 0px 0px 0px;
+            border-style: solid;
+            border-color: rgba(119, 119, 119, 1);
+            height: 86px;
+            .bet_act_ChooseWin_label{
+                margin-left: 40px;
+
+              }
+            .bet_act_ChooseWin_value{
+              margin-right: 40px;
+
+              .bet_act_ChooseWin_value_left{
+                  color:#FFFFFE;
+                  background-color: rgb(131, 104, 5);
+                  border-style: none;
+                  font-size: 30px;
+                  //font-weight: bold;
+                  text-align: center;
+                  align-items: center;
+                  text-align: center;
+                  vertical-align: middle;
+                  //width: 150px;
+                  //height: 60px;
+                  border-color: rgb(131, 104, 5);
+                  border-radius: 4px;
+                  border-width: 2px;
+                  border-style: solid;
+                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+                }
+              .bet_act_ChooseWin_value_right{
+                  color:#FFFFFE;
+                  background-color: rgb(131, 104, 5);
+                  border-style: none;
+                  font-size: 30px;
+                  //font-weight: bold;
+                  text-align: center;
+                  align-items: center;
+                  text-align: center;
+                  vertical-align: middle;
+                  text-align: center;
+                  margin-left: 15px;
+                  //width: 150px;
+                  //height: 60px;
+                  border-color: rgb(131, 104, 5);
+                  border-radius: 4px;
+                  border-width: 2px;
+                  border-style: solid;
+                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+                }
+
+
+            }
+          }
+          .bet_act_BI{
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
+            flex-direction: row;
+            font-size: 30px;
+            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+            color:#FFFFFF;
+            border-width: 1px 0px 0px 0px;
+            border-style: solid;
+            border-color: rgba(119, 119, 119, 1);
+            height: 86px;
+            .bet_act_BI_label{
+              margin-left: 40px;
+            }
+            .bet_act_BI_value{
+              margin-right: 40px;
+              .bet_act_BI_value_num{
+                  color:#FFFFFE;
+                  background-color: rgb(131, 104, 5);
+                  border-style: none;
+                  font-size: 25px;
+                  font-weight: bold;
+                  text-align: center;
+                  align-items: center;
+                  text-align: center;
+                  vertical-align: middle;
+                  text-align: center;
+                  margin-left: 10px;
+                  width: 120px;
+                  height: 60px;
+                  border-color: rgb(131, 104, 5);
+                  border-radius: 4px;
+                  border-width: 2px;
+                  border-style: solid;
+                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+                }
+            }
+          }
+          .bet_act_BP{
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
+            flex-direction: row;
+            font-size: 30px;
+            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+            color:#FFFFFF;
+            border-width: 1px 0px 0px 0px;
+            border-style: solid;
+            border-color: rgba(119, 119, 119, 1);
+            height: 86px;
+            .bet_act_BP_label{
+              margin-left: 40px;
+
+            }
+            .bet_act_BP_value{
+              margin-right: 40px;
+              .bet_act_BP_value_plus{
+                  color:#FFFFFE;
+                  background-color: rgb(131, 104, 5);
+                  border-color: rgb(131, 104, 5);
+                  border-radius: 4px;
+                  border-width: 2px;
+                  border-style: solid;
+                  font-size: 36px;
+                  font-weight: bolder;
+                  text-align: center;
+                  width: 60px;
+                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+                }
+                .bet_act_BP_value_num{
+                  margin-left: 15px;
+                  margin-right: 15px;
+                  color:#FFFFFE;
+                  font-size: 36px;
+                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+                  //font-weight: bold;
+
+                }
+                .bet_act_BP_value_minus{
+                  color:#FFFFFE;
+                  background-color: rgb(131, 104, 5);
+                  border-color: rgb(131, 104, 5);
+                  border-radius: 4px;
+                  border-width: 2px;
+                  border-style: solid;
+                  font-size: 36px;
+                  font-weight: bolder;
+                  text-align: center;
+                  width: 60px;
+                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+                }
+            }
+          }
+          .bet_act_BP_betinfo{
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
+            flex-direction: row;
+            font-size: 30px;
+            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+            color:#FFFFFF;
+            border-width: 1px 0px 0px 0px;
+            border-style: solid;
+            border-color: rgba(119, 119, 119, 1);
+            height: 86px;
+            .bet_act_BP_beinfo_label{
+              margin-left: 40px;
+
+            }
+            .bet_act_BP_beinfo_value{
+              margin-right: 40px;
+
+            }
           }
 
         }
