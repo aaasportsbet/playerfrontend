@@ -117,115 +117,127 @@
 </template>
 
 <script>
-import CountDown from 'vue2-countdown'
+import CountDown from "vue2-countdown";
+import { getPlayerIdentity } from "../../scatter/player";
+import { betRound } from "../../scatter/nba/bet";
+
 export default {
   data() {
-        return {
-            show:false,
-            list_playmore:  this.info.game_joined_more,
-            startTime:( new Date() ).getTime()+(100*100),
-            endTime:( new Date() ).getTime()+(100*100),
-            message:'',
-            dialogVisible: false,
-            form: {
-              name: '',
-              region: '',
-              date1: '',
-              date2: '',
-              delivery: false,
-              type: [],
-              resource: '',
-              desc: ''
-            },
-            num1: 1
-        }
-    },
+    return {
+      show: false,
+      list_playmore: this.info.game_joined_more,
+      startTime: new Date().getTime() + 100 * 100,
+      endTime: new Date().getTime() + 100 * 100,
+      message: "",
+      dialogVisible: false,
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: ""
+      },
+      num1: 1
+    };
+  },
   props: {
     info: {
       type: Object
     }
   },
-  computed:{
-
-  },
+  computed: {},
   components: {
     CountDown
   },
   methods: {
-    goDetailPage: function (info) {
-        this.$store.dispatch('goDetailPage',{id:info.id})
-        this.$store.dispatch('toggleheader',{nickname:info.nickname})
+    goDetailPage: function(info) {
+      this.$store.dispatch("goDetailPage", { id: info.id });
+      this.$store.dispatch("toggleheader", { nickname: info.nickname });
     },
-    handleClose(){
-        this.show = false;
-      },
-    countDownS_cb: function (x) {
-        this.message = 'Stop Betting'
-        console.log(x)
-      },
-    countDownE_cb: function (x) {
-        this.message = 'Stop Betting'
-        console.log(x)
-      },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
+    handleClose() {
+      this.show = false;
+    },
+    countDownS_cb: function(x) {
+      this.message = "Stop Betting";
+      console.log(x);
+    },
+    countDownE_cb: function(x) {
+      this.message = "Stop Betting";
+      console.log(x);
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // bet
+          getPlayerIdentity()
+            .then(identity => {
+              betRound(identity, this.info.game_server_obj, 4, "+10")
+                .then(response => {
+                  console.log("response", response);
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+            })
+            .catch(error => {
+              console.log("error: ", error);
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
+  },
+  directives: {
+    clickoutside: {
+      bind: function(el, binding, vnode) {
+        function documentHandler(e) {
+          if (el.contains(e.target)) {
             return false;
           }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
-
-
-  },
-  directives:{
-    clickoutside:{
-        bind:function(el,binding,vnode){
-            function documentHandler(e){
-                if(el.contains(e.target)){
-                    return false;
-                }
-                if(binding.expression){
-                    binding.value(e)
-                }
-            }
-            el._vueClickOutside_ = documentHandler;
-            document.addEventListener('click',documentHandler);
-        },
-        unbind:function(el,binding){
-            document.removeEventListener('click',el._vueClickOutside_);
-            delete el._vueClickOutside_;
+          if (binding.expression) {
+            binding.value(e);
+          }
         }
+        el._vueClickOutside_ = documentHandler;
+        document.addEventListener("click", documentHandler);
+      },
+      unbind: function(el, binding) {
+        document.removeEventListener("click", el._vueClickOutside_);
+        delete el._vueClickOutside_;
+      }
     }
-    }
-}
+  }
+};
 </script>
 
 <style lang="less">
-@baseBackgroundColor:#333333;
-@baseBorderColor:#777777;
+@baseBackgroundColor: #333333;
+@baseBorderColor: #777777;
 [v-cloak] {
-        display: none;
-    }
+  display: none;
+}
 .info {
-    position: relative;
-    width: 1080px;
-    background-color: #222222;
-  .count_down{
-    position:absolute;
+  position: relative;
+  width: 1080px;
+  background-color: #222222;
+  .count_down {
+    position: absolute;
     display: flex;
-    justify-content:start;
+    justify-content: start;
     align-items: center;
     flex-direction: column;
     width: 200px;
     height: 113px;
-    left:40px;
-    top:-20px;
+    left: 40px;
+    top: -20px;
     margin-left: 40px;
     background: url(../../assets/image/img_top_flag.png) no-repeat 0px 0px;
     background-size: 200px 113px;
@@ -234,345 +246,334 @@ export default {
       display: none;
     }
 
-    .count_down_top_flex{
+    .count_down_top_flex {
       display: flex;
-      justify-content:center;
+      justify-content: center;
       align-items: center;
       flex-direction: row;
 
-      .count_down_top{
+      .count_down_top {
         height: 25px;
         font-size: 25px;
-        font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
         color: #777777;
         line-height: 25px;
         padding-left: 5px;
         margin-top: 10px;
       }
-      .count_down_top_clock{
+      .count_down_top_clock {
         margin-top: 10px;
         height: 25px;
         width: 25px;
         font-size: 20px;
-        color: #FFFFFF;
+        color: #ffffff;
         line-height: 25px;
         margin-top: 10px;
-
       }
-
     }
-      .count_down_bottom{
-        width: 90%;
+    .count_down_bottom {
+      width: 90%;
       font-size: 28px;
-      font-family: "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,Tahoma,Verdana,STHeiTi,simsun,sans-serif;
+      font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
+        STHeiTi, simsun, sans-serif;
       font-weight: bold;
       color: gray;
       line-height: 50px;
       //font-style: normal;
-      .count_down_time{
+      .count_down_time {
         font-size: 28px;
-        font-family: "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,Tahoma,Verdana,STHeiTi,simsun,sans-serif;
+        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
+          STHeiTi, simsun, sans-serif;
         font-weight: bold;
-        color: #ECC22F;
+        color: #ecc22f;
         line-height: 50px;
         font-style: normal;
       }
       //background-color: #FFFFFE;
-       }
-
+    }
   }
-  .game_win_status{
-    position:absolute;
-    top:0px;
-    left:40px;
+  .game_win_status {
+    position: absolute;
+    top: 0px;
+    left: 40px;
     width: 150px;
     height: 150px;
     font-size: 36px;
-    color: #FFFFFF;
-    font-family: "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,Tahoma,Verdana,STHeiTi,simsun,sans-serif;
-    &.game_win_status_display_none{
+    color: #ffffff;
+    font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
+      STHeiTi, simsun, sans-serif;
+    &.game_win_status_display_none {
       display: none;
     }
-    .game_win_status_win{
-        background: url(../../assets/image/img_win.png) no-repeat 0px 0px;
-        background-size: 150px 150px;
-        width: 150px;
-        height: 150px;
-        .game_win_status_win_text{
-          transform: rotate(315deg);
-          font-weight: bolder;
-          text-align: bottom;
-          }
+    .game_win_status_win {
+      background: url(../../assets/image/img_win.png) no-repeat 0px 0px;
+      background-size: 150px 150px;
+      width: 150px;
+      height: 150px;
+      .game_win_status_win_text {
+        transform: rotate(315deg);
+        font-weight: bolder;
+        text-align: bottom;
+      }
     }
-    .game_win_status_lose{
-        background: url(../../assets/image/img_lose.png) no-repeat 0px 0px;
-        background-size: 150px 150px;
-        width: 150px;
-        height: 150px;
-        .game_win_status_lose_text{
-          transform: rotate(315deg);
-          font-weight: bolder;
-          text-align: bottom;
-        }
+    .game_win_status_lose {
+      background: url(../../assets/image/img_lose.png) no-repeat 0px 0px;
+      background-size: 150px 150px;
+      width: 150px;
+      height: 150px;
+      .game_win_status_lose_text {
+        transform: rotate(315deg);
+        font-weight: bolder;
+        text-align: bottom;
+      }
     }
-
-
-
   }
   .box {
-      width: 1000px;
-      //height: 570px;
-      background: inherit;
-      background-color: rgba(39, 39, 39, 1);
-      box-sizing: border-box;
-      border-width: 2px;
+    width: 1000px;
+    //height: 570px;
+    background: inherit;
+    background-color: rgba(39, 39, 39, 1);
+    box-sizing: border-box;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgba(119, 119, 119, 1);
+    border-radius: 4px;
+    box-shadow: none;
+    margin-left: 40px;
+    //margin-top: 40px;
+
+    .vs_play {
+      font-size: 36px;
+      font-weight: 400;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      .left_vs_play {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-width: 0px;
+        width: 420px;
+        height: 200px;
+        background: inherit;
+        background-color: rgba(34, 34, 34, 1);
+        border: none;
+        border-radius: 4px;
+        box-shadow: none;
+        margin-top: 60px;
+        color: #fffffe;
+        .left_text_i18n {
+          font-size: 40px;
+          font-weight: bold;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        }
+        .left_text_abbr {
+          margin-top: 30px;
+          font-size: 36px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: rgba(119, 119, 119, 0.4);
+        }
+      }
+      .icon_vs_play {
+        width: 80px;
+        height: 80px;
+        background: inherit;
+        background-color: rgba(255, 255, 255, 0);
+        border: none;
+        border-radius: 0px;
+        color: #ecc22f;
+        font-size: 36px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-weight: bold;
+        margin-top: 120px;
+        text-align: center;
+      }
+      .right_vs_play {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-width: 0px;
+        width: 420px;
+        height: 200px;
+        background: inherit;
+        background-color: rgba(34, 34, 34, 1);
+        border: none;
+        border-radius: 4px;
+        box-shadow: none;
+        margin-top: 60px;
+        color: #fffffe;
+        .right_text_i18n {
+          font-size: 40px;
+          font-weight: bold;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        }
+        .right_text_abbr {
+          margin-top: 30px;
+          font-size: 36px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: rgba(119, 119, 119, 0.4);
+        }
+      }
+    }
+    .info_play {
+      font-size: 36px;
+      font-weight: 400;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+      margin-top: 40px;
+      margin-left: 40px;
+
+      .detail_play {
+        display: flex;
+        justify-content: space-between;
+        align-items: left;
+        flex-direction: column;
+        height: 140px;
+        .detail_play_top {
+          font-size: 30px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #ffffff;
+        }
+        .detail_play_bottom {
+          font-size: 30px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #777777;
+        }
+      }
+      .joined_info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 140px;
+        width: 280px;
+        margin-right: 40px;
+        border-color: rgba(119, 119, 119, 1);
+        border-radius: 4px;
+        border-width: 2px;
+        border-style: solid;
+        overflow: hidden;
+        &.joined_info_detail {
+          border-color: #ecc22f;
+          background-color: #ecc22f;
+          font-size: 30px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #2b2b2b;
+          font-weight: bold;
+        }
+        .joined_info_top {
+          background-color: rgba(43, 43, 43, 1);
+          font-size: 25px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #ecc22f;
+          height: 70px;
+          width: 280px;
+          text-align: center;
+          line-height: 70px;
+        }
+        .joined_info_bottom {
+          background-color: rgba(119, 119, 119, 1);
+          font-size: 30px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #2b2b2b;
+          font-weight: bold;
+          height: 70px;
+          width: 280px;
+          text-align: center;
+          line-height: 70px;
+          &.joined_info_bottom_f {
+            background-color: #ecc22f;
+          }
+        }
+        &.joined_info_f {
+          border-color: #ecc22f;
+        }
+      }
+    }
+    .bet_act {
+      display: flex;
+      justify-content: space-around;
+      align-items: start;
+      width: 100%;
+      flex-direction: column;
+      .bet_act_Betting_Multiple {
+        width: 100%;
+        margin-left: 40px;
+        color: #ffffff;
+        font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+      }
+    }
+    .box_bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+      font-size: 30px;
+      font-family: "MicrosoftYaHei", "Microsoft YaHei";
+      color: #ffffff;
+      margin-top: 40px;
+      border-width: 1px 0px 0px 0px;
       border-style: solid;
       border-color: rgba(119, 119, 119, 1);
-      border-radius: 4px;
-      box-shadow: none;
-      margin-left: 40px;
-      //margin-top: 40px;
+      height: 86px;
 
-        .vs_play {
-          font-size: 36px;
-          font-weight: 400;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: row;
-          .left_vs_play{
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              flex-direction: column;
-              border-width: 0px;
-              width: 420px;
-              height: 200px;
-              background: inherit;
-              background-color: rgba(34, 34, 34, 1);
-              border: none;
-              border-radius: 4px;
-              box-shadow: none;
-              margin-top: 60px;
-              color: #FFFFFE;
-              .left_text_i18n{
-                    font-size: 40px;
-                    font-weight: bold;
-                    font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              }
-              .left_text_abbr{
-                margin-top: 30px;
-                font-size: 36px;
-                font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-                color: rgba(119, 119, 119, 0.4);
-              }
-          }
-          .icon_vs_play{
-            width: 80px;
-            height: 80px;
-            background: inherit;
-            background-color: rgba(255, 255, 255, 0);
-            border: none;
-            border-radius: 0px;
-            color:#ECC22F;
-            font-size: 36px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            font-weight: bold;
-            margin-top: 120px;
-            text-align: center;
-          }
-          .right_vs_play{
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              flex-direction: column;
-              border-width: 0px;
-              width: 420px;
-              height: 200px;
-              background: inherit;
-              background-color: rgba(34, 34, 34, 1);
-              border: none;
-              border-radius: 4px;
-              box-shadow: none;
-              margin-top: 60px;
-              color: #FFFFFE;
-              .right_text_i18n{
-                    font-size: 40px;
-                    font-weight: bold;
-                    font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              }
-              .right_text_abbr{
-                margin-top: 30px;
-                font-size: 36px;
-                font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-                color: rgba(119, 119, 119, 0.4);
-              }
-          }
-        }
-        .info_play{
-          font-size: 36px;
-          font-weight: 400;
-          display: flex;
-          justify-content:space-between;
-          align-items: center;
-          flex-direction: row;
-          margin-top: 40px;
-          margin-left: 40px;
-
-          .detail_play{
-            display: flex;
-            justify-content:space-between;
-            align-items: left;
-            flex-direction: column;
-            height: 140px;
-            .detail_play_top{
-              font-size: 30px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#FFFFFF;
-            }
-            .detail_play_bottom{
-              font-size: 30px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#777777;
-            }
-
-          }
-          .joined_info{
-            display: flex;
-            justify-content:center;
-            align-items: center;
-            flex-direction: column;
-            height: 140px;
-            width: 280px;
-            margin-right: 40px;
-            border-color: rgba(119, 119, 119, 1);
-            border-radius: 4px;
-            border-width: 2px;
-            border-style: solid;
-            overflow: hidden;
-            &.joined_info_detail{
-              border-color: #ECC22F;
-              background-color:#ECC22F;
-              font-size: 30px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#2B2B2B;
-              font-weight: bold;
-            }
-            .joined_info_top{
-              background-color: rgba(43, 43, 43, 1);
-              font-size: 25px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#ECC22F;
-              height: 70px;
-              width: 280px;
-              text-align: center;
-              line-height: 70px;
-            }
-            .joined_info_bottom{
-              background-color:rgba(119, 119, 119, 1);
-              font-size: 30px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#2B2B2B;
-              font-weight: bold;
-              height: 70px;
-              width: 280px;
-              text-align: center;
-              line-height: 70px;
-              &.joined_info_bottom_f{
-               background-color:#ECC22F;
-              }
-            }
-            &.joined_info_f{
-              border-color: #ECC22F;
-
-            }
-          }
-        }
-        .bet_act{
-          display: flex;
-          justify-content:space-around;
-          align-items: start;
-          width: 100%;
-          flex-direction: column;
-          .bet_act_Betting_Multiple{
-
-            width: 100%;
-            margin-left: 40px;
-            color: #ffffff;
-            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-          }
-
-        }
-       .box_bottom{
-          display: flex;
-          justify-content:space-between;
-          align-items: center;
-          flex-direction: row;
-          font-size: 30px;
-          font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-          color:#FFFFFF;
-          margin-top: 40px;
-          border-width: 1px 0px 0px 0px;
-          border-style: solid;
-          border-color: rgba(119, 119, 119, 1);
-          height: 86px;
-
-          .box_bottom_l{
-            margin-left: 40px;
-
-          }
-          .box_bottom_r{
-            margin-right: 40px;
-
-          }
-        }
-        .bottom_more{
-          position: relative;
-          display: flex;
-          justify-content:space-between;
-          align-items: center;
-          flex-direction: column;
-          font-size: 30px;
-          font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-          color:#FFFFFF;
-          border-width: 1px 0px 0px 0px;
-          border-style: solid;
-          border-color: rgba(119, 119, 119, 1);
-          .dropdown_menu{
-            display: flex;
-            justify-content:space-between;
-            align-items: center;
-            flex-direction: row;
-            font-size: 36px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            color:#FFFFFF;
-            height: 80px;
-            user-select: none;
-            line-height: 80px;
-          }
-          .dropdown_show{
-            width: 100%;
-            .dropdown_list{
-              display: flex;
-              justify-content:space-between;
-              align-items: center;
-              flex-direction: row;
-              height: 80px;
-              border-width: 1px 0px 0px 0px;
-              border-style: solid;
-              border-color: rgba(119, 119, 119, 1);
-              .dropdown_list_l{
-                margin-left: 40px;
-              }
-              .dropdown_list_r{
-                margin-right: 40px;
-              }
-            }
-          }
-        }
-
+      .box_bottom_l {
+        margin-left: 40px;
+      }
+      .box_bottom_r {
+        margin-right: 40px;
+      }
     }
-
-
+    .bottom_more {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      font-size: 30px;
+      font-family: "MicrosoftYaHei", "Microsoft YaHei";
+      color: #ffffff;
+      border-width: 1px 0px 0px 0px;
+      border-style: solid;
+      border-color: rgba(119, 119, 119, 1);
+      .dropdown_menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 36px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        height: 80px;
+        user-select: none;
+        line-height: 80px;
+      }
+      .dropdown_show {
+        width: 100%;
+        .dropdown_list {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-direction: row;
+          height: 80px;
+          border-width: 1px 0px 0px 0px;
+          border-style: solid;
+          border-color: rgba(119, 119, 119, 1);
+          .dropdown_list_l {
+            margin-left: 40px;
+          }
+          .dropdown_list_r {
+            margin-right: 40px;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

@@ -24,7 +24,7 @@ export async function getPlayerIdentity() {
     return account;
     }
 
-  return null;
+  throw Error('player not login');
   }
 
 // logout
