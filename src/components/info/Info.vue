@@ -53,43 +53,48 @@
     </div>
     <div class="bet_act">
       <div class="bet_act_BM">
-        <div class="bet_act_BM_label">Betting Multiple</div>
+        <div class="bet_act_BM_label">Bet Multiple</div>
         <div class="bet_act_BM_value">
-           <button class="bet_act_BM_value_minus">-</button>
-           <span class="bet_act_BM_value_num">5</span>
-           <button class="bet_act_BM_value_plus">+</button>
+           <button class="bet_act_BM_value_minus" @click="act_minus('joindata.act_game_bet_multiple')">-</button>
+           <span class="bet_act_BM_value_num">{{joindata.act_game_bet_multiple}}</span>
+           <button class="bet_act_BM_value_plus" @click="act_add('joindata.act_game_bet_multiple')">+</button>
         </div>
       </div>
       <div class="bet_act_ChooseWin">
         <div class="bet_act_ChooseWin_label">Choose Win Team</div>
         <div class="bet_act_ChooseWin_value">
-           <button class="bet_act_ChooseWin_value_left">DAL</button>
-           <button class="bet_act_ChooseWin_value_right">MEM</button>
+           <button class="bet_act_ChooseWin_value_left" @click="act_choose_team(info.game_info_left_abbr)">{{info.game_info_left_abbr}}</button>
+           <button class="bet_act_ChooseWin_value_right" @click="act_choose_team(info.game_info_right_abbr)">{{info.game_info_right_abbr}}</button>
         </div>
       </div>
       <div class="bet_act_BI">
         <div class="bet_act_BI_label">Bet Interval</div>
         <div class="bet_act_BI_value">
-          <button class="bet_act_BI_value_num">1-3</button>
-          <button class="bet_act_BI_value_num">4-7</button>
-          <button class="bet_act_BI_value_num">8-12</button>
-          <button class="bet_act_BI_value_num">13-20</button>
-          <button class="bet_act_BI_value_num">20+</button>
+          <button class="bet_act_BI_value_num" @click="act_BI_value(0)">1-3</button>
+          <button class="bet_act_BI_value_num" @click="act_BI_value(1)">4-7</button>
+          <button class="bet_act_BI_value_num" @click="act_BI_value(2)">8-12</button>
+          <button class="bet_act_BI_value_num" @click="act_BI_value(3)">13-20</button>
+          <button class="bet_act_BI_value_num" @click="act_BI_value(4)">20+</button>
         </div>
       </div>
       <div class="bet_act_BP">
         <div class="bet_act_BP_label">Choose Win Points</div>
         <div class="bet_act_BP_value">
-            <button class="bet_act_BP_value_minus">-</button>
-            <span class="bet_act_BP_value_num">5</span>
-            <button class="bet_act_BP_value_plus">+</button>
+            <button class="bet_act_BP_value_minus" @click="act_minus('joindata.act_game_point')">-</button>
+            <span class="bet_act_BP_value_num">{{joindata.act_game_point}}</span>
+            <button class="bet_act_BP_value_plus" @click="act_add('joindata.act_game_point')">+</button>
         </div>
       </div>
       <div class="bet_act_BP_betinfo">
         <div class="bet_act_BP_beinfo_label">Bet Detail</div>
-        <div class="bet_act_BP_beinfo_value">[DAL Win] [Range] [1-3] [Pay 50EOS]</div>
+        <div class="bet_act_BP_beinfo_value">[{{joindata.act_game_winner_team}} Win] [{{joindata.act_game_type}}] [{{joindata.act_game_range}}] [Pay {{joindata.act_game_pay_total}}EOS]</div>
       </div>
-      <div class="bet_act_BP_confirm">confirm</div>
+      <div class="bet_act_BP_confirm">
+        <div class="bet_act_BP_confirm_label">Confirm to Bet</div>
+          <div class="bet_act_BP_confirm_value">
+              <button class="bet_act_BP_confirm_value_C" @click="act_pay()">Pay Now</button>
+          </div>
+      </div>
     </div>
 
 
@@ -125,16 +130,17 @@ export default {
             endTime:( new Date() ).getTime()+(100*100),
             message:'',
             dialogVisible: false,
-            form: {
-              name: '',
-              region: '',
-              date1: '',
-              date2: '',
-              delivery: false,
-              type: [],
-              resource: '',
-              desc: ''
-            },
+            joindata:
+              {uid:'',
+              act_game_bet_multiple: 1,
+              act_game_id: this.info.game_serv_id,
+              act_game_type: this.info.game_round_type_i18n_serv_type,
+              act_game_winner_team: '',
+              act_game_range:'',
+              act_game_point:1,
+              act_game_joined_share: '',
+              act_game_pay_total: 0,}
+            ,
             num1: 1
         }
     },
@@ -150,6 +156,38 @@ export default {
     CountDown
   },
   methods: {
+    act_pay(){
+
+    },
+    act_BI_value(info_act_game_range){
+     this.act_game_range=info_act_game_range;
+     console.log(info_act_game_range)
+    },
+    act_choose_team(info_choose_team){
+     console.log(info_choose_team);
+     this.act_game_winner_team = info_choose_team;
+    },
+    act_add(info_bet_multiple){
+    if(info_bet_multiple  ==  'joindata.act_game_bet_multiple'){
+     this.joindata.act_game_bet_multiple ++;
+     console.log(this.joindata.act_game_bet_multiple);
+     }
+    if (info_bet_multiple ==  'joindata.act_game_point') {
+      this.joindata.act_game_point ++;
+      console.log(this.joindata.act_game_point);
+    }
+
+    },
+    act_minus(info_bet_multiple){
+     if(info_bet_multiple  ==  'joindata.act_game_bet_multiple'){
+     this.joindata.act_game_bet_multiple --;
+     console.log(this.joindata.act_game_bet_multiple);
+     }
+    if (info_bet_multiple ==  'joindata.act_game_point') {
+      this.joindata.act_game_point --;
+      console.log(this.joindata.act_game_point);
+    }
+    },
     goDetailPage: function (info) {
         this.$store.dispatch('goDetailPage',{id:info.id})
         this.$store.dispatch('toggleheader',{nickname:info.nickname})
@@ -720,8 +758,39 @@ export default {
 
             }
             .bet_act_BP_beinfo_value{
+              margin-right: 40px;}
+            }
+          .bet_act_BP_confirm{
+            display: flex;
+            justify-content:space-between;
+            align-items: center;
+            flex-direction: row;
+            font-size: 30px;
+            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+            color:#FFFFFF;
+            border-width: 1px 0px 0px 0px;
+            border-style: solid;
+            border-color: rgba(119, 119, 119, 1);
+            height: 86px;
+            .bet_act_BP_confirm_label{
+              margin-left: 40px;
+            }
+            .bet_act_BP_confirm_value{
               margin-right: 40px;
+              .bet_act_BP_confirm_value_C{
+                color:#2b2b2b;
+                background-color:#ECC22F;
+                border-color: #ECC22F;
+                border-radius: 4px;
+                border-width: 2px;
+                border-style: solid;
+                font-size: 36px;
+                font-weight: 450;
+                text-align: center;
+                //width: 60px;
+                font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
 
+              }
             }
           }
 
