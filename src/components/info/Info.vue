@@ -1,267 +1,330 @@
 <template>
-<div class="info">
-  <div class="count_down" :class="[$route.name === 'personal' ? 'count_down_display_none' : '']">
-    <div class="count_down_top_flex">
-      <div class="icon-clock count_down_top_clock"></div>
-      <div class="count_down_top">Count Down</div>
+  <div class="info">
+    <div class="count_down" :class="[$route.name === 'personal' ? 'count_down_display_none' : '']">
+      <div class="count_down_top_flex">
+        <div class="icon-clock count_down_top_clock"></div>
+        <div class="count_down_top">Count Down</div>
+      </div>
+      <div class="count_down_bottom">
+        {{message}}
+        <count-down
+          class="count_down_time"
+          v-on:start_callback="countDownS_cb(1)"
+          v-on:end_callback="countDownE_cb(1)"
+          :startTime="startTime"
+          :endTime="endTime"
+          :tipText="'距离开始'"
+          :tipTextEnd="'距离结束'"
+          :endText="'已经结束'"
+          :dayTxt="':'"
+          :hourTxt="':'"
+          :minutesTxt="':'"
+          :secondsTxt="''"
+        ></count-down>
+      </div>
     </div>
-    <div class="count_down_bottom">
-      {{message}}
-      <count-down class="count_down_time" v-on:start_callback="countDownS_cb(1)" v-on:end_callback="countDownE_cb(1)" :startTime="startTime" :endTime="endTime"   :tipText="'距离开始'" :tipTextEnd="'距离结束'" :endText="'已经结束'" :dayTxt="':'" :hourTxt="':'" :minutesTxt="':'" :secondsTxt="''"  ></count-down>
+    <div
+      class="game_win_status"
+      :class="[$route.name === 'home' ? 'game_win_status_display_none' : '']"
+    >
+      <div class="game_win_status_win" v-if="info.game_win_status === 'win'">
+        <div class="game_win_status_win_text">Win</div>
+      </div>
+      <div class="game_win_status_lose" v-if="info.game_win_status === 'lose'">
+        <div class="game_win_status_lose_text">Lose</div>
+      </div>
     </div>
-  </div>
-  <div class="game_win_status" :class="[$route.name === 'home' ? 'game_win_status_display_none' : '']">
-    <div class="game_win_status_win" v-if="info.game_win_status === 'win'">
-      <div class="game_win_status_win_text">Win</div>
-    </div>
-    <div class="game_win_status_lose" v-if="info.game_win_status === 'lose'">
-      <div class="game_win_status_lose_text">Lose</div>
-    </div>
+    <div class="box">
+      <div class="vs_play">
+        <div class="left_vs_play">
+          <span class="left_text_i18n">{{info.game_info_left_i18n_serv_awayteam}}</span>
+          <span class="left_text_abbr">({{info.game_info_left_abbr}})</span>
+        </div>
+        <div class="icon_vs_play">VS</div>
+        <div class="right_vs_play">
+          <span class="right_text_i18n">{{info.game_info_right_i18n_serv_hometeam}}</span>
+          <span class="right_text_abbr">({{info.game_info_right_abbr}})</span>
+        </div>
+      </div>
+      <div class="info_play">
+        <div class="detail_play">
+          <span
+            class="detail_play_top"
+          >[{{info.game_contract_type}}&nbsp;{{info.game_round_type_i18n_serv_type}}]</span>
+          <span
+            class="detail_play_bottom"
+          >Match Time: {{info.game_count_down_time_serv_bet_end_time}}</span>
+          <span class="detail_play_bottom">Join with {{info.game_join_bet_serv_bet_unit}}</span>
+        </div>
+        <div
+          class="joined_info joined_info_detail"
+          v-if="info.game_joined_status.index === 'View Detail'"
+        >{{info.game_joined_status.value}}</div>
 
-  </div>
-  <div class="box">
-    <div class="vs_play">
-      <div class="left_vs_play">
-        <span class="left_text_i18n">{{info.game_info_left_i18n_serv_awayteam}}</span>
-        <span class="left_text_abbr">({{info.game_info_left_abbr}})</span>
-      </div>
-      <div class="icon_vs_play">VS</div>
-      <div class="right_vs_play">
-        <span class="right_text_i18n">{{info.game_info_right_i18n_serv_hometeam}}</span>
-        <span class="right_text_abbr">({{info.game_info_right_abbr}})</span>
-      </div>
-    </div>
-    <div class="info_play" >
-      <div class="detail_play">
-        <span class="detail_play_top">[{{info.game_contract_type}}&nbsp;{{info.game_round_type_i18n_serv_type}}]</span>
-        <span class="detail_play_bottom">Match Time: {{info.game_count_down_time_serv_bet_end_time}}</span>
-        <span class="detail_play_bottom">Join with {{info.game_join_bet_serv_bet_unit}}</span>
-      </div>
-      <div class="joined_info joined_info_detail" v-if="info.game_joined_status.index === 'View Detail'">
-          {{info.game_joined_status.value}}
-      </div>
-
-      <div class="joined_info" :class="[info.game_joined_status.index === 0 ? 'joined_info_f' : '']" v-else>
-        <div class="joined_info_top">{{info.game_joied_num_serv_shares}} Joined</div>
-        <div class="joined_info_bottom" v-if="info.game_joined_status.index !== 0">
-          {{info.game_joined_status.value}}
-        </div>
-        <div class="joined_info_bottom joined_info_bottom_f" v-else>
-          {{info.game_joined_status.value}}
+        <div
+          class="joined_info"
+          :class="[info.game_joined_status.index === 0 ? 'joined_info_f' : '']"
+          v-else
+        >
+          <div class="joined_info_top">{{info.game_joied_num_serv_shares}} Joined</div>
+          <div
+            class="joined_info_bottom"
+            v-if="info.game_joined_status.index !== 0"
+          >{{info.game_joined_status.value}}</div>
+          <div
+            class="joined_info_bottom joined_info_bottom_f"
+            v-else
+          >{{info.game_joined_status.value}}</div>
         </div>
       </div>
-    </div>
-    <div class="bet_act">
-      <div class="bet_act_BM">
-        <div class="bet_act_BM_label">Bet Multiple</div>
-        <div class="bet_act_BM_value">
-           <button class="bet_act_BM_value_minus" @click="act_minus('joindata.act_game_bet_multiple')">-</button>
-           <span class="bet_act_BM_value_num">{{joindata.act_game_bet_multiple}}</span>
-           <button class="bet_act_BM_value_plus" @click="act_add('joindata.act_game_bet_multiple')">+</button>
+      <div class="bet_act">
+        <div class="bet_act_BM">
+          <div class="bet_act_BM_label">Bet Multiple</div>
+          <div class="bet_act_BM_value">
+            <button
+              class="bet_act_BM_value_minus"
+              @click="act_minus('joindata.act_game_bet_multiple')"
+            >-</button>
+            <span class="bet_act_BM_value_num">{{joindata.act_game_bet_multiple}}</span>
+            <button
+              class="bet_act_BM_value_plus"
+              @click="act_add('joindata.act_game_bet_multiple')"
+            >+</button>
+          </div>
         </div>
-      </div>
-      <div class="bet_act_ChooseWin">
-        <div class="bet_act_ChooseWin_label">Choose Win Team</div>
-        <div class="bet_act_ChooseWin_value">
-           <button class="bet_act_ChooseWin_value_left" @click="act_choose_team(info.game_info_left_abbr)">{{info.game_info_left_abbr}}</button>
-           <button class="bet_act_ChooseWin_value_right" @click="act_choose_team(info.game_info_right_abbr)">{{info.game_info_right_abbr}}</button>
+        <div class="bet_act_ChooseWin">
+          <div class="bet_act_ChooseWin_label">Choose Win Team</div>
+          <div class="bet_act_ChooseWin_value">
+            <button
+              class="bet_act_ChooseWin_value_left"
+              @click="act_choose_team(info.game_info_left_abbr)"
+            >{{info.game_info_left_abbr}}</button>
+            <button
+              class="bet_act_ChooseWin_value_right"
+              @click="act_choose_team(info.game_info_right_abbr)"
+            >{{info.game_info_right_abbr}}</button>
+          </div>
         </div>
-      </div>
-      <div class="bet_act_BI">
-        <div class="bet_act_BI_label">Bet Interval</div>
-        <div class="bet_act_BI_value">
-          <button class="bet_act_BI_value_num" @click="act_BI_value(0)">1-3</button>
-          <button class="bet_act_BI_value_num" @click="act_BI_value(1)">4-7</button>
-          <button class="bet_act_BI_value_num" @click="act_BI_value(2)">8-12</button>
-          <button class="bet_act_BI_value_num" @click="act_BI_value(3)">13-20</button>
-          <button class="bet_act_BI_value_num" @click="act_BI_value(4)">20+</button>
+        <div class="bet_act_BI">
+          <div class="bet_act_BI_label">Bet Interval</div>
+          <div class="bet_act_BI_value">
+            <button class="bet_act_BI_value_num" @click="act_BI_value(1)">1-3</button>
+            <button class="bet_act_BI_value_num" @click="act_BI_value(2)">4-7</button>
+            <button class="bet_act_BI_value_num" @click="act_BI_value(3)">8-12</button>
+            <button class="bet_act_BI_value_num" @click="act_BI_value(4)">13-20</button>
+            <button class="bet_act_BI_value_num" @click="act_BI_value(5)">20+</button>
+          </div>
         </div>
-      </div>
-      <div class="bet_act_BP">
-        <div class="bet_act_BP_label">Choose Win Points</div>
-        <div class="bet_act_BP_value">
+        <div class="bet_act_BP">
+          <div class="bet_act_BP_label">Choose Win Points</div>
+          <div class="bet_act_BP_value">
             <button class="bet_act_BP_value_minus" @click="act_minus('joindata.act_game_point')">-</button>
             <span class="bet_act_BP_value_num">{{joindata.act_game_point}}</span>
             <button class="bet_act_BP_value_plus" @click="act_add('joindata.act_game_point')">+</button>
+          </div>
+        </div>
+        <div class="bet_act_BP_betinfo">
+          <div class="bet_act_BP_beinfo_label">Bet Detail</div>
+          <div
+            class="bet_act_BP_beinfo_value"
+          >[{{joindata.act_game_winner_team}} Win] [{{joindata.act_game_type}}] [{{joindata.act_game_range}}] [Pay {{joindata.act_game_pay_total}}]</div>
+        </div>
+        <div class="bet_act_BP_confirm">
+          <div class="bet_act_BP_confirm_label">Confirm to Bet</div>
+          <div class="bet_act_BP_confirm_value">
+            <button class="bet_act_BP_confirm_value_C" @click="act_pay()">Pay Now</button>
+          </div>
         </div>
       </div>
-      <div class="bet_act_BP_betinfo">
-        <div class="bet_act_BP_beinfo_label">Bet Detail</div>
-        <div class="bet_act_BP_beinfo_value">[{{joindata.act_game_winner_team}} Win] [{{joindata.act_game_type}}] [{{joindata.act_game_range}}] [Pay {{joindata.act_game_pay_total}}EOS]</div>
+
+      <div class="box_bottom" v-show="info.game_joined_latest !== 0">
+        <span
+          class="box_bottom_l"
+        >{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}} Score</span>
+        <span class="box_bottom_r">{{info.game_joined_latest.share}}</span>
       </div>
-      <div class="bet_act_BP_confirm">
-        <div class="bet_act_BP_confirm_label">Confirm to Bet</div>
-          <div class="bet_act_BP_confirm_value">
-              <button class="bet_act_BP_confirm_value_C" @click="act_pay()">Pay Now</button>
+      <div style="height:16px;" v-show="info.game_joined_latest === 0"></div>
+      <div
+        class="bottom_more"
+        v-show="info.game_joined_latest !== 0 && info.game_joined_more_display === true"
+        v-clickoutside="handleClose"
+      >
+        <div class="el-icon-caret-bottom dropdown_menu" @click="show = !show">&nbsp;More</div>
+        <div class="dropdown_show" v-show="show">
+          <div class="dropdown_list" v-for="item in list_playmore">
+            <span class="dropdown_list_l">{{item.team_name}} Win {{item.team_score}} Score</span>
+            <span class="dropdown_list_r">{{item.share}}</span>
           </div>
+        </div>
       </div>
-    </div>
-
-
-
-    <div class="box_bottom" v-show="info.game_joined_latest !== 0">
-       <span class="box_bottom_l">{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}} Score </span>
-       <span class="box_bottom_r">{{info.game_joined_latest.share}}</span>
-    </div>
-    <div style="height:16px;" v-show="info.game_joined_latest === 0"></div>
-    <div class="bottom_more" v-show="info.game_joined_latest !== 0 && info.game_joined_more_display === true" v-clickoutside="handleClose">
-       <div class="el-icon-caret-bottom dropdown_menu" @click="show = !show">&nbsp;More</div>
-                <div class="dropdown_show"  v-show = "show">
-                    <div class="dropdown_list" v-for="item in list_playmore">
-                      <span class="dropdown_list_l">{{item.team_name}} Win {{item.team_score}} Score </span>
-                      <span class="dropdown_list_r">{{item.share}}</span>
-                    </div>
-                </div>
     </div>
   </div>
-
-
-</div>
 </template>
 
 <script>
-import CountDown from 'vue2-countdown'
+import CountDown from "vue2-countdown";
+import { getPlayerIdentity } from "../../scatter/player";
+import { betRound, calcBetTotal } from "../../scatter/nba/bet";
+import { error } from "util";
 export default {
   data() {
-        return {
-            show:false,
-            list_playmore:  this.info.game_joined_more,
-            startTime:( new Date() ).getTime()+(100*100),
-            endTime:( new Date() ).getTime()+(100*100),
-            message:'',
-            dialogVisible: false,
-            joindata:
-              {uid:'',
-              act_game_bet_multiple: 1,
-              act_game_id: this.info.game_serv_id,
-              act_game_type: this.info.game_round_type_i18n_serv_type,
-              act_game_winner_team: '',
-              act_game_range:'',
-              act_game_point:1,
-              act_game_joined_share: '',
-              act_game_pay_total: 0,}
-            ,
-            num1: 1
-        }
-    },
+    return {
+      show: false,
+      list_playmore: this.info.game_joined_more,
+      startTime: new Date().getTime() + 100 * 100,
+      endTime: new Date().getTime() + 100 * 100,
+      message: "",
+      dialogVisible: false,
+      joindata: {
+        act_game_bet_multiple: 1,
+        act_game_winner_team: "",
+        act_game_range: "",
+        act_game_point: 1,
+        act_game_pay_total: "1.0000 EOS"
+      },
+      num1: 1
+    };
+  },
   props: {
     info: {
       type: Object
     }
   },
-  computed:{
-
-  },
+  computed: {},
   components: {
     CountDown
   },
   methods: {
-    act_pay(){
+    act_pay() {
+      console.log("act_game_bet_multiple", this.joindata.act_game_bet_multiple);
+      console.log("act_game_range", this.joindata.act_game_range);
+      console.log("act_game_winner_team", this.joindata.act_game_winner_team);
+      console.log("act_game_point", this.joindata.act_game_point);
+      console.log("act_game_pay_total", this.joindata.act_game_pay_total);
 
-    },
-    act_BI_value(info_act_game_range){
-     this.act_game_range=info_act_game_range;
-     console.log(info_act_game_range)
-    },
-    act_choose_team(info_choose_team){
-     console.log(info_choose_team);
-     this.act_game_winner_team = info_choose_team;
-    },
-    act_add(info_bet_multiple){
-    if(info_bet_multiple  ==  'joindata.act_game_bet_multiple'){
-     this.joindata.act_game_bet_multiple ++;
-     console.log(this.joindata.act_game_bet_multiple);
-     }
-    if (info_bet_multiple ==  'joindata.act_game_point') {
-      this.joindata.act_game_point ++;
-      console.log(this.joindata.act_game_point);
-    }
+      // bettotal = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
 
+      getPlayerIdentity()
+        .then(identity => {
+          betRound(
+            identity,
+            this.info.game_server_obj,
+            this.joindata.act_game_winner_team,
+            this.joindata.act_game_range,
+            this.joindata.act_game_point,
+            this.joindata.act_game_bet_multiple
+          )
+            .then(response => {
+              console.log(response);
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        })
+        .catch(error => {
+          console.error(error); // player not login
+        });
     },
-    act_minus(info_bet_multiple){
-     if(info_bet_multiple  ==  'joindata.act_game_bet_multiple'){
-     this.joindata.act_game_bet_multiple --;
-     console.log(this.joindata.act_game_bet_multiple);
-     }
-    if (info_bet_multiple ==  'joindata.act_game_point') {
-      this.joindata.act_game_point --;
-      console.log(this.joindata.act_game_point);
+    act_BI_value(info_act_game_range) {
+      this.act_game_range = info_act_game_range;
+      console.log(info_act_game_range);
+    },
+    act_choose_team(info_choose_team) {
+      console.log(info_choose_team);
+      this.act_game_winner_team = info_choose_team;
+    },
+    act_add(info_bet_multiple) {
+      if (info_bet_multiple == "joindata.act_game_bet_multiple") {
+        this.joindata.act_game_bet_multiple++;
+        console.log(this.joindata.act_game_bet_multiple);
+      }
+      if (info_bet_multiple == "joindata.act_game_point") {
+        this.joindata.act_game_point++;
+        console.log(this.joindata.act_game_point);
+      }
+    },
+    act_minus(info_bet_multiple) {
+      if (info_bet_multiple == "joindata.act_game_bet_multiple") {
+        this.joindata.act_game_bet_multiple--;
+        console.log(this.joindata.act_game_bet_multiple);
+      }
+      if (info_bet_multiple == "joindata.act_game_point") {
+        this.joindata.act_game_point--;
+        console.log(this.joindata.act_game_point);
+      }
+    },
+    goDetailPage: function(info) {
+      this.$store.dispatch("goDetailPage", { id: info.id });
+      this.$store.dispatch("toggleheader", { nickname: info.nickname });
+    },
+    handleClose() {
+      this.show = false;
+    },
+    countDownS_cb: function(x) {
+      this.message = "Stop Betting";
+      console.log(x);
+    },
+    countDownE_cb: function(x) {
+      this.message = "Stop Betting";
+      console.log(x);
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
-    },
-    goDetailPage: function (info) {
-        this.$store.dispatch('goDetailPage',{id:info.id})
-        this.$store.dispatch('toggleheader',{nickname:info.nickname})
-    },
-    handleClose(){
-        this.show = false;
-      },
-    countDownS_cb: function (x) {
-        this.message = 'Stop Betting'
-        console.log(x)
-      },
-    countDownE_cb: function (x) {
-        this.message = 'Stop Betting'
-        console.log(x)
-      },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
+  },
+  directives: {
+    clickoutside: {
+      bind: function(el, binding, vnode) {
+        function documentHandler(e) {
+          if (el.contains(e.target)) {
             return false;
           }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
-
-
-  },
-  directives:{
-    clickoutside:{
-        bind:function(el,binding,vnode){
-            function documentHandler(e){
-                if(el.contains(e.target)){
-                    return false;
-                }
-                if(binding.expression){
-                    binding.value(e)
-                }
-            }
-            el._vueClickOutside_ = documentHandler;
-            document.addEventListener('click',documentHandler);
-        },
-        unbind:function(el,binding){
-            document.removeEventListener('click',el._vueClickOutside_);
-            delete el._vueClickOutside_;
+          if (binding.expression) {
+            binding.value(e);
+          }
         }
+        el._vueClickOutside_ = documentHandler;
+        document.addEventListener("click", documentHandler);
+      },
+      unbind: function(el, binding) {
+        document.removeEventListener("click", el._vueClickOutside_);
+        delete el._vueClickOutside_;
+      }
     }
-    }
-}
+  }
+};
 </script>
 
 <style lang="less">
-@baseBackgroundColor:#333333;
-@baseBorderColor:#777777;
+@baseBackgroundColor: #333333;
+@baseBorderColor: #777777;
 [v-cloak] {
-        display: none;
-    }
+  display: none;
+}
 .info {
-    position: relative;
-    width: 1080px;
-    background-color: #222222;
-  .count_down{
-    position:absolute;
+  position: relative;
+  width: 1080px;
+  background-color: #222222;
+  .count_down {
+    position: absolute;
     display: flex;
-    justify-content:start;
+    justify-content: start;
     align-items: center;
     flex-direction: column;
     width: 200px;
     height: 113px;
-    left:40px;
-    top:-20px;
+    left: 40px;
+    top: -20px;
     margin-left: 40px;
     background: url(../../assets/image/img_top_flag.png) no-repeat 0px 0px;
     background-size: 200px 113px;
@@ -270,601 +333,602 @@ export default {
       display: none;
     }
 
-    .count_down_top_flex{
+    .count_down_top_flex {
       display: flex;
-      justify-content:center;
+      justify-content: center;
       align-items: center;
       flex-direction: row;
 
-      .count_down_top{
+      .count_down_top {
         height: 25px;
         font-size: 25px;
-        font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
         color: #777777;
         line-height: 25px;
         padding-left: 5px;
         margin-top: 10px;
       }
-      .count_down_top_clock{
+      .count_down_top_clock {
         margin-top: 10px;
         height: 25px;
         width: 25px;
         font-size: 20px;
-        color: #FFFFFF;
+        color: #ffffff;
         line-height: 25px;
         margin-top: 10px;
-
       }
-
     }
-      .count_down_bottom{
-        width: 90%;
+    .count_down_bottom {
+      width: 90%;
       font-size: 28px;
-      font-family: "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,Tahoma,Verdana,STHeiTi,simsun,sans-serif;
+      font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
+        STHeiTi, simsun, sans-serif;
       font-weight: bold;
       color: gray;
       line-height: 50px;
       //font-style: normal;
-      .count_down_time{
+      .count_down_time {
         font-size: 28px;
-        font-family: "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,Tahoma,Verdana,STHeiTi,simsun,sans-serif;
+        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
+          STHeiTi, simsun, sans-serif;
         font-weight: bold;
-        color: #ECC22F;
+        color: #ecc22f;
         line-height: 50px;
         font-style: normal;
       }
       //background-color: #FFFFFE;
-       }
-
+    }
   }
-  .game_win_status{
-    position:absolute;
-    top:0px;
-    left:40px;
+  .game_win_status {
+    position: absolute;
+    top: 0px;
+    left: 40px;
     width: 150px;
     height: 150px;
     font-size: 36px;
-    color: #FFFFFF;
-    font-family: "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,Tahoma,Verdana,STHeiTi,simsun,sans-serif;
-    &.game_win_status_display_none{
+    color: #ffffff;
+    font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
+      STHeiTi, simsun, sans-serif;
+    &.game_win_status_display_none {
       display: none;
     }
-    .game_win_status_win{
-        background: url(../../assets/image/img_win.png) no-repeat 0px 0px;
-        background-size: 150px 150px;
-        width: 150px;
-        height: 150px;
-        .game_win_status_win_text{
-          transform: rotate(315deg);
-          font-weight: bolder;
-          text-align: bottom;
-          }
+    .game_win_status_win {
+      background: url(../../assets/image/img_win.png) no-repeat 0px 0px;
+      background-size: 150px 150px;
+      width: 150px;
+      height: 150px;
+      .game_win_status_win_text {
+        transform: rotate(315deg);
+        font-weight: bolder;
+        text-align: bottom;
+      }
     }
-    .game_win_status_lose{
-        background: url(../../assets/image/img_lose.png) no-repeat 0px 0px;
-        background-size: 150px 150px;
-        width: 150px;
-        height: 150px;
-        .game_win_status_lose_text{
-          transform: rotate(315deg);
-          font-weight: bolder;
-          text-align: bottom;
-        }
+    .game_win_status_lose {
+      background: url(../../assets/image/img_lose.png) no-repeat 0px 0px;
+      background-size: 150px 150px;
+      width: 150px;
+      height: 150px;
+      .game_win_status_lose_text {
+        transform: rotate(315deg);
+        font-weight: bolder;
+        text-align: bottom;
+      }
     }
-
-
-
   }
   .box {
-      width: 1000px;
-      //height: 570px;
-      background: inherit;
-      background-color: rgba(39, 39, 39, 1);
-      box-sizing: border-box;
-      border-width: 2px;
-      border-style: solid;
-      border-color: rgba(119, 119, 119, 1);
-      border-radius: 4px;
-      box-shadow: none;
-      margin-left: 40px;
-      //margin-top: 40px;
+    width: 1000px;
+    //height: 570px;
+    background: inherit;
+    background-color: rgba(39, 39, 39, 1);
+    box-sizing: border-box;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgba(119, 119, 119, 1);
+    border-radius: 4px;
+    box-shadow: none;
+    margin-left: 40px;
+    //margin-top: 40px;
 
-        .vs_play {
+    .vs_play {
+      font-size: 36px;
+      font-weight: 400;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      .left_vs_play {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-width: 0px;
+        width: 420px;
+        height: 200px;
+        background: inherit;
+        background-color: rgba(34, 34, 34, 1);
+        border: none;
+        border-radius: 4px;
+        box-shadow: none;
+        margin-top: 60px;
+        color: #fffffe;
+        .left_text_i18n {
+          font-size: 40px;
+          font-weight: bold;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        }
+        .left_text_abbr {
+          margin-top: 30px;
           font-size: 36px;
-          font-weight: 400;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: row;
-          .left_vs_play{
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              flex-direction: column;
-              border-width: 0px;
-              width: 420px;
-              height: 200px;
-              background: inherit;
-              background-color: rgba(34, 34, 34, 1);
-              border: none;
-              border-radius: 4px;
-              box-shadow: none;
-              margin-top: 60px;
-              color: #FFFFFE;
-              .left_text_i18n{
-                    font-size: 40px;
-                    font-weight: bold;
-                    font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              }
-              .left_text_abbr{
-                margin-top: 30px;
-                font-size: 36px;
-                font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-                color: rgba(119, 119, 119, 0.4);
-              }
-          }
-          .icon_vs_play{
-            width: 80px;
-            height: 80px;
-            background: inherit;
-            background-color: rgba(255, 255, 255, 0);
-            border: none;
-            border-radius: 0px;
-            color:#ECC22F;
-            font-size: 36px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            font-weight: bold;
-            margin-top: 120px;
-            text-align: center;
-          }
-          .right_vs_play{
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              flex-direction: column;
-              border-width: 0px;
-              width: 420px;
-              height: 200px;
-              background: inherit;
-              background-color: rgba(34, 34, 34, 1);
-              border: none;
-              border-radius: 4px;
-              box-shadow: none;
-              margin-top: 60px;
-              color: #FFFFFE;
-              .right_text_i18n{
-                    font-size: 40px;
-                    font-weight: bold;
-                    font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              }
-              .right_text_abbr{
-                margin-top: 30px;
-                font-size: 36px;
-                font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-                color: rgba(119, 119, 119, 0.4);
-              }
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: rgba(119, 119, 119, 0.4);
+        }
+      }
+      .icon_vs_play {
+        width: 80px;
+        height: 80px;
+        background: inherit;
+        background-color: rgba(255, 255, 255, 0);
+        border: none;
+        border-radius: 0px;
+        color: #ecc22f;
+        font-size: 36px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-weight: bold;
+        margin-top: 120px;
+        text-align: center;
+      }
+      .right_vs_play {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-width: 0px;
+        width: 420px;
+        height: 200px;
+        background: inherit;
+        background-color: rgba(34, 34, 34, 1);
+        border: none;
+        border-radius: 4px;
+        box-shadow: none;
+        margin-top: 60px;
+        color: #fffffe;
+        .right_text_i18n {
+          font-size: 40px;
+          font-weight: bold;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        }
+        .right_text_abbr {
+          margin-top: 30px;
+          font-size: 36px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: rgba(119, 119, 119, 0.4);
+        }
+      }
+    }
+    .info_play {
+      font-size: 36px;
+      font-weight: 400;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+      margin-top: 40px;
+      margin-left: 40px;
+
+      .detail_play {
+        display: flex;
+        justify-content: space-between;
+        align-items: left;
+        flex-direction: column;
+        height: 140px;
+        .detail_play_top {
+          font-size: 30px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #ffffff;
+        }
+        .detail_play_bottom {
+          font-size: 30px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #777777;
+        }
+      }
+      .joined_info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 140px;
+        width: 280px;
+        margin-right: 40px;
+        border-color: rgba(119, 119, 119, 1);
+        border-radius: 4px;
+        border-width: 2px;
+        border-style: solid;
+        overflow: hidden;
+        &.joined_info_detail {
+          border-color: #ecc22f;
+          background-color: #ecc22f;
+          font-size: 30px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #2b2b2b;
+          font-weight: bold;
+        }
+        .joined_info_top {
+          background-color: rgba(43, 43, 43, 1);
+          font-size: 25px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #ecc22f;
+          height: 70px;
+          width: 280px;
+          text-align: center;
+          line-height: 70px;
+        }
+        .joined_info_bottom {
+          background-color: rgba(119, 119, 119, 1);
+          font-size: 30px;
+          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          color: #2b2b2b;
+          font-weight: bold;
+          height: 70px;
+          width: 280px;
+          text-align: center;
+          line-height: 70px;
+          &.joined_info_bottom_f {
+            background-color: #ecc22f;
           }
         }
-        .info_play{
-          font-size: 36px;
-          font-weight: 400;
-          display: flex;
-          justify-content:space-between;
-          align-items: center;
-          flex-direction: row;
-          margin-top: 40px;
+        &.joined_info_f {
+          border-color: #ecc22f;
+        }
+      }
+    }
+    .bet_act {
+      display: flex;
+      justify-content: space-around;
+      align-items: stretch;
+      flex-direction: column;
+
+      .bet_act_BM {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 30px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        margin-top: 40px;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 86px;
+        .bet_act_BM_label {
           margin-left: 40px;
-
-          .detail_play{
-            display: flex;
-            justify-content:space-between;
-            align-items: left;
-            flex-direction: column;
-            height: 140px;
-            .detail_play_top{
-              font-size: 30px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#FFFFFF;
-            }
-            .detail_play_bottom{
-              font-size: 30px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#777777;
-            }
-
-          }
-          .joined_info{
-            display: flex;
-            justify-content:center;
-            align-items: center;
-            flex-direction: column;
-            height: 140px;
-            width: 280px;
-            margin-right: 40px;
-            border-color: rgba(119, 119, 119, 1);
+        }
+        .bet_act_BM_value {
+          margin-right: 40px;
+          .bet_act_BM_value_plus {
+            color: #fffffe;
+            background-color: rgb(131, 104, 5);
+            border-color: rgb(131, 104, 5);
             border-radius: 4px;
             border-width: 2px;
             border-style: solid;
-            overflow: hidden;
-            &.joined_info_detail{
-              border-color: #ECC22F;
-              background-color:#ECC22F;
-              font-size: 30px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#2B2B2B;
-              font-weight: bold;
-            }
-            .joined_info_top{
-              background-color: rgba(43, 43, 43, 1);
-              font-size: 25px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#ECC22F;
-              height: 70px;
-              width: 280px;
-              text-align: center;
-              line-height: 70px;
-            }
-            .joined_info_bottom{
-              background-color:rgba(119, 119, 119, 1);
-              font-size: 30px;
-              font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-              color:#2B2B2B;
-              font-weight: bold;
-              height: 70px;
-              width: 280px;
-              text-align: center;
-              line-height: 70px;
-              &.joined_info_bottom_f{
-               background-color:#ECC22F;
-              }
-            }
-            &.joined_info_f{
-              border-color: #ECC22F;
-
-            }
+            font-size: 36px;
+            font-weight: bolder;
+            text-align: center;
+            width: 60px;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
+          }
+          .bet_act_BM_value_num {
+            margin-left: 15px;
+            margin-right: 15px;
+            color: #fffffe;
+            font-size: 36px;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
+            //font-weight: bold;
+          }
+          .bet_act_BM_value_minus {
+            color: #fffffe;
+            background-color: rgb(131, 104, 5);
+            border-color: rgb(131, 104, 5);
+            border-radius: 4px;
+            border-width: 2px;
+            border-style: solid;
+            font-size: 36px;
+            font-weight: bolder;
+            text-align: center;
+            width: 60px;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
           }
         }
-        .bet_act{
-          display: flex;
-          justify-content:space-around;
-          align-items: stretch;
-          flex-direction: column;
-
-          .bet_act_BM{
-            display: flex;
-            justify-content:space-between;
-            align-items: center;
-            flex-direction: row;
-            font-size: 30px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            color:#FFFFFF;
-            margin-top: 40px;
-            border-width: 1px 0px 0px 0px;
-            border-style: solid;
-            border-color: rgba(119, 119, 119, 1);
-            height: 86px;
-              .bet_act_BM_label{
-                margin-left: 40px;
-
-              }
-              .bet_act_BM_value{
-                margin-right: 40px;
-                .bet_act_BM_value_plus{
-                  color:#FFFFFE;
-                  background-color: rgb(131, 104, 5);
-                  border-color: rgb(131, 104, 5);
-                  border-radius: 4px;
-                  border-width: 2px;
-                  border-style: solid;
-                  font-size: 36px;
-                  font-weight: bolder;
-                  text-align: center;
-                  width: 60px;
-                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-                }
-                .bet_act_BM_value_num{
-                  margin-left: 15px;
-                  margin-right: 15px;
-                  color:#FFFFFE;
-                  font-size: 36px;
-                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-                  //font-weight: bold;
-
-                }
-                .bet_act_BM_value_minus{
-                  color:#FFFFFE;
-                  background-color: rgb(131, 104, 5);
-                  border-color: rgb(131, 104, 5);
-                  border-radius: 4px;
-                  border-width: 2px;
-                  border-style: solid;
-                  font-size: 36px;
-                  font-weight: bolder;
-                  text-align: center;
-                  width: 60px;
-                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-                }
-              }
-            }
-          .bet_act_ChooseWin{
-            display: flex;
-            justify-content:space-between;
-            align-items: center;
-            flex-direction: row;
-            font-size: 30px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            color:#FFFFFF;
-            border-width: 1px 0px 0px 0px;
-            border-style: solid;
-            border-color: rgba(119, 119, 119, 1);
-            height: 86px;
-            .bet_act_ChooseWin_label{
-                margin-left: 40px;
-
-              }
-            .bet_act_ChooseWin_value{
-              margin-right: 40px;
-
-              .bet_act_ChooseWin_value_left{
-                  color:#FFFFFE;
-                  background-color: rgb(131, 104, 5);
-                  border-style: none;
-                  font-size: 30px;
-                  //font-weight: bold;
-                  text-align: center;
-                  align-items: center;
-                  text-align: center;
-                  vertical-align: middle;
-                  //width: 150px;
-                  //height: 60px;
-                  border-color: rgb(131, 104, 5);
-                  border-radius: 4px;
-                  border-width: 2px;
-                  border-style: solid;
-                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-                }
-              .bet_act_ChooseWin_value_right{
-                  color:#FFFFFE;
-                  background-color: rgb(131, 104, 5);
-                  border-style: none;
-                  font-size: 30px;
-                  //font-weight: bold;
-                  text-align: center;
-                  align-items: center;
-                  text-align: center;
-                  vertical-align: middle;
-                  text-align: center;
-                  margin-left: 15px;
-                  //width: 150px;
-                  //height: 60px;
-                  border-color: rgb(131, 104, 5);
-                  border-radius: 4px;
-                  border-width: 2px;
-                  border-style: solid;
-                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-                }
-
-
-            }
-          }
-          .bet_act_BI{
-            display: flex;
-            justify-content:space-between;
-            align-items: center;
-            flex-direction: row;
-            font-size: 30px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            color:#FFFFFF;
-            border-width: 1px 0px 0px 0px;
-            border-style: solid;
-            border-color: rgba(119, 119, 119, 1);
-            height: 86px;
-            .bet_act_BI_label{
-              margin-left: 40px;
-            }
-            .bet_act_BI_value{
-              margin-right: 40px;
-              .bet_act_BI_value_num{
-                  color:#FFFFFE;
-                  background-color: rgb(131, 104, 5);
-                  border-style: none;
-                  font-size: 25px;
-                  font-weight: bold;
-                  text-align: center;
-                  align-items: center;
-                  text-align: center;
-                  vertical-align: middle;
-                  text-align: center;
-                  margin-left: 10px;
-                  width: 120px;
-                  height: 60px;
-                  border-color: rgb(131, 104, 5);
-                  border-radius: 4px;
-                  border-width: 2px;
-                  border-style: solid;
-                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-                }
-            }
-          }
-          .bet_act_BP{
-            display: flex;
-            justify-content:space-between;
-            align-items: center;
-            flex-direction: row;
-            font-size: 30px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            color:#FFFFFF;
-            border-width: 1px 0px 0px 0px;
-            border-style: solid;
-            border-color: rgba(119, 119, 119, 1);
-            height: 86px;
-            .bet_act_BP_label{
-              margin-left: 40px;
-
-            }
-            .bet_act_BP_value{
-              margin-right: 40px;
-              .bet_act_BP_value_plus{
-                  color:#FFFFFE;
-                  background-color: rgb(131, 104, 5);
-                  border-color: rgb(131, 104, 5);
-                  border-radius: 4px;
-                  border-width: 2px;
-                  border-style: solid;
-                  font-size: 36px;
-                  font-weight: bolder;
-                  text-align: center;
-                  width: 60px;
-                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-                }
-                .bet_act_BP_value_num{
-                  margin-left: 15px;
-                  margin-right: 15px;
-                  color:#FFFFFE;
-                  font-size: 36px;
-                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-                  //font-weight: bold;
-
-                }
-                .bet_act_BP_value_minus{
-                  color:#FFFFFE;
-                  background-color: rgb(131, 104, 5);
-                  border-color: rgb(131, 104, 5);
-                  border-radius: 4px;
-                  border-width: 2px;
-                  border-style: solid;
-                  font-size: 36px;
-                  font-weight: bolder;
-                  text-align: center;
-                  width: 60px;
-                  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-                }
-            }
-          }
-          .bet_act_BP_betinfo{
-            display: flex;
-            justify-content:space-between;
-            align-items: center;
-            flex-direction: row;
-            font-size: 30px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            color:#FFFFFF;
-            border-width: 1px 0px 0px 0px;
-            border-style: solid;
-            border-color: rgba(119, 119, 119, 1);
-            height: 86px;
-            .bet_act_BP_beinfo_label{
-              margin-left: 40px;
-
-            }
-            .bet_act_BP_beinfo_value{
-              margin-right: 40px;}
-            }
-          .bet_act_BP_confirm{
-            display: flex;
-            justify-content:space-between;
-            align-items: center;
-            flex-direction: row;
-            font-size: 30px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            color:#FFFFFF;
-            border-width: 1px 0px 0px 0px;
-            border-style: solid;
-            border-color: rgba(119, 119, 119, 1);
-            height: 86px;
-            .bet_act_BP_confirm_label{
-              margin-left: 40px;
-            }
-            .bet_act_BP_confirm_value{
-              margin-right: 40px;
-              .bet_act_BP_confirm_value_C{
-                color:#2b2b2b;
-                background-color:#ECC22F;
-                border-color: #ECC22F;
-                border-radius: 4px;
-                border-width: 2px;
-                border-style: solid;
-                font-size: 36px;
-                font-weight: 450;
-                text-align: center;
-                //width: 60px;
-                font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-
-              }
-            }
-          }
-
+      }
+      .bet_act_ChooseWin {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 30px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 86px;
+        .bet_act_ChooseWin_label {
+          margin-left: 40px;
         }
-       .box_bottom{
+        .bet_act_ChooseWin_value {
+          margin-right: 40px;
+
+          .bet_act_ChooseWin_value_left {
+            color: #fffffe;
+            background-color: rgb(131, 104, 5);
+            border-style: none;
+            font-size: 30px;
+            //font-weight: bold;
+            text-align: center;
+            align-items: center;
+            text-align: center;
+            vertical-align: middle;
+            //width: 150px;
+            //height: 60px;
+            border-color: rgb(131, 104, 5);
+            border-radius: 4px;
+            border-width: 2px;
+            border-style: solid;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
+          }
+          .bet_act_ChooseWin_value_right {
+            color: #fffffe;
+            background-color: rgb(131, 104, 5);
+            border-style: none;
+            font-size: 30px;
+            //font-weight: bold;
+            text-align: center;
+            align-items: center;
+            text-align: center;
+            vertical-align: middle;
+            text-align: center;
+            margin-left: 15px;
+            //width: 150px;
+            //height: 60px;
+            border-color: rgb(131, 104, 5);
+            border-radius: 4px;
+            border-width: 2px;
+            border-style: solid;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
+          }
+        }
+      }
+      .bet_act_BI {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 30px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 86px;
+        .bet_act_BI_label {
+          margin-left: 40px;
+        }
+        .bet_act_BI_value {
+          margin-right: 40px;
+          .bet_act_BI_value_num {
+            color: #fffffe;
+            background-color: rgb(131, 104, 5);
+            border-style: none;
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+            align-items: center;
+            text-align: center;
+            vertical-align: middle;
+            text-align: center;
+            margin-left: 10px;
+            width: 120px;
+            height: 60px;
+            border-color: rgb(131, 104, 5);
+            border-radius: 4px;
+            border-width: 2px;
+            border-style: solid;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
+          }
+        }
+      }
+      .bet_act_BP {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 30px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 86px;
+        .bet_act_BP_label {
+          margin-left: 40px;
+        }
+        .bet_act_BP_value {
+          margin-right: 40px;
+          .bet_act_BP_value_plus {
+            color: #fffffe;
+            background-color: rgb(131, 104, 5);
+            border-color: rgb(131, 104, 5);
+            border-radius: 4px;
+            border-width: 2px;
+            border-style: solid;
+            font-size: 36px;
+            font-weight: bolder;
+            text-align: center;
+            width: 60px;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
+          }
+          .bet_act_BP_value_num {
+            margin-left: 15px;
+            margin-right: 15px;
+            color: #fffffe;
+            font-size: 36px;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
+            //font-weight: bold;
+          }
+          .bet_act_BP_value_minus {
+            color: #fffffe;
+            background-color: rgb(131, 104, 5);
+            border-color: rgb(131, 104, 5);
+            border-radius: 4px;
+            border-width: 2px;
+            border-style: solid;
+            font-size: 36px;
+            font-weight: bolder;
+            text-align: center;
+            width: 60px;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
+          }
+        }
+      }
+      .bet_act_BP_betinfo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 30px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 86px;
+        .bet_act_BP_beinfo_label {
+          margin-left: 40px;
+        }
+        .bet_act_BP_beinfo_value {
+          margin-right: 40px;
+        }
+      }
+      .bet_act_BP_confirm {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 30px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 86px;
+        .bet_act_BP_confirm_label {
+          margin-left: 40px;
+        }
+        .bet_act_BP_confirm_value {
+          margin-right: 40px;
+          .bet_act_BP_confirm_value_C {
+            color: #2b2b2b;
+            background-color: #ecc22f;
+            border-color: #ecc22f;
+            border-radius: 4px;
+            border-width: 2px;
+            border-style: solid;
+            font-size: 36px;
+            font-weight: 450;
+            text-align: center;
+            //width: 60px;
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+              sans-serif;
+          }
+        }
+      }
+    }
+    .box_bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+      font-size: 30px;
+      font-family: "MicrosoftYaHei", "Microsoft YaHei";
+      color: #ffffff;
+      margin-top: 40px;
+      border-width: 1px 0px 0px 0px;
+      border-style: solid;
+      border-color: rgba(119, 119, 119, 1);
+      height: 86px;
+
+      .box_bottom_l {
+        margin-left: 40px;
+      }
+      .box_bottom_r {
+        margin-right: 40px;
+      }
+    }
+    .bottom_more {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      font-size: 30px;
+      font-family: "MicrosoftYaHei", "Microsoft YaHei";
+      color: #ffffff;
+      border-width: 1px 0px 0px 0px;
+      border-style: solid;
+      border-color: rgba(119, 119, 119, 1);
+      .dropdown_menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 36px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        height: 80px;
+        user-select: none;
+        line-height: 80px;
+      }
+      .dropdown_show {
+        width: 100%;
+        .dropdown_list {
           display: flex;
-          justify-content:space-between;
+          justify-content: space-between;
           align-items: center;
           flex-direction: row;
-          font-size: 30px;
-          font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-          color:#FFFFFF;
-          margin-top: 40px;
+          height: 80px;
           border-width: 1px 0px 0px 0px;
           border-style: solid;
           border-color: rgba(119, 119, 119, 1);
-          height: 86px;
-
-          .box_bottom_l{
+          .dropdown_list_l {
             margin-left: 40px;
-
           }
-          .box_bottom_r{
+          .dropdown_list_r {
             margin-right: 40px;
-
           }
         }
-        .bottom_more{
-          position: relative;
-          display: flex;
-          justify-content:space-between;
-          align-items: center;
-          flex-direction: column;
-          font-size: 30px;
-          font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-          color:#FFFFFF;
-          border-width: 1px 0px 0px 0px;
-          border-style: solid;
-          border-color: rgba(119, 119, 119, 1);
-          .dropdown_menu{
-            display: flex;
-            justify-content:space-between;
-            align-items: center;
-            flex-direction: row;
-            font-size: 36px;
-            font-family: 'MicrosoftYaHei', 'Microsoft YaHei';
-            color:#FFFFFF;
-            height: 80px;
-            user-select: none;
-            line-height: 80px;
-          }
-          .dropdown_show{
-            width: 100%;
-            .dropdown_list{
-              display: flex;
-              justify-content:space-between;
-              align-items: center;
-              flex-direction: row;
-              height: 80px;
-              border-width: 1px 0px 0px 0px;
-              border-style: solid;
-              border-color: rgba(119, 119, 119, 1);
-              .dropdown_list_l{
-                margin-left: 40px;
-              }
-              .dropdown_list_r{
-                margin-right: 40px;
-              }
-            }
-          }
-        }
-
+      }
     }
-
-
+  }
 }
 </style>
