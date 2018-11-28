@@ -108,7 +108,7 @@
           </div>
         </div>
         <div class="bet_act_BI" v-show="info.game_round_type_i18n_serv_type === 'Range'">
-          <div class="bet_act_BI_label">Bet Interval</div>
+          <div class="bet_act_BI_label">Bet Range</div>
           <div class="bet_act_BI_value">
             <button class="bet_act_BI_value_num" :class="[joindata.act_game_range === 1 ? 'bet_act_BI_value_num_select' : '']" @click="act_BI_value(1,'1-3')">1-3</button>
             <button class="bet_act_BI_value_num" :class="[joindata.act_game_range === 2 ? 'bet_act_BI_value_num_select' : '']"  @click="act_BI_value(2,'4-7')">4-7</button>
@@ -215,7 +215,7 @@ export default {
         this.joindata.act_pay_err='Please Choose Win Team';
       }
       else if(this.joindata.act_game_range == '' && this.info.game_round_type_i18n_serv_type == 'Range'){
-        this.joindata.act_pay_err='Please Choose Bet Interval';
+        this.joindata.act_pay_err='Please Choose Bet Range';
       }
       else{
         this.joindata.act_pay_err='';
@@ -256,10 +256,33 @@ export default {
       this.joindata.act_game_winner_team_id = info_choose_team_id;
       this.joindata.act_game_winner_team_abbr = info_choose_team_abbr;
       this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
-      this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
-      if(this.info.game_round_type_i18n_serv_type == 'WinLose'){
+
+      if(this.info.game_round_type_i18n_serv_type == 'WinLose' || (this.info.game_round_type_i18n_serv_type  == 'Range' && this.joindata.act_game_range === '')){
         this.joindata.act_game_win_info=''
       }
+      else if(this.info.game_round_type_i18n_serv_type  == 'Range'){
+        let info_act_game_info='';
+        if(this.joindata.act_game_point == 1){
+             info_act_game_info='1-3';
+        }
+        if(this.joindata.act_game_point == 2){
+             info_act_game_info='4-7';
+        }
+        if(this.joindata.act_game_point == 3){
+             info_act_game_info='8-12';
+        }
+        if(this.joindata.act_game_point == 4){
+             info_act_game_info='13-20';
+        }
+        if(this.joindata.act_game_point == 5){
+             info_act_game_info='20+';
+        }
+        this.joindata.act_game_win_info = info_act_game_info  + ' Score';
+      }
+      else{
+        this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
+      }
+
 
       console.log(this.joindata.act_game_winner_team_id ,this.joindata.act_game_winner_team_abbr);
     },
