@@ -73,11 +73,12 @@
           >{{info.game_joined_status.value}}</div>
           <div
             class="joined_info_bottom joined_info_bottom_f"
+            @click="act_join_A('right')"
             v-else
-          >{{info.game_joined_status.value}}</div>
+          >{{Real_game_joined_status}}</div>
         </div>
       </div>
-      <div class="bet_act">
+      <div class="bet_act" v-show="JoinVisible === true" >
         <div class="bet_act_BM">
           <div class="bet_act_BM_label">Bet Multiple</div>
           <div class="bet_act_BM_value">
@@ -179,7 +180,8 @@ export default {
       startTime: new Date().getTime() + 100 * 100,
       endTime: new Date().getTime() + 100 * 100,
       message: "",
-      dialogVisible: false,
+      JoinVisible: false,
+      Real_game_joined_status :this.info.game_joined_status.value,
       joindata: {
         act_game_bet_multiple: 1,
         act_game_winner_team_id: "",
@@ -205,6 +207,17 @@ export default {
     CountDown
   },
   methods: {
+    act_join_A(test){
+      console.log("act_game_join", test);
+      if(this.JoinVisible==true){
+        this.JoinVisible=false;
+        this.Real_game_joined_status=this.info.game_joined_status.value;
+      }
+      else{
+        this.JoinVisible=true;
+        this.Real_game_joined_status='Cancle Join';
+      }
+    },
     act_pay() {
       console.log("act_game_bet_multiple", this.joindata.act_game_bet_multiple);
       console.log("act_game_range", this.joindata.act_game_range);
@@ -359,19 +372,6 @@ export default {
     countDownE_cb: function(x) {
       this.message = "Stop Betting";
       console.log(x);
-    },
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
     }
   },
   directives: {
