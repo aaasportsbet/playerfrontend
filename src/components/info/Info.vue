@@ -215,7 +215,7 @@ export default {
       }
       else{
         this.JoinVisible=true;
-        this.Real_game_joined_status='Cancle Join';
+        this.Real_game_joined_status='Cancel Join';
       }
     },
     act_pay() {
@@ -244,6 +244,8 @@ export default {
               )
                 .then(response => {
                   console.log(response);
+                    this.JoinVisible=false;
+                    this.Real_game_joined_status=this.info.game_joined_status.value;
                 })
                 .catch(error => {
                   console.error(error);
