@@ -84,12 +84,12 @@
             <button
               class="bet_act_BM_value_minus"
               @click="act_minus('joindata.act_game_bet_multiple')"
-            >-</button>
+            ><i class="el-icon-minus"></i></button>
             <span class="bet_act_BM_value_num">{{joindata.act_game_bet_multiple}}</span>
             <button
               class="bet_act_BM_value_plus"
               @click="act_add('joindata.act_game_bet_multiple')"
-            >+</button>
+            ><i class="el-icon-plus"></i></button>
           </div>
         </div>
         <div class="bet_act_ChooseWin">
@@ -97,38 +97,42 @@
           <div class="bet_act_ChooseWin_value">
             <button
               class="bet_act_ChooseWin_value_left"
-              @click="act_choose_team(info.game_info_left_abbr)"
+              :class="[joindata.act_game_winner_team_abbr === info.game_info_left_abbr ? 'bet_act_ChooseWin_value_left_select' : '']"
+              @click="act_choose_team(info.game_info_left_id,info.game_info_left_abbr)"
             >{{info.game_info_left_abbr}}</button>
             <button
               class="bet_act_ChooseWin_value_right"
-              @click="act_choose_team(info.game_info_right_abbr)"
+              :class="[joindata.act_game_winner_team_abbr === info.game_info_right_abbr ? 'bet_act_ChooseWin_value_right_select' : '']"
+              @click="act_choose_team(info.game_info_right_id,info.game_info_right_abbr)"
             >{{info.game_info_right_abbr}}</button>
           </div>
         </div>
-        <div class="bet_act_BI">
+        <div class="bet_act_BI" v-show="info.game_round_type_i18n_serv_type !== 'PointDiff' && info.game_round_type_i18n_serv_type !== 'WinLose'">
           <div class="bet_act_BI_label">Bet Interval</div>
           <div class="bet_act_BI_value">
-            <button class="bet_act_BI_value_num" @click="act_BI_value(1)">1-3</button>
-            <button class="bet_act_BI_value_num" @click="act_BI_value(2)">4-7</button>
-            <button class="bet_act_BI_value_num" @click="act_BI_value(3)">8-12</button>
-            <button class="bet_act_BI_value_num" @click="act_BI_value(4)">13-20</button>
-            <button class="bet_act_BI_value_num" @click="act_BI_value(5)">20+</button>
+            <button class="bet_act_BI_value_num" :class="[joindata.act_game_range === 1 ? 'bet_act_BI_value_num_select' : '']" @click="act_BI_value(1,'1-3')">1-3</button>
+            <button class="bet_act_BI_value_num" :class="[joindata.act_game_range === 2 ? 'bet_act_BI_value_num_select' : '']"  @click="act_BI_value(2,'4-7')">4-7</button>
+            <button class="bet_act_BI_value_num" :class="[joindata.act_game_range === 3 ? 'bet_act_BI_value_num_select' : '']"  @click="act_BI_value(3,'8-12')">8-12</button>
+            <button class="bet_act_BI_value_num" :class="[joindata.act_game_range === 4 ? 'bet_act_BI_value_num_select' : '']"  @click="act_BI_value(4,'13-20')">13-20</button>
+            <button class="bet_act_BI_value_num" :class="[joindata.act_game_range === 5 ? 'bet_act_BI_value_num_select' : '']"  @click="act_BI_value(5,'20+')">20+</button>
           </div>
         </div>
-        <div class="bet_act_BP">
+        <div class="bet_act_BP" v-show="info.game_round_type_i18n_serv_type === 'PointDiff'">
           <div class="bet_act_BP_label">Choose Win Points</div>
           <div class="bet_act_BP_value">
-            <button class="bet_act_BP_value_minus" @click="act_minus('joindata.act_game_point')">-</button>
+            <button class="bet_act_BP_value_minus" @click="act_minus('joindata.act_game_point')"><i class="el-icon-minus"></i></button>
             <span class="bet_act_BP_value_num">{{joindata.act_game_point}}</span>
-            <button class="bet_act_BP_value_plus" @click="act_add('joindata.act_game_point')">+</button>
+            <button class="bet_act_BP_value_plus" @click="act_add('joindata.act_game_point')"><i class="el-icon-plus"></i></button>
           </div>
         </div>
         <div class="bet_act_BP_betinfo">
           <div class="bet_act_BP_beinfo_label">Bet Detail</div>
-          <div
-            class="bet_act_BP_beinfo_value"
-          >[{{joindata.act_game_winner_team}} Win] [{{joindata.act_game_type}}] [{{joindata.act_game_range}}] [Pay {{joindata.act_game_pay_total}}]</div>
-        </div>
+          <div class="bet_act_BP_beinfo_value">
+            <span v-show="joindata.act_game_win_welcome === '1'">You bet {{joindata.act_game_pay_total}} for {{joindata.act_game_winner_team_abbr}} Win {{joindata.act_game_win_info}}</span>
+            <span v-show="joindata.act_game_win_welcome === '0'">{{joindata.act_game_win_welcome_text}}</span>
+            </div>
+          </div>
+
         <div class="bet_act_BP_confirm">
           <div class="bet_act_BP_confirm_label">Confirm to Bet</div>
           <div class="bet_act_BP_confirm_value">
@@ -177,10 +181,14 @@ export default {
       dialogVisible: false,
       joindata: {
         act_game_bet_multiple: 1,
-        act_game_winner_team: "",
+        act_game_winner_team_id: "",
+        act_game_winner_team_abbr: "",
         act_game_range: "",
-        act_game_point: 1,
-        act_game_pay_total: "1.0000 EOS"
+        act_game_point: 0,
+        act_game_pay_total: "",
+        act_game_win_info:"",
+        act_game_win_welcome:"0",
+        act_game_win_welcome_text:"Please Select Bet Plan"
       },
       num1: 1
     };
@@ -198,7 +206,7 @@ export default {
     act_pay() {
       console.log("act_game_bet_multiple", this.joindata.act_game_bet_multiple);
       console.log("act_game_range", this.joindata.act_game_range);
-      console.log("act_game_winner_team", this.joindata.act_game_winner_team);
+      console.log("act_game_winner_team_id", this.joindata.act_game_winner_team_id);
       console.log("act_game_point", this.joindata.act_game_point);
       console.log("act_game_pay_total", this.joindata.act_game_pay_total);
 
@@ -209,7 +217,7 @@ export default {
           betRound(
             identity,
             this.info.game_server_obj,
-            this.joindata.act_game_winner_team,
+            this.joindata.act_game_winner_team_id,
             this.joindata.act_game_range,
             this.joindata.act_game_point,
             this.joindata.act_game_bet_multiple
@@ -225,32 +233,67 @@ export default {
           console.error(error); // player not login
         });
     },
-    act_BI_value(info_act_game_range) {
-      this.act_game_range = info_act_game_range;
+    act_BI_value(info_act_game_range,info_act_game_info) {
+      this.joindata.act_game_win_welcome='1';
+      console.log(this.joindata.act_game_win_welcome);
+      this.joindata.act_game_range = info_act_game_range;
+      this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+      this.joindata.act_game_win_info =info_act_game_info + ' Score';
       console.log(info_act_game_range);
     },
-    act_choose_team(info_choose_team) {
-      console.log(info_choose_team);
-      this.act_game_winner_team = info_choose_team;
+    act_choose_team(info_choose_team_id,info_choose_team_abbr) {
+      this.joindata.act_game_win_welcome='1';
+      this.joindata.act_game_winner_team_id = info_choose_team_id;
+      this.joindata.act_game_winner_team_abbr = info_choose_team_abbr;
+      if(this.info.game_round_type_i18n_serv_type == 'WinLose'){
+        this.joindata.act_game_win_info=''
+      }
+      this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+
+      console.log(this.joindata.act_game_winner_team_id ,this.joindata.act_game_winner_team_abbr);
     },
-    act_add(info_bet_multiple) {
-      if (info_bet_multiple == "joindata.act_game_bet_multiple") {
+    act_add(info_bet_addtype) {
+      this.joindata.act_game_win_welcome='1';
+      if (info_bet_addtype == "joindata.act_game_bet_multiple") {
         this.joindata.act_game_bet_multiple++;
+        this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
         console.log(this.joindata.act_game_bet_multiple);
       }
-      if (info_bet_multiple == "joindata.act_game_point") {
+      if (info_bet_addtype == "joindata.act_game_point") {
         this.joindata.act_game_point++;
+        this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+        this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
         console.log(this.joindata.act_game_point);
       }
     },
-    act_minus(info_bet_multiple) {
-      if (info_bet_multiple == "joindata.act_game_bet_multiple") {
-        this.joindata.act_game_bet_multiple--;
-        console.log(this.joindata.act_game_bet_multiple);
+    act_minus(info_bet_minustype) {
+      this.joindata.act_game_win_welcome='1';
+      if (info_bet_minustype == "joindata.act_game_bet_multiple" ) {
+        if(this.joindata.act_game_bet_multiple < 2){
+          console.log(this.joindata.act_game_bet_multiple);
+          this.joindata.act_game_bet_multiple = 1;
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+        }
+        else{
+          this.joindata.act_game_bet_multiple--;
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          console.log(this.joindata.act_game_bet_multiple);
+        }
+
       }
-      if (info_bet_multiple == "joindata.act_game_point") {
-        this.joindata.act_game_point--;
-        console.log(this.joindata.act_game_point);
+      if (info_bet_minustype == "joindata.act_game_point") {
+         if(this.joindata.act_game_point < 1){
+          console.log(this.joindata.act_game_point);
+          this.joindata.act_game_point= 0;
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
+        }
+        else{
+          this.joindata.act_game_point--;
+          this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          console.log(this.joindata.act_game_point);
+        }
       }
     },
     goDetailPage: function(info) {
@@ -600,23 +643,23 @@ export default {
         border-width: 1px 0px 0px 0px;
         border-style: solid;
         border-color: rgba(119, 119, 119, 1);
-        height: 86px;
+        height: 100px;
         .bet_act_BM_label {
           margin-left: 40px;
         }
         .bet_act_BM_value {
           margin-right: 40px;
           .bet_act_BM_value_plus {
-            color: #fffffe;
-            background-color: rgb(131, 104, 5);
-            border-color: rgb(131, 104, 5);
+            border-color: #ecc22f;
+            background-color: #272727;
+            color: #fff;
             border-radius: 4px;
             border-width: 2px;
             border-style: solid;
             font-size: 36px;
             font-weight: bolder;
             text-align: center;
-            width: 60px;
+            height: 60px;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
@@ -632,16 +675,16 @@ export default {
             //font-weight: bold;
           }
           .bet_act_BM_value_minus {
-            color: #fffffe;
-            background-color: rgb(131, 104, 5);
-            border-color: rgb(131, 104, 5);
+            border-color: #ecc22f;
+            background-color: #272727;
+            color: #fff;
             border-radius: 4px;
             border-width: 2px;
             border-style: solid;
             font-size: 36px;
             font-weight: bolder;
             text-align: center;
-            width: 60px;
+            height: 60px;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
@@ -659,7 +702,7 @@ export default {
         border-width: 1px 0px 0px 0px;
         border-style: solid;
         border-color: rgba(119, 119, 119, 1);
-        height: 86px;
+        height: 100px;
         .bet_act_ChooseWin_label {
           margin-left: 40px;
         }
@@ -667,46 +710,52 @@ export default {
           margin-right: 40px;
 
           .bet_act_ChooseWin_value_left {
-            color: #fffffe;
-            background-color: rgb(131, 104, 5);
-            border-style: none;
+            border-color: #ecc22f;
+            background-color: #272727;
+            color: #fff;
             font-size: 30px;
             //font-weight: bold;
+            width: 120px;
+            height: 60px;
             text-align: center;
             align-items: center;
             text-align: center;
             vertical-align: middle;
-            //width: 150px;
-            //height: 60px;
-            border-color: rgb(131, 104, 5);
             border-radius: 4px;
             border-width: 2px;
             border-style: solid;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
+            &.bet_act_ChooseWin_value_left_select{
+              background-color:  #ecc22f;
+              color: #2b2b2b;
+            }
           }
           .bet_act_ChooseWin_value_right {
-            color: #fffffe;
-            background-color: rgb(131, 104, 5);
-            border-style: none;
+            border-color: #ecc22f;
+            background-color: #272727;
+            color: #fff;
             font-size: 30px;
             //font-weight: bold;
+            width: 120px;
+            height: 60px;
             text-align: center;
             align-items: center;
             text-align: center;
             vertical-align: middle;
             text-align: center;
             margin-left: 15px;
-            //width: 150px;
-            //height: 60px;
-            border-color: rgb(131, 104, 5);
             border-radius: 4px;
             border-width: 2px;
             border-style: solid;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
+            &.bet_act_ChooseWin_value_right_select{
+            background-color:  #ecc22f;
+            color: #2b2b2b;
+            }
           }
         }
       }
@@ -721,17 +770,17 @@ export default {
         border-width: 1px 0px 0px 0px;
         border-style: solid;
         border-color: rgba(119, 119, 119, 1);
-        height: 86px;
+        height: 100px;
         .bet_act_BI_label {
           margin-left: 40px;
         }
         .bet_act_BI_value {
           margin-right: 40px;
           .bet_act_BI_value_num {
-            color: #fffffe;
-            background-color: rgb(131, 104, 5);
-            border-style: none;
-            font-size: 25px;
+            border-color: #ecc22f;
+            background-color: #272727;
+            color: #fff;
+            font-size: 28px;
             font-weight: bold;
             text-align: center;
             align-items: center;
@@ -741,13 +790,16 @@ export default {
             margin-left: 10px;
             width: 120px;
             height: 60px;
-            border-color: rgb(131, 104, 5);
             border-radius: 4px;
             border-width: 2px;
             border-style: solid;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
+            &.bet_act_BI_value_num_select{
+            background-color:  #ecc22f;
+            color: #2b2b2b;
+            }
           }
         }
       }
@@ -762,26 +814,27 @@ export default {
         border-width: 1px 0px 0px 0px;
         border-style: solid;
         border-color: rgba(119, 119, 119, 1);
-        height: 86px;
+        height: 100px;
         .bet_act_BP_label {
           margin-left: 40px;
         }
         .bet_act_BP_value {
           margin-right: 40px;
           .bet_act_BP_value_plus {
-            color: #fffffe;
-            background-color: rgb(131, 104, 5);
-            border-color: rgb(131, 104, 5);
+            border-color: #ecc22f;
+            background-color: #272727;
+            color: #fff;
             border-radius: 4px;
             border-width: 2px;
             border-style: solid;
             font-size: 36px;
             font-weight: bolder;
             text-align: center;
-            width: 60px;
+            height: 60px;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
+
           }
           .bet_act_BP_value_num {
             margin-left: 15px;
@@ -794,16 +847,16 @@ export default {
             //font-weight: bold;
           }
           .bet_act_BP_value_minus {
-            color: #fffffe;
-            background-color: rgb(131, 104, 5);
-            border-color: rgb(131, 104, 5);
+            border-color: #ecc22f;
+            background-color: #272727;
+            color: #fff;
             border-radius: 4px;
             border-width: 2px;
             border-style: solid;
             font-size: 36px;
             font-weight: bolder;
             text-align: center;
-            width: 60px;
+            height: 60px;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
@@ -821,7 +874,7 @@ export default {
         border-width: 1px 0px 0px 0px;
         border-style: solid;
         border-color: rgba(119, 119, 119, 1);
-        height: 86px;
+        height: 100px;
         .bet_act_BP_beinfo_label {
           margin-left: 40px;
         }
@@ -840,12 +893,18 @@ export default {
         border-width: 1px 0px 0px 0px;
         border-style: solid;
         border-color: rgba(119, 119, 119, 1);
-        height: 86px;
+        height: 100px;
         .bet_act_BP_confirm_label {
+          margin-top: 45px;
+          //display: flex;
+          //align-self: center;
           margin-left: 40px;
         }
         .bet_act_BP_confirm_value {
+          margin-top: 45px;
           margin-right: 40px;
+          //display: flex;
+          //align-self: flex-end;
           .bet_act_BP_confirm_value_C {
             color: #2b2b2b;
             background-color: #ecc22f;
@@ -856,7 +915,7 @@ export default {
             font-size: 36px;
             font-weight: 450;
             text-align: center;
-            //width: 60px;
+            height: 60px;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
