@@ -107,7 +107,7 @@
             >{{info.game_info_right_abbr}}</button>
           </div>
         </div>
-        <div class="bet_act_BI" v-show="info.game_round_type_i18n_serv_type !== 'PointDiff' && info.game_round_type_i18n_serv_type !== 'WinLose'">
+        <div class="bet_act_BI" v-show="info.game_round_type_i18n_serv_type === 'Range'">
           <div class="bet_act_BI_label">Bet Interval</div>
           <div class="bet_act_BI_value">
             <button class="bet_act_BI_value_num" :class="[joindata.act_game_range === 1 ? 'bet_act_BI_value_num_select' : '']" @click="act_BI_value(1,'1-3')">1-3</button>
@@ -136,6 +136,7 @@
         <div class="bet_act_BP_confirm">
           <div class="bet_act_BP_confirm_label">Confirm to Bet</div>
           <div class="bet_act_BP_confirm_value">
+            <label class="bet_act_BP_confirm_err">{{joindata.act_pay_err}}</label>
             <button class="bet_act_BP_confirm_value_C" @click="act_pay()">Pay Now</button>
           </div>
         </div>
@@ -184,11 +185,12 @@ export default {
         act_game_winner_team_id: "",
         act_game_winner_team_abbr: "",
         act_game_range: "",
-        act_game_point: 0,
+        act_game_point: 1,
         act_game_pay_total: "",
         act_game_win_info:"",
         act_game_win_welcome:"0",
-        act_game_win_welcome_text:"Please Select Bet Plan"
+        act_game_win_welcome_text:"Please Choose Bet Plan",
+        act_pay_err:""
       },
       num1: 1
     };
@@ -209,31 +211,38 @@ export default {
       console.log("act_game_winner_team_id", this.joindata.act_game_winner_team_id);
       console.log("act_game_point", this.joindata.act_game_point);
       console.log("act_game_pay_total", this.joindata.act_game_pay_total);
-
-      // bettotal = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
-
-      getPlayerIdentity()
-        .then(identity => {
-          betRound(
-            identity,
-            this.info.game_server_obj,
-            this.joindata.act_game_winner_team_id,
-            this.joindata.act_game_range,
-            this.joindata.act_game_point,
-            this.joindata.act_game_bet_multiple
-          )
-            .then(response => {
-              console.log(response);
+      if(this.joindata.act_game_winner_team_id == '') {
+        this.joindata.act_pay_err='Please Choose Win Team';
+      }
+      else if(this.joindata.act_game_range == '' && this.info.game_round_type_i18n_serv_type == 'Range'){
+        this.joindata.act_pay_err='Please Choose Bet Interval';
+      }
+      else{
+        this.joindata.act_pay_err='';
+          getPlayerIdentity()
+            .then(identity => {
+              betRound(
+                identity,
+                this.info.game_server_obj,
+                this.joindata.act_game_winner_team_id,
+                this.joindata.act_game_range,
+                this.joindata.act_game_point,
+                this.joindata.act_game_bet_multiple
+              )
+                .then(response => {
+                  console.log(response);
+                })
+                .catch(error => {
+                  console.error(error);
+                });
             })
             .catch(error => {
-              console.error(error);
+              console.error(error); // player not login
             });
-        })
-        .catch(error => {
-          console.error(error); // player not login
-        });
+      }
     },
     act_BI_value(info_act_game_range,info_act_game_info) {
+      this.joindata.act_pay_err='';
       this.joindata.act_game_win_welcome='1';
       console.log(this.joindata.act_game_win_welcome);
       this.joindata.act_game_range = info_act_game_range;
@@ -242,28 +251,45 @@ export default {
       console.log(info_act_game_range);
     },
     act_choose_team(info_choose_team_id,info_choose_team_abbr) {
+      this.joindata.act_pay_err='';
       this.joindata.act_game_win_welcome='1';
       this.joindata.act_game_winner_team_id = info_choose_team_id;
       this.joindata.act_game_winner_team_abbr = info_choose_team_abbr;
+      this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+      this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
       if(this.info.game_round_type_i18n_serv_type == 'WinLose'){
         this.joindata.act_game_win_info=''
       }
-      this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
 
       console.log(this.joindata.act_game_winner_team_id ,this.joindata.act_game_winner_team_abbr);
     },
     act_add(info_bet_addtype) {
       this.joindata.act_game_win_welcome='1';
       if (info_bet_addtype == "joindata.act_game_bet_multiple") {
+        if(this.joindata.act_game_bet_multiple > 8){
+          this.joindata.act_game_bet_multiple = 9;
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          console.log(this.joindata.act_game_bet_multiple);
+        }
+        else{
         this.joindata.act_game_bet_multiple++;
         this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
         console.log(this.joindata.act_game_bet_multiple);
+        }
       }
       if (info_bet_addtype == "joindata.act_game_point") {
+        if(this.joindata.act_game_point > 8){
+          this.joindata.act_game_point = 9;
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
+          console.log(this.joindata.act_game_point);
+        }
+        else{
         this.joindata.act_game_point++;
         this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
         this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
         console.log(this.joindata.act_game_point);
+        }
       }
     },
     act_minus(info_bet_minustype) {
@@ -282,9 +308,9 @@ export default {
 
       }
       if (info_bet_minustype == "joindata.act_game_point") {
-         if(this.joindata.act_game_point < 1){
+         if(this.joindata.act_game_point < 2){
           console.log(this.joindata.act_game_point);
-          this.joindata.act_game_point= 0;
+          this.joindata.act_game_point= 1;
           this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
           this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
         }
@@ -905,6 +931,10 @@ export default {
           margin-right: 40px;
           //display: flex;
           //align-self: flex-end;
+          .bet_act_BP_confirm_err{
+            margin-right: 15px;
+            color: #ecc22f;
+          }
           .bet_act_BP_confirm_value_C {
             color: #2b2b2b;
             background-color: #ecc22f;
