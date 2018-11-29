@@ -7,7 +7,11 @@
       "game_payout_serv_payout":1,
       "game_get_serv_get":1
   },
-  "data": [
+  "ongoingdata": [
+    {
+      "game_serv_id":1001,
+    }],
+  "historydata": [
     {
       "game_serv_id":1001,
       "game_count_down_time_serv_bet_end_time": "2018.11.04 05:00",

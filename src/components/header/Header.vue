@@ -8,7 +8,8 @@
       <span>{{headertitle}}</span>
     </div>
     <div class="me_set">
-      <div class="img_me_set"></div>
+      <div class="login_me_set" @click="act_me_set()">
+      {{me_set_display_info}}</div>
     </div>
   </header>
   <topnav></topnav>
@@ -20,6 +21,14 @@ import VueRouter from '../../router/routes.js'
 import { mapGetters, mapActions } from 'vuex'
 import Nav from '../nav/Nav.vue'
 export default {
+  data(){
+    return {
+      me_set_display_info: 'Login',
+      me_set_uid:'',
+
+
+    }
+  },
   components: {
     "topnav":Nav
   },
@@ -29,8 +38,22 @@ export default {
   methods: {
     toggleSlideBar () {
       this.$store.dispatch('toggleSlideBar')
-    }
-  }
+    },
+    act_me_set(){
+      if(this.$store.state.scatter.identity.name != ''){
+        this.me_set_uid=this.$store.state.scatter.identity.name;
+        console.log(this.$store.state.scatter.identity.name);
+        this.me_set_display_info=this.me_set_uid + '  Log out';
+      }
+      else{
+        this.me_set_display_info='Login';
+      }
+
+  },
+
+ //feather.replace({ class: 'foo bar', 'stroke-width': 1 }),
+  },
+
 }
 </script>
 
@@ -79,13 +102,20 @@ export default {
     .me_set {
       //flex: 0 0 @header-height;
       font-size: @icon-font-size;
-      .img_me_set {
-        background: url(../../assets/image/img_me_set.png) no-repeat 0px 0px;
+      .login_me_set {
         margin-right: 40px;
-        margin-top: 40px;
-        background-size: 60px 43px;
-        width: 60px;
-        height: 43px;
+        color: #fffffe;
+        font-size: 25px;
+        font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+          sans-serif;
+          .img_login_me_set{
+            filter: hue-rotate(220deg) saturate(5);
+            //width: 40px;
+            //height: 40px;
+            -webkit-filter: hue-rotate(40deg) saturate(0.5) brightness(390%) saturate(4);
+            //
+          }
     }
     }
 

@@ -246,6 +246,11 @@ export default {
                   console.log(response);
                     this.JoinVisible=false;
                     this.Real_game_joined_status=this.info.game_joined_status.value;
+                    this.$message({
+                      message: 'Congratulations, Pay Successfully!',
+                      center: true,
+                      type:'success'
+                    });
                 })
                 .catch(error => {
                   console.error(error);
