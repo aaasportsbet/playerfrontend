@@ -3,27 +3,27 @@ const state = {
   scatter: null,
   pageIndex: 0,
   pageArray: [
-    {headerTitle: "我是广告", routename: "home"},
-    {headerTitle: "我是个人页面", routename: "Personal"},
+    {headerTitle: '我是广告', routename: 'home'},
+    {headerTitle: '我是个人页面', routename: 'Personal'},
   ],
   isSlideBarShow: false,
   isDetailHeader: false,
-  detailHeaderNickName:'',
+  detailHeaderNickName: '',
   personalInfo: {
-    avatar:'http://p1.wmpic.me/article/2017/03/06/1488780213_usvFXYIl.jpg',
-    nickname:'李白',
+    avatar: 'http://p1.wmpic.me/article/2017/03/06/1488780213_usvFXYIl.jpg',
+    nickname: '李白',
     uid: 9001
   },
 
   isLogin: false,
-  AccountName:'',
+  accountName: '',
 
-  isAudioPlay:false,
-  currentPlayerUrl:'',
-  isfollow: false ,
-  followcount:101,
-  isLove:false,
-  lovecount:12
+  isAudioPlay: false,
+  currentPlayerUrl: '',
+  isfollow: false,
+  followcount: 101,
+  isLove: false,
+  lovecount: 12
 }
 
 export default state
