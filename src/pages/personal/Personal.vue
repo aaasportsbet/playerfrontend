@@ -23,7 +23,7 @@
       <div class="list_history">History</div>
     </div>
 
-    <div class="info-container" v-for="item in homelist">
+    <div class="info-container" v-for="item in mehistorylists">
       <info :info="item" class="info"></info>
     </div>
 		<switch-button></switch-button>
@@ -36,14 +36,17 @@ import axios from 'axios'
 import Info from 'components/info/Info.vue'
 import SwitchButton from 'components/switchbutton/SwitchButton.vue'
 import { mapGetters, mapActions } from 'vuex'
-import {fetchRoundList} from "../../scatter/scatter.js"
+import { getMeRoundList } from "../../scatter/nba/round";
+import { getPlayerIdentity, login, logout } from "../../scatter/player";
+import { betRound } from "../../scatter/nba/bet";
 
 const ERR_OK = 0
 export default {
   data () {
     return {
       homelist: [],
-      homelists: []
+      meongoinglists : [],
+      mehistorylists :[]
     }},
 
   created() {
@@ -54,7 +57,12 @@ export default {
       }
     }).catch((error) => {
       console.warn(error)
-    })
+    }),
+    getPlayerIdentity().then(identity => {getMeRoundList().then(response => {
+      this.meongoinglists = response.ongoingdata;
+      this.mehistorylists  = response.historydata;
+      console.log("melists :", response);
+    });}).catch(error=>{});
   },
   components: {
     "info": Info,

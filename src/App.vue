@@ -40,7 +40,7 @@ export default {
         .catch(error => {
           console.error(error);
           const loginstatus = false;
-          const accoutname = "123";
+          const accoutname = "";
           this.$store.dispatch("setislogin", loginstatus);
           this.$store.dispatch("setaccountname", accoutname);
         });

@@ -11,7 +11,8 @@
         <div class="login_me_set"  v-show="this.me_set_login === true">{{me_set_uid}}</div>
         </div>
       <div class="me_set">
-         <div class="login_me_set" @click="act_me_set()">{{me_set_display_info}}</div>
+         <div class="login_me_set" v-if="this.me_set_login === true" @click="act_me_set()">Logout</div>
+         <div class="login_me_set" v-if="this.me_set_login === false" @click="act_me_set()">Login</div>
       </div>
     </header>
     <topnav></topnav>
@@ -37,14 +38,6 @@ export default {
     me_set_login:"isLogin",
     me_set_uid: "accountName",
   }),
-  created(){
-      if(this.me_set_login){
-          this.me_set_display_info='Logout';
-      }
-      if(!this.me_set_login){
-          this.me_set_display_info='Login';
-      }
-  },
   methods: {
     toggleSlideBar() {
       this.$store.dispatch("toggleSlideBar");

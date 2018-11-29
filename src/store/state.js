@@ -16,7 +16,7 @@ const state = {
   },
 
   isLogin: false,
-  accountName: '1111test',
+  accountName: '',
 
   isAudioPlay: false,
   currentPlayerUrl: '',
