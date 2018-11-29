@@ -9,16 +9,12 @@ export async function login() {
     await scatter.getIdentity(requiredFields);
     }
 
-  return scatter != null && scatter.identity;
+  return await getPlayerIdentity();
   }
 
 // get player identity
 export async function getPlayerIdentity() {
   const scatter = await getScatterEOS();
-  if (scatter == null || !scatter.identity) {
-    await login();
-    }
-
   if (scatter != null && scatter.identity) {
     const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
     return account;
@@ -32,7 +28,7 @@ export async function logout() {
   const scatter = await getScatterEOS();
   if (scatter != null && scatter.identity) {
     scatter.forgetIdentity();
-    // Vuex ( when using a setScatter action on your store )
-    store.dispatch('setScatterEOS', null);
   }
+  // Vuex ( when using a setScatter action on your store )
+  store.dispatch('setScatterEOS', null);
 }
