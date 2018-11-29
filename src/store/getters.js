@@ -7,8 +7,8 @@ export const currentPlayerUrl = state => state.currentPlayerUrl
 //EOS
 export const scatterEOS = state => state.scatter
 //login
-export const islogin = state => state.isLogin
-export const accountname = state => state.AccountName
+export const isLogin = state => state.isLogin
+export const accountName = state => state.accountName
 
 
 export const isfollow = state => state.isfollow

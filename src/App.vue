@@ -22,7 +22,7 @@ export default {
     };
   },
   created() {
-    if (isLogin) {
+    if (this.isLogin) {
       this.$notify({
           title: '登录提示',
           message: '您已经登录',
@@ -33,23 +33,24 @@ export default {
         .then(identity => {
           const loginstatus = true;
           const accoutname = identity.name;
-          this.$store.dispatch("setislogin", { loginstatus });
-          this.$store.dispatch("setaccountname", { accoutname });
+          console.log("identity.name:",identity.name,"accoutname:",accoutname)
+          this.$store.dispatch("setislogin", loginstatus );
+          this.$store.dispatch("setaccountname", accoutname);
         })
         .catch(error => {
           console.error(error);
           const loginstatus = false;
-          const accoutname = "";
-          this.$store.dispatch("setislogin", { loginstatus });
-          this.$store.dispatch("setaccountname", { accoutname });
+          const accoutname = "123";
+          this.$store.dispatch("setislogin", loginstatus);
+          this.$store.dispatch("setaccountname", accoutname);
         });
     }
   },
   computed: mapGetters({
     isDetailHeader: "isDetailHeader",
     detailHeaderNickName: "detailHeaderNickName",
-    isLogin: "islogin",
-    accountName: "accountname"
+    isLogin: "isLogin",
+    accountName: "accountName"
   }),
   components: {
     "v-header": Header,

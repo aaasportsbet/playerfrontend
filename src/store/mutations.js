@@ -49,10 +49,10 @@ export default {
     state.detailHeaderNickName = nickname
   },
   // login
-  [types.SET_ISLOGIN](state, {loginstatus}) {
+  [types.SET_ISLOGIN](state, loginstatus) {
     state.isLogin = loginstatus
   },
-  [types.SET_ACCOUNTNAME](state, {accountname}) {
+  [types.SET_ACCOUNTNAME](state, accountname) {
     state.accountName = accountname
   },
   // end

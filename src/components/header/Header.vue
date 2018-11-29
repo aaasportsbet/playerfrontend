@@ -8,7 +8,10 @@
         <span>{{headertitle}}</span>
       </div>
       <div class="me_set">
-        <div class="login_me_set" @click="act_me_set()">{{me_set_login}} test{{me_set_uid}}</div>
+        <div class="login_me_set"  v-show="this.me_set_login === true">{{me_set_uid}}</div>
+        </div>
+      <div class="me_set">
+         <div class="login_me_set" @click="act_me_set()">{{me_set_display_info}}</div>
       </div>
     </header>
     <topnav></topnav>
@@ -23,8 +26,7 @@ import { login, logout, getPlayerIdentity } from "../../scatter/player";
 export default {
   data() {
     return {
-        me_set_display_info: "Login",
-        //me_set_uid: "",
+        me_set_display_info: "",
     }
   },
   components: {
@@ -32,9 +34,17 @@ export default {
   },
   computed: mapGetters({
     headertitle: "headerTitle",
-    me_set_login:"islogin",
-    me_set_uid: "accountname",
+    me_set_login:"isLogin",
+    me_set_uid: "accountName",
   }),
+  created(){
+      if(this.me_set_login){
+          this.me_set_display_info='Logout';
+      }
+      if(!this.me_set_login){
+          this.me_set_display_info='Login';
+      }
+  },
   methods: {
     toggleSlideBar() {
       this.$store.dispatch("toggleSlideBar");
