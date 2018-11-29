@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <v-header :isloginstatus="isLogin" :accountNamestatus="accountName" v-show="!isDetailHeader"></v-header>
+    <v-header v-show="!isDetailHeader"></v-header>
     <detail-header :nickname="detailHeaderNickName" v-show="isDetailHeader"></detail-header>
     <router-view class="content"></router-view>
     <slide-bar></slide-bar>
@@ -19,14 +19,15 @@ export default {
   data() {
     return {
       nickname: "",
-      isloginstatus: false,
-      accountNamestatus: ""
     };
   },
   created() {
     if (isLogin) {
-      this.isloginstatus = true;
-      this.accountNamestatus = accountName;
+      this.$notify({
+          title: '登录提示',
+          message: '您已经登录',
+          position: 'bottom-right'
+        });
     } else {
       login()
         .then(identity => {
@@ -47,8 +48,8 @@ export default {
   computed: mapGetters({
     isDetailHeader: "isDetailHeader",
     detailHeaderNickName: "detailHeaderNickName",
-    isLogin: "isLogin",
-    accountName: "accountName"
+    isLogin: "islogin",
+    accountName: "accountname"
   }),
   components: {
     "v-header": Header,

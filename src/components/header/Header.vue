@@ -8,7 +8,7 @@
         <span>{{headertitle}}</span>
       </div>
       <div class="me_set">
-        <div class="login_me_set" @click="act_me_set()">{{me_set_display_info}}</div>
+        <div class="login_me_set" @click="act_me_set()">{{me_set_login}} test{{me_set_uid}}</div>
       </div>
     </header>
     <topnav></topnav>
@@ -22,60 +22,28 @@ import Nav from "../nav/Nav.vue";
 import { login, logout, getPlayerIdentity } from "../../scatter/player";
 export default {
   data() {
-    try {
-      const account = getPlayerIdentity();
-      return {
-        me_set_display_info: account.name + "  Log out",
-        me_set_uid: account.name
-      };
-    } catch (error) {
-      return {
+    return {
         me_set_display_info: "Login",
-        me_set_uid: ""
-      };
+        //me_set_uid: "",
     }
   },
   components: {
     topnav: Nav
   },
   computed: mapGetters({
-    headertitle: "headerTitle"
+    headertitle: "headerTitle",
+    me_set_login:"islogin",
+    me_set_uid: "accountname",
   }),
   methods: {
     toggleSlideBar() {
       this.$store.dispatch("toggleSlideBar");
     },
     act_me_set() {
-      getPlayerIdentity()
-        .then(account => {
-          logout();
-          this.me_set_display_info = "Login";
-          this.me_set_uid = "";
-        })
-        .catch(error => {
-          login()
-            .then(account => {
-              console.log(account);
-              this.me_set_uid = account.name;
-              this.me_set_display_info = this.me_set_uid + "  Log out";
-            })
-            .catch(error => {
-              this.me_set_display_info = "Login";
-              this.me_set_uid = "";
-            });
-        });
 
-      // if (this.$store.state.scatter.identity.name != "") {
-      //   this.me_set_uid = this.$store.state.scatter.identity.name;
-      //   console.log(this.$store.state.scatter.identity.name);
-      //   this.me_set_display_info = this.me_set_uid + "  Log out";
-      // } else {
-      //   this.me_set_display_info = "Login";
-      // }
     }
 
-    //feather.replace({ class: 'foo bar', 'stroke-width': 1 }),
-  }
+    }
 };
 </script>
 
