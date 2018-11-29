@@ -6,6 +6,10 @@ export const isAudioPlay = state => state.isAudioPlay
 export const currentPlayerUrl = state => state.currentPlayerUrl
 //EOS
 export const scatterEOS = state => state.scatter
+//login
+export const islogin = state => state.isLogin
+export const accountname = state => state.AccountName
+
 
 export const isfollow = state => state.isfollow
 export const followcount = state => state.followcount

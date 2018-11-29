@@ -1,6 +1,6 @@
 <template>
 	<div class="app">
-		<v-header v-show="!isDetailHeader"></v-header>
+		<v-header  :isloginstatus="isLogin"  :AccountNamestatus="AccountName" v-show="!isDetailHeader"></v-header>
 		<detail-header :nickname="detailHeaderNickName"  v-show="isDetailHeader"></detail-header>
 		<router-view class="content"></router-view>
 		<slide-bar></slide-bar>
@@ -17,12 +17,27 @@ import SlideBar from 'components/slidebar/SlideBar.vue'
 	export default {
 		data () {
 			return {
-				nickname: ''
+        nickname: '',
+        isloginstatus:'',
+        AccountNamestatus:''
 			}
-		},
+    },
+    created() {
+      loginScatter().then(response =>  {
+      if (isloginstatus){
+          //loginstatus=response.loginstatus
+          //accoutname=response.accoutname
+          this.$store.dispatch('setislogin',{loginstatus})
+          this.$store.dispatch('setaccountname',{accoutname})
+
+      }
+    })
+    },
 		computed: mapGetters({
 			isDetailHeader: 'isDetailHeader',
-			detailHeaderNickName: 'detailHeaderNickName'
+      detailHeaderNickName: 'detailHeaderNickName',
+      isLogin: 'isLogin',
+      AccountName:'AccountName',
 	  }),
 		components: {
 	    "v-header": Header,

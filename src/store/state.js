@@ -14,6 +14,10 @@ const state = {
     nickname:'李白',
     uid: 9001
   },
+
+  isLogin: false,
+  AccountName:'',
+
   isAudioPlay:false,
   currentPlayerUrl:'',
   isfollow: false ,

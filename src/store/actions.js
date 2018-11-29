@@ -15,7 +15,15 @@ export const  goHomePage = ({commit}) => {
 export const  setScatterEOS = ({commit}, eos) => {
     commit(types.SET_SCATTER_EOS, eos)
 }
+//login
+export const  setislogin = ({commit}, lstatus) => {
+  commit(types.SET_ISLOGIN, lstatus)
+}
+export const  setaccountname = ({commit}, acname) => {
+  commit(types.SET_ACCOUNTNAME, acname)
+}
 
+//end
 
 // 点击用户进入个人页面
 export const  goPersonalPages = ({commit},payload) => {

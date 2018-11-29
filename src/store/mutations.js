@@ -49,7 +49,14 @@ export default {
   [types.ADD_DETAIL_HEADER_NICKNAME](state,{nickname}) {
     state.detailHeaderNickName = nickname
   },
-
+  //login
+  [types.SET_ISLOGIN](state,{loginstatus}) {
+    state.isLogin = loginstatus
+  },
+  [types.SET_ACCOUNTNAME](state,{accountname}) {
+    state.AccountName = accountname
+  },
+  //end
   [types.DELEATE_DETAIL_HEADER_NICKNAME](state) {
     state.detailHeaderNickName = ''
   },

@@ -3,7 +3,14 @@
     ["es2015", { "modules": false }],
     "stage-2"
   ],
-  "plugins": ["transform-runtime"],
+  "plugins": [
+    "transform-runtime",
+    ["import", {
+      "libraryName": "vant",
+      "libraryDirectory": "es",
+      "style": true
+    }]
+  ],
   "comments": false,
   "env": {
     "test": {
