@@ -63,8 +63,8 @@ export default {
       console.warn(error)
     }),
     getPlayerIdentity().then(identity => {getMeRoundList(identity).then(response => {
-      this.meongoinglists = response.ongoinddata;
-      this.mehistorylists  = response.hsitorydata;
+      this.meongoinglists = response.ongoingdata;
+      this.mehistorylists  = response.historydata;
       console.log("melists :", response);
       console.log("this.meongoinglists :", this.meongoinglists);
     });}).catch(error=>{});
