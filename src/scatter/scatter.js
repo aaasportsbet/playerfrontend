@@ -27,13 +27,11 @@ export const requiredFields = {
 };
 
 // is scatter installed
-async function isscatterInstalled() {
+export async function isscatterInstalled() {
   // connect
-  return await ScatterJS.scatter.connect('aaasportsbet').then(connected => {
-    // User does not have Scatter Desktop, Mobile or Classic installed.
-    return connected;
-  });
-  ;
+  return await ScatterJS
+    .scatter
+    .connect('aaasportsbet');
 }
 
 // get scatter eos
