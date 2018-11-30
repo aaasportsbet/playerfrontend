@@ -5,22 +5,29 @@ import {getScatterEOS, requiredFields} from './scatter';
 // login
 export async function login() {
   const scatter = await getScatterEOS();
+
+  console.log('login scatter: ', scatter);
   if (scatter != null) {
     await scatter.getIdentity(requiredFields);
     }
 
-  return await getPlayerIdentity();
+  try {
+    return await getPlayerIdentity();
+  } catch (error) {
+    return error;
+  }
   }
 
 // get player identity
 export async function getPlayerIdentity() {
   const scatter = await getScatterEOS();
+  console.log('get player identity scatter: ', scatter);
   if (scatter != null && scatter.identity) {
     const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
     return account;
-    }
-
-  throw Error('player not login');
+  } else {
+    throw Error('player not login');
+  }
   }
 
 // logout

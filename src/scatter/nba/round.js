@@ -5,7 +5,16 @@ import {getPlayerIdentity} from '../player';
 import {eosOptions, getScatterEOS, network} from '../scatter';
 
 import {getBetListByPlayer} from './bet';
-import {filterPlayerBetListByRound, getPlayerRoundBetLatest, getPlayerRoundBets, playerBetWinStatus, playerJoinStatus, roundtypeKeyValue, teamKeyLang, teamKeyShort} from './filter';
+import {
+  filterPlayerBetListByRound,
+  getPlayerRoundBetLatest,
+  getPlayerRoundBets,
+  playerBetWinStatus,
+  playerJoinStatus,
+  roundtypeKeyValue,
+  teamKeyLang,
+  teamKeyShort
+} from './filter';
 
 const contract = process.env.EOS.CONTRACTNBA;
 
@@ -14,22 +23,24 @@ async function getRoundList() {
   const scatter = await getScatterEOS();
   if (scatter != null) {
     const eos = scatter.eos(network, Eos, eosOptions);
-    const result = await eos.getTableRows(
-        true, contract, contract, 'rounds', 'rounds', 0, -1, 10000, 'i64', 1);
+    const result = await eos.getTableRows(true, contract, contract, 'rounds', 'rounds', 0, -1, 10000, 'i64', 1);
     console.log('aaa', result.rows);
-    return result.rows.sort(sortby(moment().millisecond() * 1000));
-    ;
-    }
+    return result
+      .rows
+      .sort(sortby(moment().millisecond() * 1000));;
+  }
 
   return [];
 }
 
 // sort algo
 function sortby(time) {
-  return function(a, b) {
-    return (a.bet_end_time - time) > (b.bet_end_time - time) ? 1 : -1
+  return function (a, b) {
+    return (a.bet_end_time - time) > (b.bet_end_time - time)
+      ? 1
+      : -1
   };
-  }
+}
 
 // filter delete rounds that already drawed or returned
 function filterFinishedRounds(rounds) {
@@ -44,7 +55,7 @@ function filterFinishedRounds(rounds) {
   });
 
   return retrounds;
-  }
+}
 
 function convertRound(round) {}
 
@@ -60,16 +71,15 @@ export async function getHomeRoundList() {
 
   let displayrounds = [];
   rounds.forEach((r, idx, arr) => {
-    const playerRoundBets =
-        filterPlayerBetListByRound(playerbets, playerIdentity, r.id);
+    const playerRoundBets = filterPlayerBetListByRound(playerbets, playerIdentity, r.id);
 
     displayrounds.push({
       game_serv_id: r.id,
-      game_count_down_time_serv_bet_end_time:
-          moment.unix(r.bet_end_time / 1000000)
-              .utc()
-              .local()
-              .format('YYYY.MM.DD HH:mm'),
+      game_count_down_time_serv_bet_end_time: moment
+        .unix(r.bet_end_time / 1000000)
+        .utc()
+        .local()
+        .format('YYYY.MM.DD HH:mm'),
       game_count_down_time_display: true,
       game_win_status: 'win',
       game_win_status_display: false,
@@ -92,17 +102,19 @@ export async function getHomeRoundList() {
   });
 
   return {
-    errno: displayrounds.length > 0 ? 200 : 404,
+    errno: displayrounds.length > 0
+      ? 200
+      : 404,
     data: displayrounds,
     page: 'home'
   };
-  }
+}
 
 // get me page round list
 export async function getMeRoundList(playerIdentity) {
   if (!playerIdentity) {
     return {errno: 401, page: 'me', error: 'player not login'};
-    }
+  }
 
   const rounds = await getRoundList();
   console.log(rounds);
@@ -111,25 +123,24 @@ export async function getMeRoundList(playerIdentity) {
   const playerbets = await getBetListByPlayer(playerIdentity);
   console.log('player bets: ', playerbets);
 
-  let ongoinrounds = [];
+  let ongoingrounds = [];
   let historyrounds = [];
   rounds.forEach((r) => {
-    const playerRoundBets =
-        filterPlayerBetListByRound(playerbets, playerIdentity, r.id);
+    const playerRoundBets = filterPlayerBetListByRound(playerbets, playerIdentity, r.id);
 
     if (playerRoundBets.length == 0) {
       return;
-      }
+    }
 
     const joined_status = playerJoinStatus(playerRoundBets, r);
     if (joined_status != 2) {
-      ongoinrounds.push({
+      ongoingrounds.push({
         game_serv_id: r.id,
-        game_count_down_time_serv_bet_end_time:
-            moment.unix(r.bet_end_time / 1000000)
-                .utc()
-                .local()
-                .format('YYYY.MM.DD HH:mm'),
+        game_count_down_time_serv_bet_end_time: moment
+          .unix(r.bet_end_time / 1000000)
+          .utc()
+          .local()
+          .format('YYYY.MM.DD HH:mm'),
         game_count_down_time_display: true,
         game_win_status: 'win',
         game_win_status_display: false,
@@ -176,10 +187,5 @@ export async function getMeRoundList(playerIdentity) {
     }
   });
 
-  return {
-    errno: 200,
-    ongoinddata: ongoinrounds,
-    hsitorydata: historyrounds,
-    page: 'me'
-  };
+  return {errno: 200, ongoingdata: ongoingrounds, historydata: historyrounds, page: 'me'};
 }

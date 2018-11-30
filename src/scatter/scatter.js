@@ -29,31 +29,30 @@ export const requiredFields = {
 // is scatter installed
 async function isscatterInstalled() {
   // connect
-  return await ScatterJS
-    .scatter
-    .connect('aaasportsbet')
-    .then(connected => {
-      // User does not have Scatter Desktop, Mobile or Classic installed.
-      return connected;
-    });;
+  return await ScatterJS.scatter.connect('aaasportsbet').then(connected => {
+    // User does not have Scatter Desktop, Mobile or Classic installed.
+    return connected;
+  });
+  ;
 }
 
 // get scatter eos
 export async function getScatterEOS() {
   let scatter = store.getters.scatterEOS;
-  console.log('store.getters.scatterEOS:', store.getters.scatterEOS);
   if (scatter == null) {
-    await isscatterInstalled().then(installed => {
-      if (!installed) 
-        return null;
-      
-      scatter = ScatterJS.scatter;
-      // Vuex ( when using a setScatter action on your store )
-      store.dispatch('setScatterEOS', ScatterJS.scatter);
-      window.ScatterJS = null;
-    });
+    try {
+      const installed = await isscatterInstalled();
+      if (installed) {
+        scatter = ScatterJS.scatter;
+        // Vuex ( when using a setScatter action on your store )
+        store.dispatch('setScatterEOS', ScatterJS.scatter);
+        window.ScatterJS = null;
+      }
+    } catch (error) {
+      return error;
+    }
   }
 
-  console.log('scatter: ', scatter);
+  console.log('get scatter: ', scatter);
   return scatter;
 }
