@@ -139,7 +139,7 @@ export async function getMeRoundList(playerIdentity) {
     }
 
     const joined_status = playerJoinStatus(playerRoundBets, r);
-    if (joined_status != 2) {
+    if (joined_status.index != 2) {
       ongoingrounds.push({
         game_serv_id: r.id,
         game_count_down_time_serv_bet_end_time: moment
@@ -160,7 +160,7 @@ export async function getMeRoundList(playerIdentity) {
         game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
         game_join_bet_serv_bet_unit: r.bet_unit,
         game_joied_num_serv_shares: r.shares,
-        game_joined_status: playerJoinStatus(playerRoundBets, r),
+        game_joined_status: joined_status,
         game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
         game_joined_more_display: playerRoundBets.length > 1,
         game_joined_more: getPlayerRoundBets(playerRoundBets, r),
