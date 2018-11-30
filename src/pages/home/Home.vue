@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="info-container" v-for="item in homelists">
+    <div class="info-container" v-for="item in homelist">
       <info :info="item" class="info"></info>
     </div>
     <div style="height:16px;"></div>
@@ -43,6 +43,7 @@ export default {
     getHomeRoundList().then(response => {
       this.homelists = response.data;
       console.log("homelists :", response.data);
+      console.log("scatter01 :",this.$store.state.scatter);
     });
   },
   components: {

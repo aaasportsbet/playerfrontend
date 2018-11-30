@@ -8,9 +8,7 @@
         <span>{{headertitle}}</span>
       </div>
       <div class="me_set">
-        <div class="login_me_set"  v-show="this.me_set_login === true">{{me_set_uid}}</div>
-        </div>
-      <div class="me_set">
+        <div class="login_me_uid"  v-show="this.me_set_login === true">{{me_set_uid}}</div>
          <div class="login_me_set" v-if="this.me_set_login === true" @click="act_me_set()">Logout</div>
          <div class="login_me_set" v-if="this.me_set_login === false" @click="act_me_set()">Login</div>
       </div>
@@ -29,6 +27,7 @@ export default {
     return {
         me_set_display_info: "",
     }
+
   },
   components: {
     topnav: Nav
@@ -93,8 +92,18 @@ export default {
     font-size: @title-font-size;
   }
   .me_set {
-    //flex: 0 0 @header-height;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
     font-size: @icon-font-size;
+    .login_me_uid{
+      margin-right: 40px;
+      color: #fffffe;
+      font-size: 25px;
+      font-family: "Helvetica Neue", Helvetica, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    }
     .login_me_set {
       margin-right: 40px;
       color: #fffffe;

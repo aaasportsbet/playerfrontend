@@ -19,11 +19,14 @@
       </div>
     </div>
     <div class="list_staus">
-      <div class="list_ongoing">Ongoing</div>
-      <div class="list_history">History</div>
+      <div class="list_ongoing" @click="ListChangeTab('ongoing')">Ongoing</div>
+      <div class="list_history" @click="ListChangeTab('history')">History</div>
     </div>
 
-    <div class="info-container" v-for="item in mehistorylists">
+    <div class="info-container" v-for="item in meongoinglists" v-show="display_O_H === false">
+      <info :info="item" class="info"></info>
+    </div>
+    <div class="info-container" v-for="item in mehistorylists" v-show="display_O_H === true">
       <info :info="item" class="info"></info>
     </div>
 		<switch-button></switch-button>
@@ -44,6 +47,7 @@ const ERR_OK = 0
 export default {
   data () {
     return {
+      display_O_H:true,
       homelist: [],
       meongoinglists : [],
       mehistorylists :[]
@@ -58,10 +62,11 @@ export default {
     }).catch((error) => {
       console.warn(error)
     }),
-    getPlayerIdentity().then(identity => {getMeRoundList().then(response => {
-      this.meongoinglists = response.ongoingdata;
-      this.mehistorylists  = response.historydata;
+    getPlayerIdentity().then(identity => {getMeRoundList(identity).then(response => {
+      this.meongoinglists = response.ongoinddata;
+      this.mehistorylists  = response.hsitorydata;
       console.log("melists :", response);
+      console.log("this.meongoinglists :", this.meongoinglists);
     });}).catch(error=>{});
   },
   components: {
@@ -69,7 +74,16 @@ export default {
     "switch-button": SwitchButton
   },
   methods:{
-
+    ListChangeTab(OHstatus){
+         if(OHstatus=='ongoing'){
+           this.display_O_H=false;
+           console.log(this.display_O_H)
+         }
+         if(OHstatus=='history'){
+           this.display_O_H=true;
+           console.log(this.display_O_H)
+         }
+    }
   }
 }
 </script>
