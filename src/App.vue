@@ -13,7 +13,7 @@ import { mapGetters, mapActions } from "vuex";
 import Header from "components/header/Header.vue";
 import DetailHeader from "components/detailheader/DetailHeader.vue";
 import SlideBar from "components/slidebar/SlideBar.vue";
-import { login } from "scatter/player";
+
 
 export default {
   data() {
@@ -22,29 +22,7 @@ export default {
     };
   },
   created() {
-    if (this.isLogin) {
-      this.$notify({
-          title: '登录提示',
-          message: '您已经登录',
-          position: 'bottom-right'
-        });
-    } else {
-      login()
-        .then(identity => {
-          const loginstatus = true;
-          const accoutname = identity.name;
-          console.log("identity.name:",identity.name,"accoutname:",accoutname)
-          this.$store.dispatch("setislogin", loginstatus );
-          this.$store.dispatch("setaccountname", accoutname);
-        })
-        .catch(error => {
-          console.error(error);
-          const loginstatus = false;
-          const accoutname = "";
-          this.$store.dispatch("setislogin", loginstatus);
-          this.$store.dispatch("setaccountname", accoutname);
-        });
-    }
+
   },
   computed: mapGetters({
     isDetailHeader: "isDetailHeader",

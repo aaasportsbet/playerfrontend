@@ -1,238 +1,306 @@
 {
   "errno": 0,
-  "data": [
-    {
-      "game_serv_id": 1001,
-      "game_count_down_time_serv_bet_end_time": "2018.11.04 05:00",
-      "game_count_down_time_display": "true",
-      "game_win_status": "win",
-      "game_win_status_display": "false",
-      "game_info_left_i18n_serv_awayteam": "Brooklyn Nets",
-      "game_info_left_abbr": "TMA",
-      "game_info_right_i18n_serv_hometeam": "Warriors",
-      "game_info_right_abbr": "RMA",
-      "game_contract_type": "NBA",
-      "game_round_type_i18n_serv_type": "Range",
-      "game_join_bet_serv_bet_unit": "5EOS",
-      "game_joied_num_serv_shares": "3800",
-      "game_joined_status": "Join Again",
-      "game_joined_latest": {
-        "team_name": "Warriors",
-        "team_score": "1~3",
-        "num": "5EOS"
+  "data":[
+  {
+    "game_serv_id": 2,
+    "game_count_down_time_serv_bet_end_time": "2019.03.15 02:00",
+    "game_count_down_time_display": true,
+    "game_win_status": "win",
+    "game_win_status_display": false,
+    "game_info_left_i18n_serv_awayteam": "Dallas Mavericks",
+    "game_info_left_abbr": "DAL",
+    "game_info_left_id": 2,
+    "game_info_right_i18n_serv_hometeam": "Memphis Grizzlies",
+    "game_info_right_abbr": "MEM",
+    "game_info_right_id": 1,
+    "game_contract_type": "NBA",
+    "game_round_type_i18n_serv_type": "PointDiff",
+    "game_join_bet_serv_bet_unit": "1.0000 EOS",
+    "game_joied_num_serv_shares": 74,
+    "game_joined_status": {
+      "index": 1,
+      "value": "Detail"
+    },
+
+    "game_info_left_result_score": 23,
+    "game_info_right_result_score": 75,
+    "game_info_result_players": 195,
+    "game_info_result_bonuspool": "9975EOS",
+    "game_info_result_winner_num": 99,
+    "game_info_result_winner_getuint": 139,
+
+
+
+    "game_joined_latest": {
+      "team_name": "MEM",
+      "share": 14,
+      "team_score": "1"
+    },
+    "game_joined_more_display": true,
+    "game_joined_more": [
+      {
+        "team_name": "MEM",
+        "share": 4,
+        "team_score": "10"
       },
-      "game_joined_more_display": "true",
-      "game_joined_more": [
-        {
-          "team_name": "Warriors",
-          "team_score": "4~7",
-          "num": "5EOS"
-        },
-        {
-          "team_name": "Warriors",
-          "team_score": "8~10",
-          "num": "5EOS"
-        }
-      ]
-    },
-    {
-      "game_serv_id": 1002,
-      "game_count_down_time_serv_bet_end_time": "2018.11.04 05:00",
-      "game_count_down_time_display": "true",
-      "game_win_status": "win",
-      "game_win_status_display": "false",
-      "game_info_left_i18n_serv_awayteam": "2Brooklyn Nets",
-      "game_info_left_abbr": "TMA",
-      "game_info_right_i18n_serv_hometeam": "2Warriors",
-      "game_info_right_abbr": "RMA",
-      "game_contract_type": "NBA",
-      "game_round_type_i18n_serv_type": "Range",
-      "game_join_bet_serv_bet_unit": "5EOS",
-      "game_joied_num_serv_shares": "3800",
-      "game_joined_status": "Join Now",
-      "game_joined_latest": 0,
-      "game_joined_more_display": "false",
-      "game_joined_more": 0
-    },
-    {
-      "game_serv_id": 1003,
-      "game_count_down_time_serv_bet_end_time": "2018.11.04 05:00",
-      "game_count_down_time_display": "true",
-      "game_win_status": "win",
-      "game_win_status_display": "false",
-      "game_info_left_i18n_serv_awayteam": "2Brooklyn Nets",
-      "game_info_left_abbr": "TMA",
-      "game_info_right_i18n_serv_hometeam": "2Warriors",
-      "game_info_right_abbr": "RMA",
-      "game_contract_type": "NBA",
-      "game_round_type_i18n_serv_type": "Range",
-      "game_join_bet_serv_bet_unit": "5EOS",
-      "game_joied_num_serv_shares": "3800",
-      "game_joined_status": "View Detail",
-      "game_joined_latest": {
-        "team_name": "Warriors",
-        "team_score": "1~3",
-        "num": "5EOS"
+      {
+        "team_name": "MEM",
+        "share": 4,
+        "team_score": "10"
       },
-      "game_joined_more_display": "ture",
-      "game_joined_more": [
-        {
-          "team_name": "Warriors",
-          "team_score": "4~7",
-          "num": "5EOS"
-        },
-        {
-          "team_name": "Warriors",
-          "team_score": "8~10",
-          "num": "5EOS"
-        }
-      ]
-    },
-    {
-      "game_serv_id": 1004,
-      "game_count_down_time_serv_bet_end_time": "2018.11.04 05:00",
-      "game_count_down_time_display": "true",
-      "game_win_status": "win",
-      "game_win_status_display": "false",
-      "game_info_left_i18n_serv_awayteam": "2Brooklyn Nets",
-      "game_info_left_abbr": "TMA",
-      "game_info_right_i18n_serv_hometeam": "2Warriors",
-      "game_info_right_abbr": "RMA",
-      "game_contract_type": "NBA",
-      "game_round_type_i18n_serv_type": "Range",
-      "game_join_bet_serv_bet_unit": "5EOS",
-      "game_joied_num_serv_shares": "3800",
-      "game_joined_status": "Returning",
-      "game_joined_latest": {
-        "team_name": "Warriors",
-        "team_score": "1~3",
-        "num": "5EOS"
+      {
+        "team_name": "MEM",
+        "share": 4,
+        "team_score": "10"
       },
-      "game_joined_more_display": "false",
-      "game_joined_more": 0
-    },
-    {
-      "game_serv_id": 1005,
-      "game_count_down_time_serv_bet_end_time": "2018.11.04 05:00",
-      "game_count_down_time_display": "true",
-      "game_win_status": "win",
-      "game_win_status_display": "false",
-      "game_info_left_i18n_serv_awayteam": "2Brooklyn Nets",
-      "game_info_left_abbr": "TMA",
-      "game_info_right_i18n_serv_hometeam": "2Warriors",
-      "game_info_right_abbr": "RMA",
-      "game_contract_type": "NBA",
-      "game_round_type_i18n_serv_type": "Range",
-      "game_join_bet_serv_bet_unit": "5EOS",
-      "game_joied_num_serv_shares": "3800",
-      "game_joined_status": "Join Now",
-      "game_joined_latest": 0,
-      "game_joined_more_display": "false",
-      "game_joined_more": 0
-    },
-    {
-      "game_serv_id": 1006,
-      "game_count_down_time_serv_bet_end_time": "2018.11.04 05:00",
-      "game_count_down_time_display": "true",
-      "game_win_status": "win",
-      "game_win_status_display": "false",
-      "game_info_left_i18n_serv_awayteam": "2Brooklyn Nets",
-      "game_info_left_abbr": "TMA",
-      "game_info_right_i18n_serv_hometeam": "2Warriors",
-      "game_info_right_abbr": "RMA",
-      "game_contract_type": "NBA",
-      "game_round_type_i18n_serv_type": "Range",
-      "game_join_bet_serv_bet_unit": "5EOS",
-      "game_joied_num_serv_shares": "3800",
-      "game_joined_status": "Drawing",
-      "game_joined_latest": {
-        "team_name": "Warriors",
-        "team_score": "1~3",
-        "num": "5EOS"
+      {
+        "team_name": "MEM",
+        "share": 4,
+        "team_score": "10"
       },
-      "game_joined_more_display": "true",
-      "game_joined_more": [
-        {
-          "team_name": "Warriors",
-          "team_score": "4~7",
-          "num": "5EOS"
-        },
-        {
-          "team_name": "Warriors",
-          "team_score": "8~10",
-          "num": "5EOS"
-        }
-      ]
-    },
-    {
-      "game_serv_id": 1007,
-      "game_count_down_time_serv_bet_end_time": "2018.11.04 05:00",
-      "game_count_down_time_display": "true",
-      "game_win_status": "win",
-      "game_win_status_display": "false",
-      "game_info_left_i18n_serv_awayteam": "2Brooklyn Nets",
-      "game_info_left_abbr": "TMA",
-      "game_info_right_i18n_serv_hometeam": "2Warriors",
-      "game_info_right_abbr": "RMA",
-      "game_contract_type": "NBA",
-      "game_round_type_i18n_serv_type": "Range",
-      "game_join_bet_serv_bet_unit": "5EOS",
-      "game_joied_num_serv_shares": "3800",
-      "game_joined_status": "Gaming",
-      "game_joined_latest": {
-        "team_name": "Warriors",
-        "team_score": "1~3",
-        "num": "5EOS"
+      {
+        "team_name": "MEM",
+        "share": 4,
+        "team_score": "10"
       },
-      "game_joined_more_display": "true",
-      "game_joined_more": [
-        {
-          "team_name": "Warriors",
-          "team_score": "4~7",
-          "num": "5EOS"
-        },
-        {
-          "team_name": "Warriors",
-          "team_score": "8~10",
-          "num": "5EOS"
-        }
-      ]
-    },
-    {
-      "game_serv_id": 1008,
-      "game_count_down_time_serv_bet_end_time": "2018.11.04 05:00",
-      "game_count_down_time_display": "true",
-      "game_win_status": "win",
-      "game_win_status_display": "false",
-      "game_info_left_i18n_serv_awayteam": "2Brooklyn Nets",
-      "game_info_left_abbr": "TMA",
-      "game_info_right_i18n_serv_hometeam": "2Warriors",
-      "game_info_right_abbr": "RMA",
-      "game_contract_type": "NBA",
-      "game_round_type_i18n_serv_type": "Range",
-      "game_join_bet_serv_bet_unit": "5EOS",
-      "game_joied_num_serv_shares": "3800",
-      "game_joined_status": "Join Now",
-      "game_joined_latest": {
-        "team_name": "Warriors",
-        "team_score": "1~3",
-        "num": "5EOS"
+      {
+        "team_name": "DAL",
+        "share": 2,
+        "team_score": "4"
       },
-      "game_joined_more_display": "true",
-      "game_joined_more": [
-        {
-          "team_name": "Warriors",
-          "team_score": "4~7",
-          "num": "5EOS"
-        },
-        {
-          "team_name": "Warriors",
-          "team_score": "8~10",
-          "num": "5EOS"
-        }
-      ]
+      {
+        "team_name": "DAL",
+        "share": 2,
+        "team_score": "5"
+      },
+      {
+        "team_name": "MEM",
+        "share": 4,
+        "team_score": "3"
+      },
+      {
+        "team_name": "DAL",
+        "share": 17,
+        "team_score": "3"
+      },
+      {
+        "team_name": "DAL",
+        "share": 1,
+        "team_score": "23"
+      },
+      {
+        "team_name": "MEM",
+        "share": 14,
+        "team_score": "37"
+      }
+    ],
+    "game_server_obj": {
+      "id": 2,
+      "issuer": "aaasports112",
+      "bet_end_time": "1552615200000000",
+      "public_begin_time": "1552615250000000",
+      "lottery_begin_time": "1552615300000000",
+      "type": 0,
+      "hometeam": 1,
+      "awayteam": 2,
+      "bet_unit": "1.0000 EOS",
+      "fee_unit": "0.0100 EOS",
+      "result": 0,
+      "status": 0,
+      "create_time": "1543056270000000",
+      "total": "74.0000 EOS",
+      "bet_count": 15,
+      "shares": 74,
+      "shares_win": 0,
+      "unit_award": "0.0000 EOS",
+      "award_left": 0,
+      "return_left": 0,
+      "token_left": "0.0000 EOS",
+      "homepoint": 0,
+      "awaypoint": 0
     }
-
-
-  ]
+  },
+  {
+    "game_serv_id": 3,
+    "game_count_down_time_serv_bet_end_time": "2019.03.16 05:46",
+    "game_count_down_time_display": true,
+    "game_win_status": "win",
+    "game_win_status_display": false,
+    "game_info_left_i18n_serv_awayteam": "Sacramento Kings",
+    "game_info_left_abbr": "SAC",
+    "game_info_left_id": 10,
+    "game_info_right_i18n_serv_hometeam": "Washington Wizards",
+    "game_info_right_abbr": "WAS",
+    "game_info_right_id": 18,
+    "game_contract_type": "NBA",
+    "game_round_type_i18n_serv_type": "Range",
+    "game_join_bet_serv_bet_unit": "3.0000 EOS",
+    "game_joied_num_serv_shares": 0,
+    "game_joined_status": {
+      "index": 0,
+      "value": "Join Now"
+    },
+    "game_joined_latest": 0,
+    "game_joined_more_display": false,
+    "game_joined_more": [],
+    "game_server_obj": {
+      "id": 3,
+      "issuer": "aaasports112",
+      "bet_end_time": "1552715200000000",
+      "public_begin_time": "1552715250000000",
+      "lottery_begin_time": "1552715300000000",
+      "type": 2,
+      "hometeam": 18,
+      "awayteam": 10,
+      "bet_unit": "3.0000 EOS",
+      "fee_unit": "0.0300 EOS",
+      "result": 0,
+      "status": 0,
+      "create_time": "1543417218500000",
+      "total": "0.0000 EOS",
+      "bet_count": 0,
+      "shares": 0,
+      "shares_win": 0,
+      "unit_award": "0.0000 EOS",
+      "award_left": 0,
+      "return_left": 0,
+      "token_left": "0.0000 EOS",
+      "homepoint": 0,
+      "awaypoint": 0
+    }
+  },
+  {
+    "game_serv_id": 1,
+    "game_count_down_time_serv_bet_end_time": "2019.03.16 05:46",
+    "game_count_down_time_display": true,
+    "game_win_status": "win",
+    "game_win_status_display": false,
+    "game_info_left_i18n_serv_awayteam": "West All Star",
+    "game_info_left_abbr": "WEST",
+    "game_info_left_id": 30,
+    "game_info_right_i18n_serv_hometeam": "East All Star",
+    "game_info_right_abbr": "EAST",
+    "game_info_right_id": 31,
+    "game_contract_type": "NBA",
+    "game_round_type_i18n_serv_type": "WinLose",
+    "game_join_bet_serv_bet_unit": "2.0000 EOS",
+    "game_joied_num_serv_shares": 15,
+    "game_joined_status": {
+      "index": 0,
+      "value": "Join Again"
+    },
+    "game_joined_latest": {
+      "team_name": "EAST",
+      "share": 2,
+      "team_score": ""
+    },
+    "game_joined_more_display": true,
+    "game_joined_more": [
+      {
+        "team_name": "WEST",
+        "share": 4,
+        "team_score": ""
+      },
+      {
+        "team_name": "WEST",
+        "share": 9,
+        "team_score": ""
+      }
+    ],
+    "game_server_obj": {
+      "id": 1,
+      "issuer": "aaasports112",
+      "bet_end_time": "1552715200000000",
+      "public_begin_time": "1552715250000000",
+      "lottery_begin_time": "1552715300000000",
+      "type": 1,
+      "hometeam": 31,
+      "awayteam": 30,
+      "bet_unit": "2.0000 EOS",
+      "fee_unit": "0.0200 EOS",
+      "result": 0,
+      "status": 0,
+      "create_time": "1542997122000000",
+      "total": "31.0000 EOS",
+      "bet_count": 3,
+      "shares": 15,
+      "shares_win": 0,
+      "unit_award": "0.0000 EOS",
+      "award_left": 0,
+      "return_left": 0,
+      "token_left": "0.0000 EOS",
+      "homepoint": 0,
+      "awaypoint": 0
+    }
+  },
+  {
+    "game_serv_id": 0,
+    "game_count_down_time_serv_bet_end_time": "2019.03.16 05:46",
+    "game_count_down_time_display": true,
+    "game_win_status": "win",
+    "game_win_status_display": false,
+    "game_info_left_i18n_serv_awayteam": "Dallas Mavericks",
+    "game_info_left_abbr": "DAL",
+    "game_info_left_id": 2,
+    "game_info_right_i18n_serv_hometeam": "Memphis Grizzlies",
+    "game_info_right_abbr": "MEM",
+    "game_info_right_id": 1,
+    "game_contract_type": "NBA",
+    "game_round_type_i18n_serv_type": "PointDiff",
+    "game_join_bet_serv_bet_unit": "1.0000 EOS",
+    "game_joied_num_serv_shares": 21,
+    "game_joined_status": {
+      "index": 0,
+      "value": "Join Again"
+    },
+    "game_joined_latest": {
+      "team_name": "MEM",
+      "share": 4,
+      "team_score": "10"
+    },
+    "game_joined_more_display": true,
+    "game_joined_more": [
+      {
+        "team_name": "MEM",
+        "share": 4,
+        "team_score": "5"
+      },
+      {
+        "team_name": "DAL",
+        "share": 4,
+        "team_score": "10"
+      },
+      {
+        "team_name": "MEM",
+        "share": 1,
+        "team_score": "9"
+      }
+    ],
+    "game_server_obj": {
+      "id": 0,
+      "issuer": "aaasports112",
+      "bet_end_time": "1552715200000000",
+      "public_begin_time": "1552715250000000",
+      "lottery_begin_time": "1552715300000000",
+      "type": 0,
+      "hometeam": 1,
+      "awayteam": 2,
+      "bet_unit": "1.0000 EOS",
+      "fee_unit": "0.0100 EOS",
+      "result": 0,
+      "status": 0,
+      "create_time": "1542997092000000",
+      "total": "21.0000 EOS",
+      "bet_count": 6,
+      "shares": 21,
+      "shares_win": 0,
+      "unit_award": "0.0000 EOS",
+      "award_left": 0,
+      "return_left": 0,
+      "token_left": "0.0000 EOS",
+      "homepoint": 0,
+      "awaypoint": 0
+    }
+  }
+]
 }

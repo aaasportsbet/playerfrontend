@@ -97,7 +97,13 @@ export async function getHomeRoundList() {
       game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
       game_joined_more_display: playerRoundBets.length > 1,
       game_joined_more: getPlayerRoundBets(playerRoundBets, r),
-      game_server_obj: r
+      game_server_obj: r,
+      game_info_left_result_score: r.awaypoint,
+      game_info_right_result_score: r.homepoint,
+      game_info_result_players: r.shares,
+      game_info_result_bonuspool: r.total,
+      game_info_result_winner_num: r.shares_win,
+      game_info_result_winner_getuint: r.unit_award
     });
   });
 
@@ -181,7 +187,13 @@ export async function getMeRoundList(playerIdentity) {
           game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
           game_joined_more_display: false,
           // game_joined_more: getPlayerRoundBets(playerRoundBets, r),
-          game_server_obj: r
+          game_server_obj: r,
+          game_info_left_result_score: r.awaypoint,
+          game_info_right_result_score: r.homepoint,
+          game_info_result_players: r.shares,
+          game_info_result_bonuspool: r.total,
+          game_info_result_winner_num: r.shares_win,
+          game_info_result_winner_getuint: r.unit_award
         });
       });
     }

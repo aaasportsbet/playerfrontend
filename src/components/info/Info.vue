@@ -1,6 +1,6 @@
 <template>
   <div class="info">
-    <div class="count_down" :class="[$route.name === 'personal' ? 'count_down_display_none' : '']">
+    <div class="count_down" :class="[info.game_count_down_time_display === false ? 'count_down_display_none' : '']">
       <div class="count_down_top_flex">
         <div class="icon-clock count_down_top_clock"></div>
         <div class="count_down_top">Count Down</div>
@@ -25,7 +25,7 @@
     </div>
     <div
       class="game_win_status"
-      :class="[$route.name === 'home' ? 'game_win_status_display_none' : '']"
+      :class="[info.game_win_status_display === false ? 'game_win_status_display_none' : '']"
     >
       <div class="game_win_status_win" v-if="info.game_win_status === 'win'">
         <div class="game_win_status_win_text">Win</div>
@@ -58,8 +58,9 @@
         </div>
         <div
           class="joined_info joined_info_detail"
-          v-if="info.game_joined_status.index === 'View Detail'"
-        >{{info.game_joined_status.value}}</div>
+          @click="act_detail('testing')"
+          v-if="info.game_joined_status.index !== 0"
+        >{{Real_game_detail_status}}</div>
 
         <div
           class="joined_info"
@@ -76,6 +77,33 @@
             @click="act_join_A('right')"
             v-else
           >{{Real_game_joined_status}}</div>
+        </div>
+      </div>
+      <div class="detail_act" v-show="DetailVisible === true" >
+        <div class="detail_act_score">
+          <div class="detail_act_score_left">{{info.game_info_left_result_score}}</div>
+          <div class="detail_act_score_mid">
+            <span>{{info.game_info_left_abbr}}</span>
+            <span>&nbsp;&nbsp;VS&nbsp;&nbsp;</span>
+            <span>{{info.game_info_right_abbr}}</span>
+          </div>
+          <div class="detail_act_score_right">{{info.game_info_right_result_score}}</div>
+        </div>
+        <div class="detail_act_players">
+          <div class="detail_act_players_lable">Player</div>
+          <div class="detail_act_players_value">{{info.game_info_result_players}}</div>
+        </div>
+        <div class="detail_act_bonuspool">
+          <div class="detail_act_bonuspool_lable">Bonus Pool</div>
+          <div class="detail_act_bonuspool_value">{{info.game_info_result_bonuspool}}</div>
+        </div>
+        <div class="detail_act_winner">
+          <div class="detail_act_winner_lable">Winner</div>
+          <div class="detail_act_winner_value">{{info.game_info_result_winner_num}}</div>
+        </div>
+        <div  class="detail_act_getuint">
+          <div class="detail_act_getuint_lable">Get EOS/Pers</div>
+          <div class="detail_act_getuint_value">{{info.game_info_result_winner_getuint}}</div>
         </div>
       </div>
       <div class="bet_act" v-show="JoinVisible === true" >
@@ -181,7 +209,9 @@ export default {
       endTime: new Date().getTime() + 100 * 100,
       message: "",
       JoinVisible: false,
+      DetailVisible: false,
       Real_game_joined_status :this.info.game_joined_status.value,
+      Real_game_detail_status :this.info.game_joined_status.value,
       joindata: {
         act_game_bet_multiple: 1,
         act_game_winner_team_id: "",
@@ -216,6 +246,17 @@ export default {
       else{
         this.JoinVisible=true;
         this.Real_game_joined_status='Cancel Join';
+      }
+    },
+    act_detail(test){
+      console.log("act_detail", test);
+      if(this.DetailVisible==true){
+        this.DetailVisible=false;
+        this.Real_game_detail_status=this.info.game_joined_status.value;
+      }
+      else{
+        this.DetailVisible=true;
+        this.Real_game_detail_status='Close Detail';
       }
     },
     act_pay() {
@@ -680,6 +721,113 @@ export default {
           border-color: #ecc22f;
         }
       }
+    }
+    .detail_act{
+      display: flex;
+      justify-content: space-around;
+      align-items: stretch;
+      flex-direction: column;
+      .detail_act_score{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 36px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        margin-top: 40px;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 100px;
+        .detail_act_score_left{
+          margin-left: 40px;
+        }
+        .detail_act_score_mid{
+
+        }
+        .detail_act_score_right{
+          margin-right: 40px;
+        }
+      }
+      .detail_act_players{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 36px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 100px;
+        .detail_act_players_lable{
+          margin-left: 40px;
+        }
+        .detail_act_players_value{
+          margin-right: 40px;
+        }
+      }
+      .detail_act_bonuspool{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 36px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 100px;
+        .detail_act_bonuspool_lable{
+          margin-left: 40px;
+        }
+        .detail_act_bonuspool_value{
+          margin-right: 40px;
+        }
+      }
+      .detail_act_winner{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 36px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 100px;
+        .detail_act_winner_lable{
+          margin-left: 40px;
+        }
+        .detail_act_winner_value{
+          margin-right: 40px;
+        }
+
+      }
+      .detail_act_getuint{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        font-size: 36px;
+        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        color: #ffffff;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: rgba(119, 119, 119, 1);
+        height: 100px;
+        .detail_act_getuint_lable{
+          margin-left: 40px;
+        }
+        .detail_act_getuint_value{
+          margin-right: 40px;
+        }
+      }
+
     }
     .bet_act {
       display: flex;
