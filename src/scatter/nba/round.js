@@ -132,7 +132,7 @@ export async function getHomeRoundList() {
 // get me page round list
 export async function getMeRoundList(playerIdentity) {
   if (!playerIdentity) {
-    return Error('player not login');
+    throw Error('player not login');
     }
 
   const rounds = await getRoundList();
@@ -208,6 +208,13 @@ export async function getMeRoundList(playerIdentity) {
     errno: 200,
     ongoingdata: ongoingrounds,
     historydata: historyrounds,
+    me_sum: {
+      'game_status': 'history_or_ongoing',
+      'game_join_times_serv_times': 5,
+      'game_join_win_times_serv_win_times': 1,
+      'game_payout_serv_payout': 1,
+      'game_get_serv_get': 1
+    },
     page: 'me'
   };
 }

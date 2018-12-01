@@ -5,13 +5,8 @@ import {getScatterEOS, requiredFields} from './scatter';
 // login
 export async function login() {
   try {
-    var scatter = await getScatterEOS();
-    if (scatter != null && !scatter.identity) {
-      await scatter.getIdentity(requiredFields);
-      store.dispatch('setScatterEOS', scatter);
-      console.log('login here');
-    }
-    return await getPlayerIdentity();
+    const identity = await getPlayerIdentity();
+    return identity;
   } catch (error) {
     return error;
   }
