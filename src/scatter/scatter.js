@@ -28,29 +28,37 @@ export const requiredFields = {
 
 // is scatter installed
 export async function isscatterInstalled() {
-  // connect
-  return await ScatterJS
-    .scatter
-    .connect('aaasportsbet');
+  try {
+    // connect
+    const installed = await ScatterJS
+      .scatter
+      .connect(process.env.EOS.APPLICATION);
+    // console.log('scatter installed: ', installed);
+    return installed;
+  } catch (error) {
+    return error;
+  }
 }
 
 // get scatter eos
 export async function getScatterEOS() {
-  let scatter = store.getters.scatterEOS;
-  if (scatter == null) {
-    try {
+  try {
+    let scatter = store.getters.scatterEOS;
+    console.log('get scatter from store', scatter);
+    if (scatter == null) {
       const installed = await isscatterInstalled();
       if (installed) {
         scatter = ScatterJS.scatter;
-        // Vuex ( when using a setScatter action on your store )
-        store.dispatch('setScatterEOS', ScatterJS.scatter);
+        await scatter.getIdentity(requiredFields);
+        store.dispatch('setScatterEOS', scatter);
         window.ScatterJS = null;
+      } else {
+        throw Error('scatter not installed');
       }
-    } catch (error) {
-      return error;
     }
-  }
 
-  console.log('get scatter: ', scatter);
-  return scatter;
+    return scatter;
+  } catch (error) {
+    return error;
+  }
 }

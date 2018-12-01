@@ -4,31 +4,37 @@ import {getScatterEOS, requiredFields} from './scatter';
 
 // login
 export async function login() {
-  const scatter = await getScatterEOS();
-
-  console.log('login scatter: ', scatter);
-  if (scatter != null) {
-    await scatter.getIdentity(requiredFields);
-    }
-
   try {
+    var scatter = await getScatterEOS();
+    if (scatter != null && !scatter.identity) {
+      await scatter.getIdentity(requiredFields);
+      store.dispatch('setScatterEOS', scatter);
+      console.log('login here');
+    }
     return await getPlayerIdentity();
   } catch (error) {
     return error;
   }
-  }
+}
 
 // get player identity
 export async function getPlayerIdentity() {
-  const scatter = await getScatterEOS();
-  console.log('get player identity scatter: ', scatter);
-  if (scatter != null && scatter.identity) {
-    const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
-    return account;
-  } else {
+  try {
+    const scattereos = await getScatterEOS();
+    console.log('get player identity scatter: ', scattereos);
+    if (scattereos != null && scattereos.identity) {
+      const account = scattereos
+        .identity
+        .accounts
+        .find(x => x.blockchain === 'eos');
+      return account;
+    }
+
     throw Error('player not login');
+  } catch (error) {
+    return error;
   }
-  }
+}
 
 // logout
 export async function logout() {
