@@ -21,6 +21,7 @@
 import VueRouter from "../../router/routes.js";
 import { mapGetters, mapActions } from "vuex";
 import Nav from "../nav/Nav.vue";
+import store from '../../store/index.js';
 import { login, logout, getPlayerIdentity } from "../../scatter/player";
 export default {
   data() {
@@ -42,11 +43,30 @@ export default {
       this.$store.dispatch("toggleSlideBar");
     },
     act_me_set() {
-
+      if(this.me_set_login == true){
+        console.log("this.me_set_login",this.me_set_login)
+        logout().then( () =>{
+          const loginstatus = false;
+          const accoutname ="";
+          store.dispatch("setislogin", loginstatus );
+          store.dispatch("setaccountname", accoutname);
+          console.log("isLogin:",this.$store.state.isLogin);
+          console.log("accountName:",this.$store.state.accountName);
+        })};
+      if(this.me_set_login == false){
+        console.log("this.me_set_login",this.me_set_login);
+        login().then( identity =>{
+        const loginstatus = true;
+        const accoutname = identity.name;
+        console.log("identity.name:",identity.name,"accoutname:",accoutname)
+        store.dispatch("setislogin", loginstatus );
+        store.dispatch("setaccountname", accoutname);
+        console.log("isLogin:",this.$store.state.isLogin);
+          console.log("accountName:",this.$store.state.accountName);
+        })};
+      }
     }
-
-    }
-};
+}
 </script>
 
 <style lang="less">
@@ -103,6 +123,16 @@ export default {
       font-size: 25px;
       font-family: "Helvetica Neue", Helvetica, "PingFang SC",
         "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+      border-color:rgba(119, 119, 119, 1);
+      background-color: rgba(119, 119, 119, 1);
+      border-radius: 4px;
+      border-width: 2px;
+      border-style: solid;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      padding-right: 10px;
+      padding-left: 10px;
     }
     .login_me_set {
       margin-right: 40px;
@@ -110,6 +140,19 @@ export default {
       font-size: 25px;
       font-family: "Helvetica Neue", Helvetica, "PingFang SC",
         "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+      background-color: #ecc22f;
+      font-size: 30px;
+      font-family: "MicrosoftYaHei", "Microsoft YaHei";
+      color: #2b2b2b;
+      font-weight: bold;
+      height: 50px;
+      width: 140px;
+      text-align: center;
+      line-height: 50px;
+      border-color: #ecc22f;
+      border-radius: 4px;
+      border-width: 2px;
+      border-style: solid;
       .img_login_me_set {
         filter: hue-rotate(220deg) saturate(5);
         //width: 40px;

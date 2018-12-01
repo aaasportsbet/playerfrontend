@@ -19,8 +19,8 @@
       </div>
     </div>
     <div class="list_staus">
-      <div class="list_ongoing" @click="ListChangeTab('ongoing')">Ongoing</div>
-      <div class="list_history" @click="ListChangeTab('history')">History</div>
+      <div :class="[this.display_O_H === true ? 'list_ongoing' : 'list_history']"  @click="ListChangeTab('ongoing')">Ongoing</div>
+      <div :class="[this.display_O_H === false ? 'list_ongoing' : 'list_history']" @click="ListChangeTab('history')">History</div>
     </div>
 
     <div class="info-container" v-for="item in meongoinglists" v-show="display_O_H === false">

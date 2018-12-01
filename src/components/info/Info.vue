@@ -59,7 +59,7 @@
         <div
           class="joined_info joined_info_detail"
           @click="act_detail('testing')"
-          v-if="info.game_joined_status.index !== 0"
+          v-if="info.game_joined_status.index === 2"
         >{{Real_game_detail_status}}</div>
 
         <div
@@ -592,8 +592,9 @@ export default {
         margin-top: 60px;
         color: #fffffe;
         .left_text_i18n {
-          font-size: 40px;
+          font-size: 36px;
           font-weight: bold;
+          text-align: center;
           font-family: "MicrosoftYaHei", "Microsoft YaHei";
         }
         .left_text_abbr {
@@ -633,8 +634,9 @@ export default {
         margin-top: 60px;
         color: #fffffe;
         .right_text_i18n {
-          font-size: 40px;
+          font-size: 36px;
           font-weight: bold;
+          text-align: center;
           font-family: "MicrosoftYaHei", "Microsoft YaHei";
         }
         .right_text_abbr {
@@ -822,9 +824,11 @@ export default {
         height: 100px;
         .detail_act_getuint_lable{
           margin-left: 40px;
+          margin-top: 45px;
         }
         .detail_act_getuint_value{
           margin-right: 40px;
+          margin-top: 45px;
         }
       }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="info-container" v-for="item in homelist">
+    <div class="info-container" v-for="item in homelists">
       <info :info="item" class="info"></info>
     </div>
     <div style="height:16px;"></div>
