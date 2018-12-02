@@ -18,9 +18,6 @@ import VueRouter from '../../router/routes.js'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  computed: mapGetters({
-    testscatterEOS:'scatterEOS',
-  }),
   methods: {
     toggleSlideBar () {
       this.$store.dispatch('toggleSlideBar')
@@ -29,7 +26,8 @@ export default {
       if (this.$route.name !== 'personal'){
         console.log(this.$route.name)
         if (uid) {
-          this.$store.dispatch('goPersonalPages',{userId:uid})
+          this.$store.dispatch('goPersonalPages',{userId:uid});
+          console.log('nav-click-me :', this.$store.state.cancelLogin);
         }
       }
     },
@@ -37,6 +35,7 @@ export default {
     goHomePage(){
       if (this.$route.name !== 'home'){
       this.$store.dispatch('goHomePage')
+      console.log('nav-click-home :', this.$store.state.cancelLogin);
       //console.log(this.$route.path)
       //console.log(this.$route.name)
     }

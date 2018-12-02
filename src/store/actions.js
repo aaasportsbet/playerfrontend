@@ -19,6 +19,12 @@ export const  setScatterEOS = ({commit}, eos) => {
 export const  setislogin = ({commit}, lstatus) => {
   commit(types.SET_ISLOGIN, lstatus)
 }
+
+//cancellogin
+export const  setcancelLogin = ({commit}, cancellstatus) => {
+  commit(types.SET_CANCELLOGIN , cancellstatus)
+}
+
 export const  setaccountname = ({commit}, acname) => {
   commit(types.SET_ACCOUNTNAME, acname)
 }

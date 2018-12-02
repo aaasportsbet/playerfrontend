@@ -52,6 +52,10 @@ export default {
   [types.SET_ISLOGIN](state, loginstatus) {
     state.isLogin = loginstatus
   },
+  // scattercancellogin
+  [types.SET_CANCELLOGIN](state, cancelloginstatus) {
+    state.cancelLogin = cancelloginstatus
+  },
   [types.SET_ACCOUNTNAME](state, accountname) {
     state.accountName = accountname
   },

@@ -24,3 +24,5 @@ new Vue({
 
 // 默认进入商品模块
 VueRouter.push({ path: '/home' })
+
+

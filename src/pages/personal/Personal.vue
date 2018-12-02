@@ -19,8 +19,14 @@
       </div>
     </div>
     <div class="list_staus">
-      <div :class="[this.display_O_H === true ? 'list_ongoing' : 'list_history']"  @click="ListChangeTab('ongoing')">Ongoing</div>
-      <div :class="[this.display_O_H === false ? 'list_ongoing' : 'list_history']" @click="ListChangeTab('history')">History</div>
+      <div
+        :class="[this.display_O_H === true ? 'list_ongoing' : 'list_history']"
+        @click="ListChangeTab('ongoing')"
+      >Ongoing</div>
+      <div
+        :class="[this.display_O_H === false ? 'list_ongoing' : 'list_history']"
+        @click="ListChangeTab('history')"
+      >History</div>
     </div>
 
     <div class="info-container" v-for="item in meongoinglists" v-show="display_O_H === false">
@@ -65,17 +71,21 @@ export default {
       })
       .catch(error => {
         console.warn(error);
-      }),
+      });
+    if (this.$store.getters.isLogin == true) {
       getPlayerIdentity()
         .then(identity => {
-          getMeRoundList(identity).then(response => {
+          getMeRoundList(identity.name).then(response => {
             this.meongoinglists = response.ongoingdata;
             this.mehistorylists = response.historydata;
             console.log("melists :", response);
             console.log("this.meongoinglists :", this.meongoinglists);
           });
         })
-        .catch(error => {});
+        .catch(error => {
+          console.log("me-created-error", error);
+        });
+    }
   },
   components: {
     info: Info,

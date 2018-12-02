@@ -30,14 +30,15 @@ export const requiredFields = {
 export async function isscatterInstalled() {
   try {
     // connect
-    const installed =
-        await ScatterJS.scatter.connect(process.env.EOS.APPLICATION);
+    const installed = await ScatterJS
+      .scatter
+      .connect(process.env.EOS.APPLICATION);
     // console.log('scatter installed: ', installed);
     return installed;
   } catch (error) {
-    return error;
+    throw Error(error);
   }
-  }
+}
 
 // get scatter eos
 export async function getScatterEOS() {
@@ -45,21 +46,22 @@ export async function getScatterEOS() {
     let scatter = store.getters.scatterEOS;
     console.log('get scatter from store: ', scatter);
     if (scatter == null) {
+      console.log('err_get scatter from store', scatter);
       const installed = await isscatterInstalled();
       if (installed) {
         scatter = ScatterJS.scatter;
         await scatter.getIdentity(requiredFields);
+        console.log('await_get scatter from store', scatter);
         store.dispatch('setScatterEOS', scatter);
         window.ScatterJS = null;
 
         console.log('set scatter to store: ', scatter);
-      } else {
-        throw Error('scatter not installed');
       }
-      }
-
+    }
+    console.log('return_get scatter from store', scatter);
     return scatter;
   } catch (error) {
-    return error;
+    console.log('return_erro_get scatter from store', error);
+    throw Error(error);
   }
 }
