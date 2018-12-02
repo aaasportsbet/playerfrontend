@@ -1,6 +1,7 @@
 import Eos from 'eosjs';
 import * as moment from 'moment';
 
+import store from '../../store/index';
 import {getPlayerIdentity} from '../player';
 import {eosOptions, getScatterEOS, network} from '../scatter';
 
@@ -82,12 +83,17 @@ export async function getHomeRoundList() {
   try {
     const rounds = await getRoundList();
     console.log('home rounds', rounds);
-    const playerIdentity = await getPlayerIdentity();
-    console.log('player identity: ', playerIdentity);
+
+    var player = '';
+    if (store.getters.isLogin) {
+      const playerIdentity = await getPlayerIdentity();
+      console.log('player identity: ', playerIdentity);
+      player = playerIdentity.name;
+      }
 
     let displayrounds = [];
     rounds.forEach((r) => {
-      const playerRoundBets = getPlayerRoundBets(playerIdentity.name, r);
+      const playerRoundBets = getPlayerRoundBets(player, r);
 
       displayrounds.push({
         game_serv_id: r.id,
@@ -130,19 +136,14 @@ export async function getHomeRoundList() {
 }
 
 // get me page round list
-export async function getMeRoundList(playerIdentity) {
-  if (!playerIdentity) {
-    throw Error('player not login');
-    }
-
+export async function getMeRoundList(player) {
   const rounds = await getRoundList();
   console.log(rounds);
 
   let ongoingrounds = [];
   let historyrounds = [];
   rounds.forEach((r) => {
-    const playerRoundBets = getPlayerRoundBets(playerIdentity.name, r);
-
+    const playerRoundBets = getPlayerRoundBets(player, r);
     if (playerRoundBets.length == 0) {
       return;
       }
