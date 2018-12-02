@@ -65,7 +65,8 @@ export default {
       })
       .catch(error => {
         console.warn(error);
-      }),
+      })
+      if(this.$store.getters.isLogin == true){
       getPlayerIdentity()
         .then(identity => {
           getMeRoundList(identity).then(response => {
@@ -75,7 +76,8 @@ export default {
             console.log("this.meongoinglists :", this.meongoinglists);
           });
         })
-        .catch(error => {});
+        .catch(error => {console.log("me-created-error",error)});
+      }
   },
   components: {
     info: Info,

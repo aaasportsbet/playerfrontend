@@ -52,6 +52,8 @@ export default {
           store.dispatch("setaccountname", accoutname);
           console.log("isLogin:",this.$store.state.isLogin);
           console.log("accountName:",this.$store.state.accountName);
+          console.log("logoutscatter-state:",this.$store.state.scatter);
+          console.log("logoutscatter-getters:",this.$store.getters.scatterEOS);
         })
         .catch(error =>{
           console.log("meseterrlogout:",error)
@@ -68,6 +70,8 @@ export default {
         store.dispatch("setaccountname", accoutname);
         console.log("isLogin:",this.$store.state.isLogin);
         console.log("accountName:",this.$store.state.accountName);
+        console.log("loginscatter-state:",this.$store.state.scatter);
+        console.log("loginscatter-getters:",this.$store.getters.scatterEOS);
         })
         .catch(error =>{
           console.log("meseterrlogin:",error)

@@ -40,11 +40,14 @@ export default {
       .catch(error => {
         console.warn(error);
       });
+    if(this.$store.getters.isLogin == true){
     getHomeRoundList().then(response => {
       this.homelists = response.data;
       console.log("homelists :", response.data);
       console.log("scatter01 :",this.$store.state.scatter);
-    });
+    })
+    .catch(error => {console.log("home-created-error",error)});
+    }
   },
   components: {
     info: Info,
