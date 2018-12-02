@@ -6,9 +6,11 @@ import {getScatterEOS, requiredFields} from './scatter';
 export async function login() {
   try {
     const identity = await getPlayerIdentity();
+
     return identity;
   } catch (error) {
-    return error;
+    console.log('catch return identity scatter: ', error);
+    throw error;
   }
 }
 
@@ -27,7 +29,8 @@ export async function getPlayerIdentity() {
 
     throw Error('player not login');
   } catch (error) {
-    return error;
+    console.log('eero_etPlayerIdentit: ', error);
+    throw error;
   }
 }
 

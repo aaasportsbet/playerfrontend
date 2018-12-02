@@ -9,6 +9,7 @@ export const scatterEOS = state => state.scatter
 //login
 export const isLogin = state => state.isLogin
 export const accountName = state => state.accountName
+export const cancelLogin = state => state.cancelLogin
 
 
 export const isfollow = state => state.isfollow

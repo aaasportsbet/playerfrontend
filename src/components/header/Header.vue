@@ -52,7 +52,12 @@ export default {
           store.dispatch("setaccountname", accoutname);
           console.log("isLogin:",this.$store.state.isLogin);
           console.log("accountName:",this.$store.state.accountName);
-        })};
+        })
+        .catch(error =>{
+          console.log("meseterrlogout:",error)
+        }
+
+        )};
       if(this.me_set_login == false){
         console.log("this.me_set_login",this.me_set_login);
         login().then( identity =>{
@@ -62,8 +67,12 @@ export default {
         store.dispatch("setislogin", loginstatus );
         store.dispatch("setaccountname", accoutname);
         console.log("isLogin:",this.$store.state.isLogin);
-          console.log("accountName:",this.$store.state.accountName);
-        })};
+        console.log("accountName:",this.$store.state.accountName);
+        })
+        .catch(error =>{
+          console.log("meseterrlogin:",error)
+        })
+        };
       }
     }
 }
