@@ -25,17 +25,24 @@ function playerBetWinStatus(bet) {
     default:
       return 'unknown';
   }
-  }
+}
 
 // sort algo
 function sortby(time) {
-  return function(a, b) {
-    return (a.bet_end_time - time) > (b.bet_end_time - time) ? 1 : -1
+  return function (a, b) {
+    return (a.bet_end_time - time) > (b.bet_end_time - time)
+      ? 1
+      : -1
   };
-  }
+}
 
-function formatTime(time){
-    return moment.unix(time).utc().local().format('YYYY.MM.DD HH:mm')}
+function formatTime(time) {
+  return moment
+    .unix(time)
+    .utc()
+    .local()
+    .format('YYYY.MM.DD HH:mm')
+}
 
 // get round list
 async function getRoundList() {
@@ -43,9 +50,10 @@ async function getRoundList() {
   const scatter = await getScatterEOS();
   if (scatter != null) {
     const eos = scatter.eos(network, Eos, eosOptions);
-    const result = await eos.getTableRows(
-        true, contract, contract, 'rounds', 'rounds', 0, -1, 10000, 'i64', 1);
-    rounds = result.rows.sort(sortby(moment().second()));
+    const result = await eos.getTableRows(true, contract, contract, 'rounds', 'rounds', 0, -1, 10000, 'i64', 1);
+    rounds = result
+      .rows
+      .sort(sortby(moment().second()));
   }
 
   console.log('rounds', rounds);
@@ -53,7 +61,11 @@ async function getRoundList() {
 }
 
 // get single round
-export async function getRound(id) {
+async function getRound(id) {
+  if (id < 0) {
+    return {};
+  }
+
   const scatter = await getScatterEOS();
   if (scatter != null) {
     const eos = scatter.eos(network, Eos, eosOptions);
@@ -68,11 +80,29 @@ export async function getRound(id) {
     });
 
     if (result.rows.length > 0) {
-      return {errno: 200, data: result.rows[0]};
+      return result.rows[0];
     }
-    }
+  }
 
-  return {errno: 404, error: 'round not found'};
+  return {};
+}
+
+function nullObj(obj) {
+  return Object
+    .keys(obj)
+    .length === 0
+}
+
+export async function getSingleRound(id, player) {
+  const round = await getRound(id);
+  if (nullObj(round)) {
+    return {errno: 404, error: 'round not found'};
+  }
+  const playerRoundBets = getPlayerRoundBets(player, r);
+  return {
+    errno: 200,
+    data: formatHomeRound(r, playerRoundBets)
+  };
 }
 
 // get home round list
@@ -83,38 +113,13 @@ export async function getHomeRoundList(player) {
   rounds.forEach((r) => {
     const playerRoundBets = getPlayerRoundBets(player, r);
 
-    displayrounds.push({
-      game_serv_id: r.id,
-      game_count_down_time_serv_bet_end_time: formatTime(r.bet_end_time),
-      game_count_down_time_display: true,
-      game_win_status: 'win',
-      game_win_status_display: false,
-      game_info_left_i18n_serv_awayteam: teamKeyLang[r.awayteam],
-      game_info_left_abbr: teamKeyShort[r.awayteam],
-      game_info_left_id: r.awayteam,
-      game_info_right_i18n_serv_hometeam: teamKeyLang[r.hometeam],
-      game_info_right_abbr: teamKeyShort[r.hometeam],
-      game_info_right_id: r.hometeam,
-      game_contract_type: 'NBA',
-      game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
-      game_join_bet_serv_bet_unit: r.bet_unit,
-      game_joied_num_serv_shares: r.shares,
-      game_joined_status: playerRoundJoinStatus(playerRoundBets, r),
-      game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
-      game_joined_more_display: playerRoundBets.length > 1,
-      game_joined_more: getPlayerPreviousRoundBets(playerRoundBets, r),
-      game_server_obj: r,
-      game_info_left_result_score: r.awaypoint,
-      game_info_right_result_score: r.homepoint,
-      game_info_result_players: r.shares,
-      game_info_result_bonuspool: r.total,
-      game_info_result_winner_num: r.shares_win,
-      game_info_result_winner_getuint: r.unit_award
-    });
+    displayrounds.push(formatHomeRound(r, playerRoundBets));
   });
 
   return {
-    errno: displayrounds.length > 0 ? 200 : 404,
+    errno: displayrounds.length > 0
+      ? 200
+      : 404,
     data: displayrounds,
     page: 'home'
   };
@@ -124,7 +129,7 @@ export async function getHomeRoundList(player) {
 export async function getMeRoundList(player) {
   if (player === '') {
     return {errno: 401, page: 'me', error: 'player not login'};
-    }
+  }
 
   const rounds = await getRoundList();
 
@@ -134,61 +139,15 @@ export async function getMeRoundList(player) {
     const playerRoundBets = getPlayerRoundBets(player, r);
     if (playerRoundBets.length == 0) {
       return;
-      }
+    }
 
     const joined_status = playerRoundJoinStatus(playerRoundBets, r);
     if (joined_status.index != 2) {
-      ongoingrounds.push({
-        game_serv_id: r.id,
-        game_count_down_time_serv_bet_end_time: formatTime(r.bet_end_time),
-        game_count_down_time_display: true,
-        game_win_status: 'win',
-        game_win_status_display: false,
-        game_info_left_i18n_serv_awayteam: teamKeyLang[r.awayteam],
-        game_info_left_abbr: teamKeyShort[r.awayteam],
-        game_info_left_id: r.awayteam,
-        game_info_right_i18n_serv_hometeam: teamKeyLang[r.hometeam],
-        game_info_right_abbr: teamKeyShort[r.hometeam],
-        game_info_right_id: r.hometeam,
-        game_contract_type: 'NBA',
-        game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
-        game_join_bet_serv_bet_unit: r.bet_unit,
-        game_joied_num_serv_shares: r.shares,
-        game_joined_status: joined_status,
-        game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
-        game_joined_more_display: playerRoundBets.length > 1,
-        game_joined_more: getPlayerPreviousRoundBets(playerRoundBets, r),
-        game_server_obj: r
-      });
+      ongoingrounds.push(formatOngoinRound(r, playerRoundBets, joined_status));
     } else {
       // split by bet
       playerRoundBets.forEach((bet) => {
-        historyrounds.push({
-          game_serv_id: r.id,
-          game_count_down_time_display: false,
-          game_win_status: playerBetWinStatus(bet),
-          game_win_status_display: true,
-          game_info_left_i18n_serv_awayteam: teamKeyLang[r.awayteam],
-          game_info_left_abbr: teamKeyShort[r.awayteam],
-          game_info_left_id: r.awayteam,
-          game_info_right_i18n_serv_hometeam: teamKeyLang[r.hometeam],
-          game_info_right_abbr: teamKeyShort[r.hometeam],
-          game_info_right_id: r.hometeam,
-          game_contract_type: 'NBA',
-          game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
-          game_join_bet_serv_bet_unit: r.bet_unit,
-          game_joied_num_serv_shares: r.shares,
-          game_joined_status: joined_status,
-          game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
-          game_joined_more_display: false,
-          game_server_obj: r,
-          game_info_left_result_score: r.awaypoint,
-          game_info_right_result_score: r.homepoint,
-          game_info_result_players: r.shares,
-          game_info_result_bonuspool: r.total,
-          game_info_result_winner_num: r.shares_win,
-          game_info_result_winner_getuint: r.unit_award
-        });
+        historyrounds.push(formatHistoryRound(r, playerRoundBets, joined_status, bet));
       });
     }
   });
@@ -205,5 +164,88 @@ export async function getMeRoundList(player) {
       game_get_serv_get: betstat.win_amount
     },
     page: 'me'
+  };
+}
+
+function formatHomeRound(r, playerRoundBets) {
+  return {
+    game_serv_id: r.id,
+    game_count_down_time_serv_bet_end_time: formatTime(r.bet_end_time),
+    game_count_down_time_display: true,
+    game_win_status_display: false,
+    game_info_left_i18n_serv_awayteam: teamKeyLang[r.awayteam],
+    game_info_left_abbr: teamKeyShort[r.awayteam],
+    game_info_left_id: r.awayteam,
+    game_info_right_i18n_serv_hometeam: teamKeyLang[r.hometeam],
+    game_info_right_abbr: teamKeyShort[r.hometeam],
+    game_info_right_id: r.hometeam,
+    game_contract_type: 'NBA',
+    game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
+    game_join_bet_serv_bet_unit: r.bet_unit,
+    game_joied_num_serv_shares: r.shares,
+    game_joined_status: playerRoundJoinStatus(playerRoundBets, r),
+    game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
+    game_joined_more_display: playerRoundBets.length > 1,
+    game_joined_more: getPlayerPreviousRoundBets(playerRoundBets, r),
+    game_server_obj: r,
+    game_info_left_result_score: r.awaypoint,
+    game_info_right_result_score: r.homepoint,
+    game_info_result_players: r.shares,
+    game_info_result_bonuspool: r.total,
+    game_info_result_winner_num: r.shares_win,
+    game_info_result_winner_getuint: r.unit_award
+  };
+}
+
+function formatOngoinRound(r, playerRoundBets, joined_status) {
+  return {
+    game_serv_id: r.id,
+    game_count_down_time_serv_bet_end_time: formatTime(r.bet_end_time),
+    game_count_down_time_display: true,
+    game_win_status_display: false,
+    game_info_left_i18n_serv_awayteam: teamKeyLang[r.awayteam],
+    game_info_left_abbr: teamKeyShort[r.awayteam],
+    game_info_left_id: r.awayteam,
+    game_info_right_i18n_serv_hometeam: teamKeyLang[r.hometeam],
+    game_info_right_abbr: teamKeyShort[r.hometeam],
+    game_info_right_id: r.hometeam,
+    game_contract_type: 'NBA',
+    game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
+    game_join_bet_serv_bet_unit: r.bet_unit,
+    game_joied_num_serv_shares: r.shares,
+    game_joined_status: joined_status,
+    game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
+    game_joined_more_display: playerRoundBets.length > 1,
+    game_joined_more: getPlayerPreviousRoundBets(playerRoundBets, r),
+    game_server_obj: r
+  };
+}
+
+function formatHistoryRound(r, playerRoundBets, joined_status, bet) {
+  return {
+    game_serv_id: r.id,
+    game_count_down_time_display: false,
+    game_win_status: playerBetWinStatus(bet),
+    game_win_status_display: true,
+    game_info_left_i18n_serv_awayteam: teamKeyLang[r.awayteam],
+    game_info_left_abbr: teamKeyShort[r.awayteam],
+    game_info_left_id: r.awayteam,
+    game_info_right_i18n_serv_hometeam: teamKeyLang[r.hometeam],
+    game_info_right_abbr: teamKeyShort[r.hometeam],
+    game_info_right_id: r.hometeam,
+    game_contract_type: 'NBA',
+    game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
+    game_join_bet_serv_bet_unit: r.bet_unit,
+    game_joied_num_serv_shares: r.shares,
+    game_joined_status: joined_status,
+    game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
+    game_joined_more_display: false,
+    game_server_obj: r,
+    game_info_left_result_score: r.awaypoint,
+    game_info_right_result_score: r.homepoint,
+    game_info_result_players: r.shares,
+    game_info_result_bonuspool: r.total,
+    game_info_result_winner_num: r.shares_win,
+    game_info_result_winner_getuint: r.unit_award
   };
 }
