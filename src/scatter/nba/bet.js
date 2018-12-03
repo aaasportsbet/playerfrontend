@@ -133,7 +133,8 @@ export async function getPlayerBetStatEOS(player) {
   }
 
 /// bet round
-export async function betRound(player, round, winner, range, points, shares) {
+export async function betRound(
+    playerIdentity, round, winner, range, points, shares) {
   if (!playerIdentity) {
     return {errno: 401, error: 'player not login'};
     }
