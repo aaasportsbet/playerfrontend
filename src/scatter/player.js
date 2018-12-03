@@ -4,44 +4,31 @@ import {getScatterEOS, requiredFields} from './scatter';
 
 // login
 export async function login() {
-  try {
-    const identity = await getPlayerIdentity();
+  console.log('should only show once login');
 
-    return identity;
-  } catch (error) {
-    console.error('catch return identity scatter: ', error);
-    throw Error(error);
-  }
+  const identity = await getPlayerIdentity(true);
+  return identity;
   }
 
 // get player identity
-export async function getPlayerIdentity() {
-  try {
-    const scattereos = await getScatterEOS();
-    console.log('get player identity scatter: ', scattereos);
-    if (scattereos != null && scattereos.identity) {
-      const account =
-          scattereos.identity.accounts.find(x => x.blockchain === 'eos');
-      return account;
-      }
+export async function getPlayerIdentity(force = false) {
+  console.log('should only show once getPlayerIdentity');
+  const scatter = await getScatterEOS(force);
+  console.log('getPlayerIdentity scatter: ', scatter);
+  if (scatter != null && scatter.identity) {
+    const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
+    return account;
+    }
 
-    throw Error('player not login');
-  } catch (error) {
-    console.error('eero_etPlayerIdentit: ', error);
-    throw Error(error);
-  }
+  return null;
   }
 
 // logout
 export async function logout() {
-  try {
-    const scatter = await getScatterEOS();
-    if (scatter != null && scatter.identity) {
-      scatter.forgetIdentity();
-    }
-    // Vuex ( when using a setScatter action on your store )
-    store.dispatch('setScatterEOS', null);
-  } catch (error) {
-    throw Error(error);
+  const scatter = await getScatterEOS();
+  if (scatter != null && scatter.identity) {
+    scatter.forgetIdentity();
   }
+  // Vuex ( when using a setScatter action on your store )
+  store.dispatch('setScatterEOS', null);
 }

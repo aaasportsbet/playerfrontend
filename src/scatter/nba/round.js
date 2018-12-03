@@ -25,20 +25,24 @@ function playerBetWinStatus(bet) {
     default:
       return 'unknown';
   }
-  }
+}
 
 // sort algo
 function sortby(time) {
-  console.log('current time: ', time);
-
-  return function(a, b) {
-    console.log('a.time: ', a.bet_end_time);
-    return (a.bet_end_time - time) < (b.bet_end_time - time) ? 1 : -1
+  return function (a, b) {
+    return (a.bet_end_time - time) < (b.bet_end_time - time)
+      ? 1
+      : -1
   };
-  }
+}
 
-function formatTime(time){
-    return moment.unix(time).utc().local().format('YYYY.MM.DD HH:mm')}
+function formatTime(time) {
+  return moment
+    .unix(time)
+    .utc()
+    .local()
+    .format('YYYY.MM.DD HH:mm')
+}
 
 // get round list
 async function getRoundList() {
@@ -46,9 +50,10 @@ async function getRoundList() {
   const scatter = await getScatterEOS();
   if (scatter != null) {
     const eos = scatter.eos(network, Eos, eosOptions);
-    const result = await eos.getTableRows(
-        true, contract, contract, 'rounds', 'rounds', 0, -1, 10000, 'i64', 1);
-    rounds = result.rows.sort(sortby(moment().unix()));
+    const result = await eos.getTableRows(true, contract, contract, 'rounds', 'rounds', 0, -1, 10000, 'i64', 1);
+    rounds = result
+      .rows
+      .sort(sortby(moment().unix()));
   }
 
   console.log('rounds', rounds);
@@ -59,7 +64,7 @@ async function getRoundList() {
 async function getRound(id) {
   if (id < 0) {
     return {};
-    }
+  }
 
   const scatter = await getScatterEOS();
   if (scatter != null) {
@@ -77,23 +82,28 @@ async function getRound(id) {
     if (result.rows.length > 0) {
       return result.rows[0];
     }
-    }
+  }
 
   return {};
 }
 
 function nullObj(obj) {
-  return Object.keys(obj).length === 0
-  }
+  return Object
+    .keys(obj)
+    .length === 0
+}
 
 export async function getSingleRound(id, player) {
   const round = await getRound(id);
   if (nullObj(round)) {
     return {errno: 404, error: 'round not found'};
-    }
-  const playerRoundBets = getPlayerRoundBets(player, r);
-  return {errno: 200, data: formatHomeRound(r, playerRoundBets)};
   }
+  const playerRoundBets = getPlayerRoundBets(player, r);
+  return {
+    errno: 200,
+    data: formatHomeRound(r, playerRoundBets)
+  };
+}
 
 // get home round list
 export async function getHomeRoundList(player) {
@@ -107,17 +117,19 @@ export async function getHomeRoundList(player) {
   });
 
   return {
-    errno: displayrounds.length > 0 ? 200 : 404,
+    errno: displayrounds.length > 0
+      ? 200
+      : 404,
     data: displayrounds,
     page: 'home'
   };
-  }
+}
 
 // get me page round list
 export async function getMeRoundList(player) {
   if (player === '') {
     return {errno: 401, page: 'me', error: 'player not login'};
-    }
+  }
 
   const rounds = await getRoundList();
 
@@ -127,7 +139,7 @@ export async function getMeRoundList(player) {
     const playerRoundBets = getPlayerRoundBets(player, r);
     if (playerRoundBets.length == 0) {
       return;
-      }
+    }
 
     const joined_status = playerRoundJoinStatus(playerRoundBets, r);
     if (joined_status.index != 2) {
@@ -135,8 +147,7 @@ export async function getMeRoundList(player) {
     } else {
       // split by bet
       playerRoundBets.forEach((bet) => {
-        historyrounds.push(
-            formatHistoryRound(r, playerRoundBets, joined_status, bet));
+        historyrounds.push(formatHistoryRound(r, playerRoundBets, joined_status, bet));
       });
     }
   });
@@ -154,7 +165,7 @@ export async function getMeRoundList(player) {
     },
     page: 'me'
   };
-  }
+}
 
 function formatHomeRound(r, playerRoundBets) {
   return {
@@ -184,7 +195,7 @@ function formatHomeRound(r, playerRoundBets) {
     game_info_result_winner_num: r.shares_win,
     game_info_result_winner_getuint: r.unit_award
   };
-  }
+}
 
 function formatOngoinRound(r, playerRoundBets, joined_status) {
   return {
@@ -208,7 +219,7 @@ function formatOngoinRound(r, playerRoundBets, joined_status) {
     game_joined_more: getPlayerPreviousRoundBets(playerRoundBets, r),
     game_server_obj: r
   };
-  }
+}
 
 function formatHistoryRound(r, playerRoundBets, joined_status, bet) {
   return {
