@@ -40,14 +40,25 @@ export default {
       .catch(error => {
         console.warn(error);
       });
-    if(this.$store.getters.isLogin == true){
-    getHomeRoundList().then(response => {
-      this.homelists = response.data;
-      console.log("homelists :", response.data);
-      console.log("scatter01 :",this.$store.state.scatter);
-    })
-    .catch(error => {console.log("home-created-error",error)});
-    }
+
+      let acc_player=this.$store.getters.accountName;
+      let acc_isLogin= this.$store.getters.isLogin;
+      if(acc_isLogin){
+        getHomeRoundList(acc_player).then(response => {
+        this.homelists = response.data;
+        console.log("homelists :", response.data);
+        console.log("scatter01 login status is true:",this.$store.state.scatter);
+        })
+        .catch(error => {console.log("home-created-error-login-status-is-true",error)});
+      }
+      if(!acc_isLogin){
+        getHomeRoundList(acc_player).then(response => {
+        this.homelists = response.data;
+        console.log("homelists :", response.data);
+        console.log("scatter01 login status is false:",this.$store.state.scatter);
+        })
+        .catch(error => {console.log("home-created-error-login-status-is-false",error)});
+      }
   },
   components: {
     info: Info,
