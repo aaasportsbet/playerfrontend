@@ -3,10 +3,13 @@ import Eos from 'eosjs';
 
 import {eosOptions, getScatterEOS, network} from '../scatter';
 
+import {teamKeyShort} from './filter';
+
 const contract = process.env.EOS.CONTRACTNBA;
 
 // get bet list
 export function getPlayerRoundBets(player, round) {
+  console.log('getPlayerRoundBets player: ', player);
   if (player === '') {
     return [];
     }
