@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: eos-mainnet
+  name: aaasportsbet-frontend
+  labels:
+    app: aaasportsbet
+    component: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aaasportsbet
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: aaasportsbet
+        component: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: gcr.io/aaasportsbet/frontend:eos-mainnet
+        imagePullPolicy: IfNotPresent
+        # resources:
+        #   requests:
+        #     cpu: 100m
+        #     memory: 100Mi
+        ports:
+        - containerPort: 80
