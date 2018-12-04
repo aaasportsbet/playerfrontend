@@ -1,5 +1,6 @@
 import {BigNumber} from 'bignumber.js';
 import Eos from 'eosjs';
+import * as moment from 'moment';
 
 import {eosOptions, getScatterEOS, network} from '../scatter';
 
@@ -32,6 +33,10 @@ export function getPlayerRoundBets(player, round) {
 export function playerRoundJoinStatus(playerRoundBets, round) {
   switch (round.status) {
     case 0:  // betting
+      if (moment().unix() > round.bet_end_time) {
+        return {index: 1, value: 'Gaming'};
+        }
+
       return {
         index: 0,
         value: playerRoundBets.length > 0 ? 'Join Again' : 'Join Now'
