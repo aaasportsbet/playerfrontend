@@ -174,6 +174,12 @@
       <div class="box_bottom" v-show="info.game_joined_latest !== 0">
         <span
           class="box_bottom_l"
+          v-if="info.game_round_type_i18n_serv_type === 'WinLose'"
+        >{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}}</span>
+
+        <span
+          class="box_bottom_l"
+          v-else
         >{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}} Score</span>
         <span class="box_bottom_r">{{info.game_joined_latest.share}}</span>
       </div>
@@ -186,7 +192,8 @@
         <div class="el-icon-caret-bottom dropdown_menu" @click="show = !show">&nbsp;More</div>
         <div class="dropdown_show" v-show="show">
           <div class="dropdown_list" v-for="item in list_playmore">
-            <span class="dropdown_list_l">{{item.team_name}} Win {{item.team_score}} Score</span>
+            <span class="dropdown_list_l" v-if="info.game_round_type_i18n_serv_type === 'WinLose'">{{item.team_name}} Win {{item.team_score}}</span>
+            <span class="dropdown_list_l" v-else>{{item.team_name}} Win {{item.team_score}} Score</span>
             <span class="dropdown_list_r">{{item.share}}</span>
           </div>
         </div>

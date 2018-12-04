@@ -18,11 +18,12 @@
 </template>
 
 <script>
-import VueRouter from "../../router/routes.js";
+
 import { mapGetters, mapActions } from "vuex";
 import Nav from "../nav/Nav.vue";
 import store from '../../store/index.js';
 import { login, logout, getPlayerIdentity } from "../../scatter/player";
+//import router from '../../router/routes.js';
 export default {
   data() {
     return {
@@ -54,6 +55,17 @@ export default {
           console.log("accountName:",this.$store.state.accountName);
           console.log("logoutscatter-state:",this.$store.state.scatter);
           console.log("logoutscatter-getters:",this.$store.getters.scatterEOS);
+          console.log("this.$route.namelogout,before",this.$route.name);
+          if(this.$route.name === 'home'){
+            console.log("this.$route.name.logout",this.$route.name);
+            this.$router.go(0);
+          }
+          else{
+            this.$router.push({name: 'home'});
+          }
+
+
+
         })
         .catch(error =>{
           console.log("meseterrlogout:",error)
@@ -72,6 +84,14 @@ export default {
         console.log("accountName:",this.$store.state.accountName);
         console.log("loginscatter-state:",this.$store.state.scatter);
         console.log("loginscatter-getters:",this.$store.getters.scatterEOS);
+        if(this.$route.name === 'home'){
+            console.log("this.$route.namelogin.login",this.$route.name);
+            this.$router.go(0);
+
+          }
+          else{
+            this.$router.push({name: 'home'});
+          }
         })
         .catch(error =>{
           console.log("meseterrlogin:",error)

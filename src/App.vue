@@ -2,7 +2,7 @@
   <div class="app">
     <v-header v-show="!isDetailHeader"></v-header>
     <detail-header :nickname="detailHeaderNickName" v-show="isDetailHeader"></detail-header>
-    <router-view class="content"></router-view>
+    <router-view class="content" :key="activeDate" />
     <slide-bar></slide-bar>
   </div>
 </template>
@@ -18,11 +18,11 @@ import SlideBar from "components/slidebar/SlideBar.vue";
 export default {
   data() {
     return {
-      nickname: "",
+      nickname: ""
     };
   },
   created() {
-
+    this.activeDate = (new Date()).toString();
   },
   computed: mapGetters({
     isDetailHeader: "isDetailHeader",
@@ -34,7 +34,9 @@ export default {
     "v-header": Header,
     "slide-bar": SlideBar,
     "detail-header": DetailHeader
-  }
+  },
+  methods: {
+ }
 };
 </script>
 

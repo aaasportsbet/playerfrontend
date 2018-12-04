@@ -23,6 +23,6 @@ new Vue({
 }).$mount('#app')
 
 // 默认进入商品模块
-VueRouter.push({ path: '/home' })
+ VueRouter.push({ path: '/home' })
 
 

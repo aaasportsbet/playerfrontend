@@ -29,8 +29,8 @@ const routes = [
       // 导航守卫，进入该组件的对应路由时调用
       next(vm => {
         // 通过 `vm` 访问组件实例
-        let userisLogin = vm.$store.state.isLogin;
-        console.log('should not be show');
+        let userisLogin = vm.$store.getters.isLogin;
+        console.log('should not be show', userisLogin);
         if (userisLogin == false) {
           vm
             .$router
@@ -51,12 +51,19 @@ export default router;
 router.beforeEach((to, from, next) => {
   console.log('from ', from.path, ' to ', to.path);
   const isLogin = store.getters.isLogin;
-  const cancelLogin = store.getters.cancelLogin;
-  console.log('is login:', isLogin);
+  const cancelLogin=store.getters.isLogin;
+  const acname= store.getters.accountName;
+  console.log('before login:', isLogin);
+  console.log('before login:', cancelLogin);
+  console.log('before login:', acname);
   if (isLogin) {
+    console.log('if is login-isLogin:', isLogin);
+    console.log('if is login-cancelLogin:', cancelLogin);
+    console.log('if is login-acname:', acname);
     next();
   } else {
     if (cancelLogin !== 1) {
+      console.log('login now:');
       login().then(identity => {
         console.log('identity', identity);
         const loginstatus = true;
@@ -68,7 +75,7 @@ router.beforeEach((to, from, next) => {
         console.log('scatter04 :', store.state.cancelLogin);
         next();
       }).catch(error => {
-        console.error('router_err_login', error);
+        console.log('router_err_login', error);
         const loginstatus = false;
         const accoutname = '';
         const sacttercancelLogin = 1;
