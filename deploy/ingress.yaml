@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: aaasportsbet
+  name: aaasportsbet-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: aaasportsbet-ip
+  labels:
+    app: frontend
+spec:
+  rules:
+  - host: testnet.aaasports.io
+    http:
+      paths:
+      - backend:
+          serviceName: service1
+          servicePort: 80
+  - host: bar.foo.com
+    http:
+      paths:
+      - backend:
+          serviceName: service2
+          servicePort: 80
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: aaasports-io-tls
+  namespace: aaasportsbet
+spec:
+  secretName: aaasports-io-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: '*.aaasports.io'
+  dnsNames:
+  - testnet.aaasports.io
+  - mainnet.aaasports.io
+  acme:
+    config:
+    - http01:
+        ingress: aaasportsbet-ingress
+      domains:
+      - aaasports.io
+      - testnet.aaasports.io
+      - mainnet.aaasports.io
