@@ -3,6 +3,7 @@
 // 引入vue及相关插件 引入自定义单文件组件
 import Home from 'pages/home/Home'
 import Personal from 'pages/personal/Personal'
+import Pchome from 'pages/pchome/index'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
@@ -21,7 +22,13 @@ const routes = [
     path: '/home',
     name: 'home',
     component: Home
-  }, {
+  },
+  {
+    path: '/pchome',
+    name: 'pchome',
+    component: Pchome
+  },
+  {
     path: '/personal',
     name: 'personal',
     component: Personal,

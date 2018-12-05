@@ -3,15 +3,15 @@ const state = {
   scatter: null,
   pageIndex: 0,
   pageArray: [
-    {headerTitle: '我是广告', routename: 'home'},
-    {headerTitle: '我是个人页面', routename: 'Personal'},
+    {headerTitle: '', routename: 'home'},
+    {headerTitle: '', routename: 'Personal'},
   ],
   isSlideBarShow: false,
   isDetailHeader: false,
   detailHeaderNickName: '',
   personalInfo: {
-    avatar: 'http://p1.wmpic.me/article/2017/03/06/1488780213_usvFXYIl.jpg',
-    nickname: '李白',
+    avatar: 'http://q1.qlogo.cn/g?b=qq&k=WLzM03viaN3tUFTEhfN41IQ&s=40&t=1531929600',
+    nickname: 'AAASports',
     uid: 9001
   },
 

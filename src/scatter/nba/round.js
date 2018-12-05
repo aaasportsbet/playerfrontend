@@ -98,10 +98,10 @@ export async function getSingleRound(id, player) {
   if (nullObj(round)) {
     return {errno: 404, error: 'round not found'};
   }
-  const playerRoundBets = getPlayerRoundBets(player, r);
+  const playerRoundBets = getPlayerRoundBets(player, round);
   return {
     errno: 200,
-    data: formatHomeRound(r, playerRoundBets)
+    data: formatHomeRound(round, playerRoundBets)
   };
 }
 
@@ -171,6 +171,7 @@ function formatHomeRound(r, playerRoundBets) {
   return {
     game_serv_id: r.id,
     game_count_down_time_serv_bet_end_time: formatTime(r.bet_end_time),
+    game_count_down_time_serv_bet_end_time_second: r.bet_end_time,
     game_count_down_time_display: true,
     game_win_status_display: false,
     game_info_left_i18n_serv_awayteam: teamKeyLang[r.awayteam],
@@ -201,6 +202,7 @@ function formatOngoinRound(r, playerRoundBets, joined_status) {
   return {
     game_serv_id: r.id,
     game_count_down_time_serv_bet_end_time: formatTime(r.bet_end_time),
+    game_count_down_time_serv_bet_end_time_second: r.bet_end_time,
     game_count_down_time_display: true,
     game_win_status_display: false,
     game_info_left_i18n_serv_awayteam: teamKeyLang[r.awayteam],

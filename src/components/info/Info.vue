@@ -6,8 +6,9 @@
         <div class="count_down_top">Count Down</div>
       </div>
       <div class="count_down_bottom">
-        {{message}}
+        <span v-show="countdownshow">{{message}}</span>
         <count-down
+          v-show="!countdownshow"
           class="count_down_time"
           v-on:start_callback="countDownS_cb(1)"
           v-on:end_callback="countDownE_cb(1)"
@@ -107,20 +108,7 @@
         </div>
       </div>
       <div class="bet_act" v-show="JoinVisible === true" >
-        <div class="bet_act_BM">
-          <div class="bet_act_BM_label">Bet Multiple</div>
-          <div class="bet_act_BM_value">
-            <button
-              class="bet_act_BM_value_minus"
-              @click="act_minus('joindata.act_game_bet_multiple')"
-            ><i class="el-icon-minus"></i></button>
-            <span class="bet_act_BM_value_num">{{joindata.act_game_bet_multiple}}</span>
-            <button
-              class="bet_act_BM_value_plus"
-              @click="act_add('joindata.act_game_bet_multiple')"
-            ><i class="el-icon-plus"></i></button>
-          </div>
-        </div>
+
         <div class="bet_act_ChooseWin">
           <div class="bet_act_ChooseWin_label">Choose Win Team</div>
           <div class="bet_act_ChooseWin_value">
@@ -154,6 +142,20 @@
             <button class="bet_act_BP_value_plus" @click="act_add('joindata.act_game_point')"><i class="el-icon-plus"></i></button>
           </div>
         </div>
+        <div class="bet_act_BM">
+          <div class="bet_act_BM_label">Bet Multiple</div>
+          <div class="bet_act_BM_value">
+            <button
+              class="bet_act_BM_value_minus"
+              @click="act_minus('joindata.act_game_bet_multiple')"
+            ><i class="el-icon-minus"></i></button>
+            <span class="bet_act_BM_value_num">{{joindata.act_game_bet_multiple}}</span>
+            <button
+              class="bet_act_BM_value_plus"
+              @click="act_add('joindata.act_game_bet_multiple')"
+            ><i class="el-icon-plus"></i></button>
+          </div>
+        </div>
         <div class="bet_act_BP_betinfo">
           <div class="bet_act_BP_beinfo_label">Bet Detail</div>
           <div class="bet_act_BP_beinfo_value">
@@ -175,13 +177,13 @@
         <span
           class="box_bottom_l"
           v-if="info.game_round_type_i18n_serv_type === 'WinLose'"
-        >{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}}</span>
+        >{{local_game_joined_latest.team_name}} Win {{local_game_joined_latest.team_score}}</span>
 
         <span
           class="box_bottom_l"
           v-else
-        >{{info.game_joined_latest.team_name}} Win {{info.game_joined_latest.team_score}} Score</span>
-        <span class="box_bottom_r">{{info.game_joined_latest.share}}</span>
+        >{{local_game_joined_latest.team_name}} Win {{local_game_joined_latest.team_score}} Score</span>
+        <span class="box_bottom_r">{{local_game_joined_latest.share}}</span>
       </div>
       <div style="height:16px;" v-show="info.game_joined_latest === 0"></div>
       <div
@@ -189,7 +191,10 @@
         v-show="info.game_joined_latest !== 0 && info.game_joined_more_display === true"
         v-clickoutside="handleClose"
       >
-        <div class="el-icon-caret-bottom dropdown_menu" @click="show = !show">&nbsp;More</div>
+        <div class="dropdown_menu" @click="show = !show">
+          <span v-show="show">▲&nbsp;More</span>
+          <span v-show="!show">▼&nbsp;More</span>
+          </div>
         <div class="dropdown_show" v-show="show">
           <div class="dropdown_list" v-for="item in list_playmore">
             <span class="dropdown_list_l" v-if="info.game_round_type_i18n_serv_type === 'WinLose'">{{item.team_name}} Win {{item.team_score}}</span>
@@ -205,6 +210,7 @@
 <script>
 import CountDown from "vue2-countdown";
 import { getPlayerIdentity } from "../../scatter/player";
+import { getSingleRound } from "../../scatter/nba/round";
 import { betRound, calcBetTotal } from "../../scatter/nba/bet";
 import { error } from "util";
 export default {
@@ -212,9 +218,10 @@ export default {
     return {
       show: false,
       list_playmore: this.info.game_joined_more,
-      startTime: new Date().getTime() + 100 * 100,
-      endTime: new Date().getTime() + 100 * 100,
-      message: "",
+      startTime: this.info.game_count_down_time_serv_bet_end_time_second,
+      endTime: this.info.game_count_down_time_serv_bet_end_time_second,
+      message: "Stop Betting",
+      countdownshow: false,
       JoinVisible: false,
       DetailVisible: false,
       Real_game_joined_status :this.info.game_joined_status.value,
@@ -230,6 +237,11 @@ export default {
         act_game_win_welcome:"0",
         act_game_win_welcome_text:"Please Choose Bet Plan",
         act_pay_err:""
+      },
+      local_game_joined_latest:{
+        team_name: this.info.game_joined_latest.team_name,
+        share: this.info.game_joined_latest.share,
+        team_score: this.info.game_joined_latest.team_score,
       },
       num1: 1
     };
@@ -292,13 +304,45 @@ export default {
               )
                 .then(response => {
                   console.log(response);
-                    this.JoinVisible=false;
-                    this.Real_game_joined_status=this.info.game_joined_status.value;
-                    this.$message({
-                      message: 'Congratulations, Pay Successfully!',
-                      center: true,
-                      type:'success'
-                    });
+                    if(response.errno== 200){
+                      this.JoinVisible=false;
+                      this.Real_game_joined_status=this.info.game_joined_status.value;
+                      this.$message({
+                        message: 'Congratulations, Pay Successfully!',
+                        center: true,
+                        type:'success'
+                      });
+                      let acc_player= this.$store.getters.accountName
+                      console.log("acc_player",acc_player)
+                      getSingleRound(this.info.game_serv_id,acc_player).then(response =>{
+                        if(response.errno== 200){
+                          console.log("response.data",response.data)
+                          console.log("this.info.game_joined_more",this.info.game_joined_more)
+                          console.log("response.data.game_joined_more",response.data.game_joined_more)
+                          console.log("this.local_game_joined_latest",this.local_game_joined_latest)
+                          console.log("response.data.game_joined_latest",response.data.game_joined_latest)
+                          this.list_playmore = response.data.game_joined_more;
+                          this.local_game_joined_latest=response.data.game_joined_latest;
+                        }
+                        else{
+                          this.$message.error(response.error);
+                        };
+                      });
+                    }
+                    else if(response.errno== 401){
+                      this.$message.error('Sorry, You are not login, Please Login!');
+
+
+                    }
+                    else if(response.errno== 400){
+                      this.$message.error('Sorry, Network latency, Please try again later!');
+
+                    }
+                    else{
+                      this.$message.error('Sorry, Network error, Please try again later!');
+                    }
+
+
                 })
                 .catch(error => {
                   console.error(error);
@@ -357,8 +401,8 @@ export default {
     act_add(info_bet_addtype) {
       this.joindata.act_game_win_welcome='1';
       if (info_bet_addtype == "joindata.act_game_bet_multiple") {
-        if(this.joindata.act_game_bet_multiple > 8){
-          this.joindata.act_game_bet_multiple = 9;
+        if(this.joindata.act_game_bet_multiple > 98){
+          this.joindata.act_game_bet_multiple = 99;
           this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
           console.log(this.joindata.act_game_bet_multiple);
         }
@@ -369,8 +413,8 @@ export default {
         }
       }
       if (info_bet_addtype == "joindata.act_game_point") {
-        if(this.joindata.act_game_point > 8){
-          this.joindata.act_game_point = 9;
+        if(this.joindata.act_game_point > 98){
+          this.joindata.act_game_point = 99;
           this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
           this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
           console.log(this.joindata.act_game_point);
@@ -421,11 +465,11 @@ export default {
       this.show = false;
     },
     countDownS_cb: function(x) {
-      this.message = "Stop Betting";
+      this.countdownshow=true;
       console.log(x);
     },
     countDownE_cb: function(x) {
-      this.message = "Stop Betting";
+      this.countdownshow=true;
       console.log(x);
     }
   },
@@ -489,7 +533,7 @@ export default {
       .count_down_top {
         height: 25px;
         font-size: 25px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #777777;
         line-height: 25px;
         padding-left: 5px;
@@ -508,16 +552,14 @@ export default {
     .count_down_bottom {
       width: 90%;
       font-size: 28px;
-      font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-        STHeiTi, simsun, sans-serif;
+      font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       font-weight: bold;
       color: gray;
       line-height: 50px;
       //font-style: normal;
       .count_down_time {
         font-size: 28px;
-        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-          STHeiTi, simsun, sans-serif;
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         font-weight: bold;
         color: #ecc22f;
         line-height: 50px;
@@ -602,12 +644,12 @@ export default {
           font-size: 36px;
           font-weight: bold;
           text-align: center;
-          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         }
         .left_text_abbr {
           margin-top: 30px;
           font-size: 36px;
-          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
           color: rgba(119, 119, 119, 0.4);
         }
       }
@@ -620,7 +662,7 @@ export default {
         border-radius: 0px;
         color: #ecc22f;
         font-size: 36px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         font-weight: bold;
         margin-top: 120px;
         text-align: center;
@@ -644,12 +686,12 @@ export default {
           font-size: 36px;
           font-weight: bold;
           text-align: center;
-          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         }
         .right_text_abbr {
           margin-top: 30px;
           font-size: 36px;
-          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
           color: rgba(119, 119, 119, 0.4);
         }
       }
@@ -672,12 +714,12 @@ export default {
         height: 140px;
         .detail_play_top {
           font-size: 30px;
-          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
           color: #ffffff;
         }
         .detail_play_bottom {
           font-size: 30px;
-          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
           color: #777777;
         }
       }
@@ -698,14 +740,14 @@ export default {
           border-color: #ecc22f;
           background-color: #ecc22f;
           font-size: 30px;
-          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
           color: #2b2b2b;
           font-weight: bold;
         }
         .joined_info_top {
           background-color: rgba(43, 43, 43, 1);
           font-size: 25px;
-          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
           color: #ecc22f;
           height: 70px;
           width: 280px;
@@ -715,7 +757,7 @@ export default {
         .joined_info_bottom {
           background-color: rgba(119, 119, 119, 1);
           font-size: 30px;
-          font-family: "MicrosoftYaHei", "Microsoft YaHei";
+          font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
           color: #2b2b2b;
           font-weight: bold;
           height: 70px;
@@ -742,7 +784,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 36px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         margin-top: 40px;
         border-width: 1px 0px 0px 0px;
@@ -765,7 +807,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 36px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         border-width: 1px 0px 0px 0px;
         border-style: solid;
@@ -784,7 +826,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 36px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         border-width: 1px 0px 0px 0px;
         border-style: solid;
@@ -803,7 +845,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 36px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         border-width: 1px 0px 0px 0px;
         border-style: solid;
@@ -823,7 +865,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 36px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         border-width: 1px 0px 0px 0px;
         border-style: solid;
@@ -852,9 +894,9 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 30px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
-        margin-top: 40px;
+
         border-width: 1px 0px 0px 0px;
         border-style: solid;
         border-color: rgba(119, 119, 119, 1);
@@ -912,8 +954,9 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 30px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
+        margin-top: 40px;
         border-width: 1px 0px 0px 0px;
         border-style: solid;
         border-color: rgba(119, 119, 119, 1);
@@ -939,9 +982,7 @@ export default {
             border-radius: 4px;
             border-width: 2px;
             border-style: solid;
-            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
-              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-              sans-serif;
+            font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
             &.bet_act_ChooseWin_value_left_select{
               background-color:  #ecc22f;
               color: #2b2b2b;
@@ -980,7 +1021,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 30px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         border-width: 1px 0px 0px 0px;
         border-style: solid;
@@ -1024,7 +1065,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 30px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         border-width: 1px 0px 0px 0px;
         border-style: solid;
@@ -1046,9 +1087,7 @@ export default {
             font-weight: bolder;
             text-align: center;
             height: 60px;
-            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
-              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-              sans-serif;
+            font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
 
           }
           .bet_act_BP_value_num {
@@ -1056,9 +1095,7 @@ export default {
             margin-right: 15px;
             color: #fffffe;
             font-size: 36px;
-            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
-              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-              sans-serif;
+            font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
             //font-weight: bold;
           }
           .bet_act_BP_value_minus {
@@ -1072,9 +1109,7 @@ export default {
             font-weight: bolder;
             text-align: center;
             height: 60px;
-            font-family: "Helvetica Neue", Helvetica, "PingFang SC",
-              "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
-              sans-serif;
+            font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
           }
         }
       }
@@ -1084,7 +1119,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 30px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         border-width: 1px 0px 0px 0px;
         border-style: solid;
@@ -1103,7 +1138,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 30px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         border-width: 1px 0px 0px 0px;
         border-style: solid;
@@ -1148,7 +1183,7 @@ export default {
       align-items: center;
       flex-direction: row;
       font-size: 30px;
-      font-family: "MicrosoftYaHei", "Microsoft YaHei";
+      font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       color: #ffffff;
       margin-top: 40px;
       border-width: 1px 0px 0px 0px;
@@ -1170,7 +1205,7 @@ export default {
       align-items: center;
       flex-direction: column;
       font-size: 30px;
-      font-family: "MicrosoftYaHei", "Microsoft YaHei";
+      font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       color: #ffffff;
       border-width: 1px 0px 0px 0px;
       border-style: solid;
@@ -1181,7 +1216,7 @@ export default {
         align-items: center;
         flex-direction: row;
         font-size: 36px;
-        font-family: "MicrosoftYaHei", "Microsoft YaHei";
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         color: #ffffff;
         height: 80px;
         user-select: none;

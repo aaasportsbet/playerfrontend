@@ -21,6 +21,7 @@ export default {
       nickname: ""
     };
   },
+
   created() {
     this.activeDate = (new Date()).toString();
   },
@@ -34,9 +35,7 @@ export default {
     "v-header": Header,
     "slide-bar": SlideBar,
     "detail-header": DetailHeader
-  },
-  methods: {
- }
+  }
 };
 </script>
 

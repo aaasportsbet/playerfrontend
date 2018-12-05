@@ -35,6 +35,7 @@
     <div class="info-container" v-for="item in mehistorylists" v-show="display_O_H === true">
       <info :info="item" class="info"></info>
     </div>
+    <div style="height:16px;"></div>
     <switch-button></switch-button>
   </div>
 </template>
@@ -53,7 +54,7 @@ const ERR_OK = 0;
 export default {
   data() {
     return {
-      display_O_H: true,
+      display_O_H: false,
       homelist: [],
       meongoinglists: [],
       mehistorylists: [],
@@ -140,15 +141,13 @@ export default {
       .ts_join_times_text {
         font-size: 36px;
         color: #222222;
-        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-          STHeiTi, simsun, sans-serif;
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       }
       .ts_join_times_num {
         margin-top: 40px;
         font-size: 60px;
         color: #222222;
-        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-          STHeiTi, simsun, sans-serif;
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         font-weight: bold;
       }
     }
@@ -160,15 +159,13 @@ export default {
       .ts_win_text {
         font-size: 36px;
         color: #222222;
-        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-          STHeiTi, simsun, sans-serif;
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       }
       .ts_win_num {
         margin-top: 40px;
         font-size: 60px;
         color: #222222;
-        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-          STHeiTi, simsun, sans-serif;
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         font-weight: bold;
       }
     }
@@ -180,15 +177,13 @@ export default {
       .ts_payout_text {
         font-size: 36px;
         color: #222222;
-        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-          STHeiTi, simsun, sans-serif;
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       }
       .ts_payout_num {
         margin-top: 40px;
         font-size: 60px;
         color: #222222;
-        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-          STHeiTi, simsun, sans-serif;
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         font-weight: bold;
       }
     }
@@ -200,15 +195,13 @@ export default {
       .ts_get_text {
         font-size: 36px;
         color: #222222;
-        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-          STHeiTi, simsun, sans-serif;
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       }
       .ts_get_num {
         margin-top: 40px;
         font-size: 60px;
         color: #222222;
-        font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-          STHeiTi, simsun, sans-serif;
+        font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
         font-weight: bold;
       }
     }
@@ -228,8 +221,7 @@ export default {
       background-color: rgba(51, 51, 51, 1);
       font-size: 36px;
       color: rgba(255, 255, 255, 0.6);
-      font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-        STHeiTi, simsun, sans-serif;
+      font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
     }
     .list_history {
       height: 134px;
@@ -237,8 +229,7 @@ export default {
       background-color: rgba(34, 34, 34, 1);
       font-size: 36px;
       color: #ffffff;
-      font-family: "\5FAE\8F6F\96C5\9ED1", Arial, Helvetica, Tahoma, Verdana,
-        STHeiTi, simsun, sans-serif;
+      font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
     }
   }
 }
