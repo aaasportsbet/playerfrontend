@@ -6,15 +6,15 @@
         <div class="ts_join_times_num">{{mesum.game_join_times_serv_times}}</div>
       </div>
       <div class="ts_win">
-        <div class="ts_win_text">Win</div>
+        <div class="ts_win_text">Win Times</div>
         <div class="ts_win_num">{{mesum.game_join_win_times_serv_win_times}}</div>
       </div>
       <div class="ts_payout">
-        <div class="ts_payout_text">Payout(eos)</div>
+        <div class="ts_payout_text">Payout(EOS)</div>
         <div class="ts_payout_num">{{mesum.game_payout_serv_payout}}</div>
       </div>
       <div class="ts_get">
-        <div class="ts_get_text">Get(eos)</div>
+        <div class="ts_get_text">Get(EOS)</div>
         <div class="ts_get_num">{{mesum.game_get_serv_get}}</div>
       </div>
     </div>

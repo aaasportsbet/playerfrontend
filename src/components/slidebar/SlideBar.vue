@@ -11,10 +11,10 @@
           </div>
         </div>
         <el-menu class="el-menu-vertical-demo" @select="handleSelect">
-          <el-menu-item index="1"><i class="icon-user"></i><div class="navtext">Me</div></el-menu-item>
-          <el-menu-item index="2"><i class="icon-eye"></i><div class="navtext">NBA</div></el-menu-item>
-          <el-menu-item index="3"><i class="icon-bubbles3"></i><div class="navtext">World Cup</div></el-menu-item>
-          <el-menu-item index="4"><i class="icon-cog"></i><div class="navtext">CBA</div></el-menu-item>
+          <el-menu-item index="1"><i class="iconfont">&#xe735;</i><div class="navtext">Me</div></el-menu-item>
+          <el-menu-item index="2"><i class="iconfont">&#xe726;</i><div class="navtext">NBA</div></el-menu-item>
+          <el-menu-item index="3"><i class="iconfont">&#xe6b6;</i><div class="navtext">World Cup</div></el-menu-item>
+          <el-menu-item index="4"><i class="iconfont">&#xe726;</i><div class="navtext">CBA</div></el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="10" class="right" ><div @click="toggleSlideBar" class="rightEvent"></div></el-col>
@@ -44,7 +44,7 @@ export default {
         case 1:
           if (this.personalInfo.uid && this.personalInfo.nickname){
             this.$store.dispatch('goPersonalPages',{userId:this.personalInfo.uid})
-            this.$store.dispatch('toggleheader',{nickname:this.personalInfo.nickname})
+            //this.$store.dispatch('toggleheader',{nickname:this.personalInfo.nickname})
             this.$store.dispatch('toggleSlideBar')
           }
           break;
@@ -63,13 +63,20 @@ export default {
 </script>
 
 <style lang="less">
-  @font-face {
-    font-family: 'fangzheng';
-    src:  url('../../../static/fonts/fangzheng.ttf');
-    font-weight: normal;
-    font-style: normal;
-  }
-
+    @font-face {
+      font-family: 'iconfont';  /* project id 954268 */
+      src: url('//at.alicdn.com/t/font_954268_mym5nfp1ym.eot');
+      src: url('//at.alicdn.com/t/font_954268_mym5nfp1ym.eot?#iefix') format('embedded-opentype'),
+      url('//at.alicdn.com/t/font_954268_mym5nfp1ym.woff') format('woff'),
+      url('//at.alicdn.com/t/font_954268_mym5nfp1ym.ttf') format('truetype'),
+      url('//at.alicdn.com/t/font_954268_mym5nfp1ym.svg#iconfont') format('svg');
+    }
+  .iconfont{
+      font-family:"iconfont" !important;
+      font-size:60px;font-style:normal;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-stroke-width: 0.2px;
+      -moz-osx-font-smoothing: grayscale;}
   .slidebar {
     position: fixed;
     left: 0;

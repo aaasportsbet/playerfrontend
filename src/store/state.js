@@ -10,7 +10,7 @@ const state = {
   isDetailHeader: false,
   detailHeaderNickName: '',
   personalInfo: {
-    avatar: 'http://q1.qlogo.cn/g?b=qq&k=WLzM03viaN3tUFTEhfN41IQ&s=40&t=1531929600',
+    avatar: 'https://i.postimg.cc/RVjjM4zy/img-logo.png',
     nickname: 'AAASports',
     uid: 9001
   },
