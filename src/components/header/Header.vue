@@ -177,14 +177,12 @@ export default {
       .login_me_lan_zhcn{
         text-align: center;
         width: 40px;
-        height: 50px;
-        line-height: 50px;
+        height: 45px;
         color: #2b2b2b;
 
       }
       .login_me_lan_en{
         text-align: center;
-        
         width: 40px;
         color: #ecc22f;
         border-color: #ecc22f;

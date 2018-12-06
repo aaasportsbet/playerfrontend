@@ -58,7 +58,12 @@ export default {
       homelist: [],
       meongoinglists: [],
       mehistorylists: [],
-      mesum:[]
+      mesum:{
+      game_join_times_serv_times: 0,
+      game_join_win_times_serv_win_times: 0,
+      game_payout_serv_payout: 0,
+      game_get_serv_get: 0,
+      }
     };
   },
 

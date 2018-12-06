@@ -239,11 +239,7 @@ export default {
         act_game_win_welcome_text:"Please Choose Bet Plan",
         act_pay_err:""
       },
-      local_game_joined_latest:{
-        team_name: this.info.game_joined_latest.team_name,
-        share: this.info.game_joined_latest.share,
-        team_score: this.info.game_joined_latest.team_score,
-      },
+      local_game_joined_latest:this.info.game_joined_latest,
       num1: 1
     };
   },
@@ -363,6 +359,7 @@ export default {
       this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
       this.joindata.act_game_win_info =info_act_game_info + ' Score';
       console.log(info_act_game_range);
+      console.log("this.joindata.act_game_point",this.joindata.act_game_point);
     },
     act_choose_team(info_choose_team_id,info_choose_team_abbr) {
       this.joindata.act_pay_err='';
@@ -376,21 +373,22 @@ export default {
       }
       else if(this.info.game_round_type_i18n_serv_type  == 'Range'){
         let info_act_game_info='';
-        if(this.joindata.act_game_point == 1){
+        if(this.joindata.act_game_range == 1){
              info_act_game_info='1-3';
         }
-        if(this.joindata.act_game_point == 2){
+        if(this.joindata.act_game_range == 2){
              info_act_game_info='4-7';
         }
-        if(this.joindata.act_game_point == 3){
+        if(this.joindata.act_game_range  == 3){
              info_act_game_info='8-12';
         }
-        if(this.joindata.act_game_point == 4){
+        if(this.joindata.act_game_range  == 4){
              info_act_game_info='13-20';
         }
-        if(this.joindata.act_game_point == 5){
+        if(this.joindata.act_game_range  == 5){
              info_act_game_info='20+';
         }
+        console.log("ct_this.joindata.act_game_range ",this.joindata.act_game_range );
         this.joindata.act_game_win_info = info_act_game_info  + ' Score';
       }
       else{
