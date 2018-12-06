@@ -34,7 +34,7 @@ export function playerRoundJoinStatus(playerRoundBets, round) {
   switch (round.status) {
     case 0:  // betting
       if (moment().unix() > round.bet_end_time) {
-        return {index: 1, value: 'Gaming'};
+        return {index: 1, value: 'Playing'};
         }
 
       return {
@@ -42,7 +42,7 @@ export function playerRoundJoinStatus(playerRoundBets, round) {
         value: playerRoundBets.length > 0 ? 'Join Again' : 'Join Now'
       };
     case 1:  // wait publish result
-      return {index: 1, value: 'Gaming'};
+      return {index: 1, value: 'Playing'};
     default:
       return {index: 2, value: 'View Detail'};
   }
@@ -76,14 +76,16 @@ function roundBetValue(bet, round) {
           points = '13~20';
           break;
         case 5:
-          points = '>20';
+          points = '+20';
           break;
           }
       break;
       }
 
   return {
-    team_name: teamKeyShort[winner], share: bet.share, team_score: points
+    team_name: teamKeyShort[winner],
+        share: calcBetTotal(round.bet_unit, bet.share, false, 2),
+        team_score: points
   }
 };
 
@@ -106,7 +108,14 @@ export function getPlayerPreviousRoundBets(playerRoundBets, round) {
 };
 
 export async function getPlayerBetStatEOS(player) {
-  var stat = {};
+  var stat = {
+    player: player,
+    join_times: 0,
+    win_times: 0,
+    bet_amount: 0,
+    win_amount: 0,
+    extras: []
+  };
   const scatter = await getScatterEOS();
   if (scatter != null && scatter.identity) {
     const eos = scatter.eos(network, Eos, eosOptions);
@@ -123,14 +132,14 @@ export async function getPlayerBetStatEOS(player) {
 
     console.log('player bet stat response: ', result);
     if (result.rows.length > 0) {
-      stat = result.rows[0];
-    } else {
+      const retstat = result.rows[0]
+
       stat = {
         player: player,
-        join_times: 0,
-        win_times: 0,
-        bet_amount: '0 EOS',
-        win_amount: '0 EOS',
+        join_times: retstat.join_times,
+        win_times: retstat.win_times,
+        bet_amount: asset2amount(retstat.bet_amount, 0),
+        win_amount: asset2amount(retstat.win_amount, 0),
         extras: []
       };
     }
@@ -190,7 +199,8 @@ export async function betRound(
   }
 };
 
-export function calcBetTotal(round_bet_unit, shares) {
+export function calcBetTotal(
+    round_bet_unit, shares, original = true, fixed = 4) {
   const units = round_bet_unit.split(' ', 2);
   if (units.length != 2) {
     return '';
@@ -202,10 +212,27 @@ export function calcBetTotal(round_bet_unit, shares) {
     }
 
   const symbol = units[1];
-  if (symbol == 'EOS') {
+  if (original) {
     let DecimalPad = Eos.modules.format.DecimalPad;
-    return DecimalPad(unit * shares, 4) + ' ' + symbol;
+    switch (symbol) {
+      case 'EOS':
+        return DecimalPad(unit * shares, 4) + ' ' + symbol;
+    }
     }
 
-  return unit * shares + ' ' + symbol;
+  return (unit * shares).toFixed(fixed) + ' ' + symbol;
 };
+
+export function asset2amount(asset, fixed = 0) {
+  const units = asset.split(' ', 2);
+  if (units.length != 2) {
+    return 0;
+    }
+
+  const unit = parseFloat(units[0]);
+  if (unit == 0) {
+    return 0;
+    }
+
+  return unit.toFixed(fixed);
+}
