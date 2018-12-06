@@ -5,7 +5,7 @@ import store from '../../store/index';
 import {getPlayerIdentity} from '../player';
 import {eosOptions, getScatterEOS, network} from '../scatter';
 
-import {getPlayerBetStatEOS, getPlayerPreviousRoundBets, getPlayerRoundBetLatest, getPlayerRoundBets, playerRoundJoinStatus} from './bet';
+import {calcBetTotal, getPlayerBetStatEOS, getPlayerPreviousRoundBets, getPlayerRoundBetLatest, getPlayerRoundBets, playerRoundJoinStatus} from './bet';
 import {roundtypeKeyValue, teamKeyLang, teamKeyShort} from './filter';
 
 const contract = process.env.EOS.CONTRACTNBA;
@@ -150,7 +150,7 @@ export async function getMeRoundList(player) {
       game_payout_serv_payout: betstat.bet_amount,
       game_get_serv_get: betstat.win_amount
     },
-    page: 'me',
+    page: 'me'
   };
   }
 
@@ -169,7 +169,7 @@ function formatHomeRound(r, playerRoundBets) {
     game_info_right_id: r.hometeam,
     game_contract_type: 'NBA',
     game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
-    game_join_bet_serv_bet_unit: r.bet_unit,
+    game_join_bet_serv_bet_unit: calcBetTotal(r.bet_unit, 1, false, 2),
     game_joied_num_serv_shares: r.shares,
     game_joined_status: playerRoundJoinStatus(playerRoundBets, r),
     game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
@@ -200,7 +200,7 @@ function formatOngoinRound(r, playerRoundBets, joined_status) {
     game_info_right_id: r.hometeam,
     game_contract_type: 'NBA',
     game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
-    game_join_bet_serv_bet_unit: r.bet_unit,
+    game_join_bet_serv_bet_unit: calcBetTotal(r.bet_unit, 1, false, 2),
     game_joied_num_serv_shares: r.shares,
     game_joined_status: joined_status,
     game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
@@ -224,7 +224,7 @@ function formatHistoryRound(r, playerRoundBets, joined_status, bet) {
     game_info_right_id: r.hometeam,
     game_contract_type: 'NBA',
     game_round_type_i18n_serv_type: roundtypeKeyValue[r.type],
-    game_join_bet_serv_bet_unit: r.bet_unit,
+    game_join_bet_serv_bet_unit: calcBetTotal(r.bet_unit, 1, false, 2),
     game_joied_num_serv_shares: r.shares,
     game_joined_status: joined_status,
     game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
