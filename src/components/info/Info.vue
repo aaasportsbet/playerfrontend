@@ -173,7 +173,7 @@
         </div>
       </div>
 
-      <div class="box_bottom" v-show="info.game_joined_latest !== 0">
+      <div class="box_bottom" v-show="local_game_joined_latest !== 0">
         <span
           class="box_bottom_l"
           v-if="info.game_round_type_i18n_serv_type === 'WinLose'"
@@ -185,10 +185,10 @@
         >{{local_game_joined_latest.team_name}} Win {{local_game_joined_latest.team_score}} Score</span>
         <span class="box_bottom_r">{{local_game_joined_latest.share}}</span>
       </div>
-      <div style="height:16px;" v-show="info.game_joined_latest === 0"></div>
+      <div style="height:16px;" v-show="local_game_joined_latest === 0"></div>
       <div
         class="bottom_more"
-        v-show="info.game_joined_latest !== 0 && info.game_joined_more_display === true"
+        v-show="local_game_joined_latest !== 0 && Real_game_joined_more_display === true"
         v-clickoutside="handleClose"
       >
         <div class="dropdown_menu" @click="show = !show">
@@ -224,6 +224,7 @@ export default {
       countdownshow: false,
       JoinVisible: false,
       DetailVisible: false,
+      Real_game_joined_more_display: this.info.game_joined_more_display,
       Real_game_joined_status :this.info.game_joined_status.value,
       Real_game_detail_status :this.info.game_joined_status.value,
       joindata: {
@@ -323,6 +324,7 @@ export default {
                           console.log("response.data.game_joined_latest",response.data.game_joined_latest)
                           this.list_playmore = response.data.game_joined_more;
                           this.local_game_joined_latest=response.data.game_joined_latest;
+                          this.Real_game_joined_more_display=response.data.game_joined_more_display;
                         }
                         else{
                           this.$message.error(response.error);

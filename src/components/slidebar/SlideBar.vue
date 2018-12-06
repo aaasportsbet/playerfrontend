@@ -44,7 +44,7 @@ export default {
         case 1:
           if (this.personalInfo.uid && this.personalInfo.nickname){
             this.$store.dispatch('goPersonalPages',{userId:this.personalInfo.uid})
-            //this.$store.dispatch('toggleheader',{nickname:this.personalInfo.nickname})
+            this.$store.dispatch('toggleheader',{nickname:this.personalInfo.nickname})
             this.$store.dispatch('toggleSlideBar')
           }
           break;

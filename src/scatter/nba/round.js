@@ -152,7 +152,8 @@ export async function getMeRoundList(player) {
     }
   });
 
-  var betstat = getPlayerBetStatEOS(player);
+  var betstat =await getPlayerBetStatEOS(player);
+  console.log("betstat",betstat);
   return {
     errno: 200,
     ongoingdata: ongoingrounds,
@@ -163,8 +164,9 @@ export async function getMeRoundList(player) {
       game_payout_serv_payout: betstat.bet_amount,
       game_get_serv_get: betstat.win_amount
     },
-    page: 'me'
+    page: 'me',
   };
+
 }
 
 function formatHomeRound(r, playerRoundBets) {

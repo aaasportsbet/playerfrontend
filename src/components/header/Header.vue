@@ -8,9 +8,13 @@
         <span>{{headertitle}}</span>
       </div>
       <div class="me_set">
+        <div class="login_me_lan">
+          <span class="login_me_lan_zhcn">简</span>
+          <span class="login_me_lan_en">En</span>
+        </div>
         <div class="login_me_uid"  v-show="this.me_set_login === true">{{me_set_uid}}</div>
-         <div class="login_me_set" v-if="this.me_set_login === true" @click="act_me_set()">Logout</div>
-         <div class="login_me_set" v-if="this.me_set_login === false" @click="act_me_set()">Login</div>
+        <div class="login_me_set" v-if="this.me_set_login === true" @click="act_me_set()">Logout</div>
+        <div class="login_me_set" v-if="this.me_set_login === false" @click="act_me_set()">Login</div>
       </div>
     </header>
     <topnav></topnav>
@@ -150,12 +154,52 @@ export default {
     align-items: center;
     flex-direction: row;
     font-size: @icon-font-size;
+    .login_me_lan{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: row;
+      margin-right: 40px;
+      color: #fffffe;
+      font-size: 25px;
+      font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;background-color: #ecc22f;
+      font-size: 30px;
+      color: #2b2b2b;
+      font-weight: bold;
+      height: 50px;
+      width: 100px;
+      text-align: center;
+      line-height: 50px;
+      border-color: #ecc22f;
+      border-radius: 4px;
+      border-width: 2px;
+      border-style: solid;
+      .login_me_lan_zhcn{
+        text-align: center;
+        width: 40px;
+        height: 50px;
+        line-height: 50px;
+        color: #2b2b2b;
+
+      }
+      .login_me_lan_en{
+        text-align: center;
+        
+        width: 40px;
+        color: #ecc22f;
+        border-color: #ecc22f;
+        border-radius: 8px;
+        height: 45px;
+        border-width: 2px;
+        border-style: solid;
+        background-color: rgba(34, 34, 34, 0.8);
+      }
+    }
     .login_me_uid{
       margin-right: 40px;
       color: #fffffe;
       font-size: 25px;
-      font-family: "Helvetica Neue", Helvetica, "PingFang SC",
-        "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+      font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       border-color:rgba(119, 119, 119, 1);
       background-color: rgba(119, 119, 119, 1);
       border-radius: 4px;
@@ -171,11 +215,9 @@ export default {
       margin-right: 40px;
       color: #fffffe;
       font-size: 25px;
-      font-family: "Helvetica Neue", Helvetica, "PingFang SC",
-        "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+      font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       background-color: #ecc22f;
-      font-size: 30px;
-      font-family: "MicrosoftYaHei", "Microsoft YaHei";
+      font-size: 30px;;
       color: #2b2b2b;
       font-weight: bold;
       height: 50px;

@@ -129,8 +129,8 @@ export async function getPlayerBetStatEOS(player) {
         player: player,
         join_times: 0,
         win_times: 0,
-        bet_amount: '0.0000 EOS',
-        win_amount: '0.0000 EOS',
+        bet_amount: '0 EOS',
+        win_amount: '0 EOS',
         extras: []
       };
     }
