@@ -917,6 +917,7 @@ export default {
             font-weight: bolder;
             text-align: center;
             height: 60px;
+            width: 60px;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
@@ -942,6 +943,7 @@ export default {
             font-weight: bolder;
             text-align: center;
             height: 60px;
+            width: 60px;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;
@@ -1087,6 +1089,7 @@ export default {
             font-weight: bolder;
             text-align: center;
             height: 60px;
+            width: 60px;
             font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
 
           }
@@ -1109,6 +1112,7 @@ export default {
             font-weight: bolder;
             text-align: center;
             height: 60px;
+            width: 60px;
             font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
           }
         }
@@ -1170,6 +1174,7 @@ export default {
             font-weight: 450;
             text-align: center;
             height: 60px;
+            width:180px;
             font-family: "Helvetica Neue", Helvetica, "PingFang SC",
               "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
               sans-serif;

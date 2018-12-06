@@ -161,9 +161,8 @@ export default {
       flex-direction: row;
       margin-right: 40px;
       color: #fffffe;
-      font-size: 25px;
       font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;background-color: #ecc22f;
-      font-size: 30px;
+      font-size: 25px;
       color: #2b2b2b;
       font-weight: bold;
       height: 50px;
@@ -177,8 +176,9 @@ export default {
       .login_me_lan_zhcn{
         text-align: center;
         width: 40px;
-        height: 45px;
+        line-height: 45px;
         color: #2b2b2b;
+
 
       }
       .login_me_lan_en{
@@ -187,9 +187,9 @@ export default {
         color: #ecc22f;
         border-color: #ecc22f;
         border-radius: 8px;
-        height: 45px;
-        border-width: 2px;
+        border-width: 0px;
         border-style: solid;
+        line-height: 45px;
         background-color: rgba(34, 34, 34, 0.8);
       }
     }
@@ -215,7 +215,6 @@ export default {
       font-size: 25px;
       font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;
       background-color: #ecc22f;
-      font-size: 30px;;
       color: #2b2b2b;
       font-weight: bold;
       height: 50px;
