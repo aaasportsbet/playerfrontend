@@ -356,7 +356,7 @@ export default {
       this.joindata.act_game_win_welcome='1';
       console.log(this.joindata.act_game_win_welcome);
       this.joindata.act_game_range = info_act_game_range;
-      this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+      this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
       this.joindata.act_game_win_info =info_act_game_info + ' Score';
       console.log(info_act_game_range);
       console.log("this.joindata.act_game_point",this.joindata.act_game_point);
@@ -366,7 +366,7 @@ export default {
       this.joindata.act_game_win_welcome='1';
       this.joindata.act_game_winner_team_id = info_choose_team_id;
       this.joindata.act_game_winner_team_abbr = info_choose_team_abbr;
-      this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+      this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
 
       if(this.info.game_round_type_i18n_serv_type == 'WinLose' || (this.info.game_round_type_i18n_serv_type  == 'Range' && this.joindata.act_game_range === '')){
         this.joindata.act_game_win_info=''
@@ -403,25 +403,25 @@ export default {
       if (info_bet_addtype == "joindata.act_game_bet_multiple") {
         if(this.joindata.act_game_bet_multiple > 98){
           this.joindata.act_game_bet_multiple = 99;
-          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
           console.log(this.joindata.act_game_bet_multiple);
         }
         else{
         this.joindata.act_game_bet_multiple++;
-        this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+        this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
         console.log(this.joindata.act_game_bet_multiple);
         }
       }
       if (info_bet_addtype == "joindata.act_game_point") {
         if(this.joindata.act_game_point > 98){
           this.joindata.act_game_point = 99;
-          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
           this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
           console.log(this.joindata.act_game_point);
         }
         else{
         this.joindata.act_game_point++;
-        this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+        this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
         this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
         console.log(this.joindata.act_game_point);
         }
@@ -433,11 +433,11 @@ export default {
         if(this.joindata.act_game_bet_multiple < 2){
           console.log(this.joindata.act_game_bet_multiple);
           this.joindata.act_game_bet_multiple = 1;
-          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
         }
         else{
           this.joindata.act_game_bet_multiple--;
-          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
           console.log(this.joindata.act_game_bet_multiple);
         }
 
@@ -446,13 +446,13 @@ export default {
          if(this.joindata.act_game_point < 2){
           console.log(this.joindata.act_game_point);
           this.joindata.act_game_point= 1;
-          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
           this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
         }
         else{
           this.joindata.act_game_point--;
           this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
-          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple);
+          this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
           console.log(this.joindata.act_game_point);
         }
       }
