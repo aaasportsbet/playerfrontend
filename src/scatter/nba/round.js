@@ -11,29 +11,13 @@ import {
   getPlayerPreviousRoundBets,
   getPlayerRoundBetLatest,
   getPlayerRoundBets,
+  playerBetWinStatus,
   playerRoundJoinStatus,
   roundBetValue
 } from './bet';
 import {roundtypeKeyValue, teamKeyLang, teamKeyShort} from './filter';
 
 const contract = process.env.EOS.CONTRACTNBA;
-
-function playerBetWinStatus(bet) {
-  switch (bet.status) {
-    case 0:
-      return 'wait';
-    case 1:
-      return 'win';
-    case 2:
-      return 'lose';
-    case 3:
-      return 'awarded';
-    case 4:
-      return 'returned';
-    default:
-      return 'unknown';
-  }
-}
 
 // sort algo
 function sortby(time) {
