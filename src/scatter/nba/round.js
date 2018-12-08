@@ -5,7 +5,7 @@ import store from '../../store/index';
 import {getPlayerIdentity} from '../player';
 import {eosOptions, getScatterEOS, network} from '../scatter';
 
-import {calcBetTotal, getPlayerBetStatEOS, getPlayerPreviousRoundBets, getPlayerRoundBetLatest, getPlayerRoundBets, playerRoundJoinStatus} from './bet';
+import {calcBetTotal, getPlayerBetStatEOS, getPlayerPreviousRoundBets, getPlayerRoundBetLatest, getPlayerRoundBets, playerRoundJoinStatus, roundBetValue} from './bet';
 import {roundtypeKeyValue, teamKeyLang, teamKeyShort} from './filter';
 
 const contract = process.env.EOS.CONTRACTNBA;
@@ -98,7 +98,7 @@ export async function getHomeRoundList(player) {
 
   let displayrounds = [];
   rounds.forEach((r) => {
-    const playerRoundBets = getPlayerRoundBets(player, r);
+    const playerRoundBets = getPlayerRoundBets(player, r).reverse();
 
     displayrounds.push(formatHomeRound(r, playerRoundBets));
   });
@@ -121,7 +121,7 @@ export async function getMeRoundList(player) {
   let ongoingrounds = [];
   let historyrounds = [];
   rounds.forEach((r) => {
-    const playerRoundBets = getPlayerRoundBets(player, r);
+    const playerRoundBets = getPlayerRoundBets(player, r).reverse();
     if (playerRoundBets.length == 0) {
       return;
       }
@@ -132,8 +132,7 @@ export async function getMeRoundList(player) {
     } else {
       // split by bet
       playerRoundBets.forEach((bet) => {
-        historyrounds.push(
-            formatHistoryRound(r, playerRoundBets, joined_status, bet));
+        historyrounds.push(formatHistoryRound(r, joined_status, bet));
       });
     }
   });
@@ -210,7 +209,7 @@ function formatOngoinRound(r, playerRoundBets, joined_status) {
   };
   }
 
-function formatHistoryRound(r, playerRoundBets, joined_status, bet) {
+function formatHistoryRound(r, joined_status, bet) {
   return {
     game_serv_id: r.id,
     game_count_down_time_display: false,
@@ -227,7 +226,7 @@ function formatHistoryRound(r, playerRoundBets, joined_status, bet) {
     game_join_bet_serv_bet_unit: calcBetTotal(r.bet_unit, 1, false, 2),
     game_joied_num_serv_shares: r.shares,
     game_joined_status: joined_status,
-    game_joined_latest: getPlayerRoundBetLatest(playerRoundBets, r),
+    game_joined_latest: roundBetValue(bet, r),
     game_joined_more_display: false,
     game_server_obj: r,
     game_info_left_result_score: r.awaypoint,
