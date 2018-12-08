@@ -7,21 +7,21 @@
       </div>
       <div class="count_down_bottom">
         <span v-show="countdownshow">{{message}}</span>
-        <count-down
+        <astcountdown
           v-show="!countdownshow"
           class="count_down_time"
           v-on:start_callback="countDownS_cb(1)"
           v-on:end_callback="countDownE_cb(1)"
           :startTime="startTime"
           :endTime="endTime"
-          :tipText="'距离开始'"
-          :tipTextEnd="'距离结束'"
-          :endText="'已经结束'"
+          :tipText="''"
+          :tipTextEnd="''"
+          :endText="''"
           :dayTxt="':'"
           :hourTxt="':'"
           :minutesTxt="':'"
           :secondsTxt="''"
-        ></count-down>
+        ></astcountdown>
       </div>
     </div>
     <div
@@ -208,7 +208,7 @@
 </template>
 
 <script>
-import CountDown from "vue2-countdown";
+import astcountdown from "../astcountdown/astcountdown";
 import { getPlayerIdentity } from "../../scatter/player";
 import { getSingleRound } from "../../scatter/nba/round";
 import { betRound, calcBetTotal } from "../../scatter/nba/bet";
@@ -250,7 +250,7 @@ export default {
   },
   computed: {},
   components: {
-    CountDown
+    astcountdown
   },
   methods: {
     act_join_A(test){

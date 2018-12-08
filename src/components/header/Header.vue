@@ -9,8 +9,8 @@
       </div>
       <div class="me_set">
         <div class="login_me_lan">
-          <span class="login_me_lan_zhcn">简</span>
-          <span class="login_me_lan_en">En</span>
+          <div class="login_me_lan_zhcn">简</div>
+          <div class="login_me_lan_en">En</div>
         </div>
         <div class="login_me_uid"  v-show="this.me_set_login === true">{{me_set_uid}}</div>
         <div class="login_me_set" v-if="this.me_set_login === true" @click="act_me_set()">Logout</div>
@@ -113,11 +113,16 @@ export default {
 @baseBorderColor: #3b3b3b;
 .top_header {
   position: fixed;
-  width: 1080px;
+  //width: 1080px;
+  width: 100%;
   z-index: 10;
   top: 0px;
   margin-top: 0px;
   height: 268px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .heade {
   position: relative;
@@ -156,19 +161,19 @@ export default {
     font-size: @icon-font-size;
     .login_me_lan{
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
       flex-direction: row;
       margin-right: 40px;
       color: #fffffe;
       font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC","Hiragino Sans GB",Arial,sans-serif;background-color: #ecc22f;
-      font-size: 25px;
+      font-size: 30px;
       color: #2b2b2b;
       font-weight: bold;
       height: 50px;
       width: 100px;
       text-align: center;
-      line-height: 50px;
+      //line-height: 50px;
       border-color: #ecc22f;
       border-radius: 4px;
       border-width: 2px;
@@ -176,7 +181,9 @@ export default {
       .login_me_lan_zhcn{
         text-align: center;
         width: 40px;
-        line-height: 45px;
+        font-size: 30px;
+        line-height: 40px;
+        height: 40px;
         color: #2b2b2b;
 
 
@@ -184,12 +191,14 @@ export default {
       .login_me_lan_en{
         text-align: center;
         width: 40px;
+        font-size: 30px;
         color: #ecc22f;
         border-color: #ecc22f;
         border-radius: 8px;
-        border-width: 0px;
+        border-width: 2px;
         border-style: solid;
-        line-height: 45px;
+        height: 40px;
+        line-height: 40px;
         background-color: rgba(34, 34, 34, 0.8);
       }
     }

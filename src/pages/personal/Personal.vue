@@ -128,9 +128,10 @@ export default {
   .top_sum {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: stretch;
     flex-direction: row;
     height: 272px;
+    width: 100%;
     background: linear-gradient(
       180deg,
       rgba(208, 147, 42, 1) 0%,
@@ -140,7 +141,7 @@ export default {
     );
     .ts_join_times {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
       flex-direction: column;
       .ts_join_times_text {
@@ -158,7 +159,7 @@ export default {
     }
     .ts_win {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
       flex-direction: column;
       .ts_win_text {
@@ -176,7 +177,7 @@ export default {
     }
     .ts_payout {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
       flex-direction: column;
       .ts_payout_text {
@@ -194,7 +195,7 @@ export default {
     }
     .ts_get {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
       flex-direction: column;
       .ts_get_text {

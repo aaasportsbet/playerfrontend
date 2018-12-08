@@ -22,6 +22,7 @@ time, mark, audio, video, input,button {
     font-weight: normal;
     font-style:normal;
     outline:none;
+    user-select: none;
     /*vertical-align: baseline;*/
 }
 

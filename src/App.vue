@@ -47,6 +47,10 @@ export default {
 .content {
   //margin-top: 268px;
   //z-index: -2;
+  display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: column;
   top: 268px;
 }
 </style>

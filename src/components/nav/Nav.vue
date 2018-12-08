@@ -55,14 +55,18 @@ export default {
 
   .top_nav {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
     width: 100%;
     height: @nav-height;
     background: rgba(51, 51, 51, 1);
     text-align: center;
     margin-top:0px;
     //top:134px;
-    left: 0;
-    float:left;
+    //left: 0;
+    //float:left;
     outline: none;
 
     .nav_HS {
@@ -82,7 +86,7 @@ export default {
       background-color:@nav-div-bgColor;
       border-radius:@nav-div-radius;
       margin-top:@nav-div-top;
-      margin-left:80px;
+      //margin-left:80px;
       float:left;
     }
     .nav_M {
@@ -92,7 +96,8 @@ export default {
       background-color:@nav-div-bgColor;
       border-radius:@nav-div-radius;
       margin-top:@nav-div-top;
-      margin-left:80px;
+      //margin-left:80px;
+      margin-right: 40px;
       float:left;
     }
     .nav_text{
