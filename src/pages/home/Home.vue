@@ -9,8 +9,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 import Info from "components/info/Info.vue";
 import SwitchButton from "components/switchbutton/SwitchButton.vue";
 import { mapGetters, mapActions } from "vuex";
@@ -22,25 +20,12 @@ const ERR_OK = 0;
 export default {
   data() {
     return {
-      homelist: [],
+      //homelist: [],
       homelists: []
     };
   },
 
   created() {
-    axios
-      .get("/api/home")
-      .then(res => {
-        res = res.data;
-        if (res.errno === ERR_OK) {
-          this.homelist = res.data;
-          console.log("homelist :", res.data);
-        }
-      })
-      .catch(error => {
-        console.warn(error);
-      });
-
       let acc_player=this.$store.getters.accountName;
       let acc_isLogin= this.$store.getters.isLogin;
       if(acc_isLogin){

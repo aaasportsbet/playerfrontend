@@ -1,6 +1,6 @@
 <template>
   <div class="info">
-    <div class="count_down" :class="[info.game_count_down_time_display === false ? 'count_down_display_none' : '']">
+    <div class="count_down" :class="[info.game_count_down_time_display === false ? 'count_down_display_none' : '']" v-if="info.game_count_down_time_display !== false">
       <div class="count_down_top_flex">
         <div class="icon-clock count_down_top_clock"></div>
         <div class="count_down_top">Count Down</div>
@@ -27,6 +27,7 @@
     <div
       class="game_win_status"
       :class="[info.game_win_status_display === false ? 'game_win_status_display_none' : '']"
+      v-if="info.game_win_status_display === true"
     >
       <div class="game_win_status_win" v-if="info.game_win_status === 'win'">
         <div class="game_win_status_win_text">Win</div>
@@ -183,6 +184,12 @@
           class="box_bottom_l"
           v-else
         >{{local_game_joined_latest.team_name}} Win {{local_game_joined_latest.team_score}} Score</span>
+            <span class="win_status" style="color:rgba(205, 89, 48, 1)" v-if="local_game_joined_latest.user_win_status === 'win'"><i class="iconfont">&#xe604;</i></span>
+            <span class="win_status" style="color:#777777;" v-else-if="local_game_joined_latest.user_win_status === 'lose'"><i class="iconfont">&#xe605;</i></span>
+            <span class="win_status" style="color:#ecc22f;" v-else-if="local_game_joined_latest.user_win_status === 'returned'"><i class="iconfont">&#xe72d;</i></span>
+            <span class="win_status" style="color:#ecc22f;" v-else-if="local_game_joined_latest.user_win_status === 'wait'"><i class="iconfont">&#xe621;</i></span>
+            <span class="win_status" style="color:#ecc22f;" v-else-if="local_game_joined_latest.user_win_status === 'awarded'"><i class="iconfont">&#xe621;</i></span>
+            <span class="win_status" style="color:#ecc22f;" v-else><i class="iconfont">&#xe7e1;</i></span>
         <span class="box_bottom_r">{{local_game_joined_latest.share}}</span>
       </div>
       <div style="height:16px;" v-show="local_game_joined_latest === 0"></div>
@@ -199,6 +206,12 @@
           <div class="dropdown_list" v-for="item in list_playmore">
             <span class="dropdown_list_l" v-if="info.game_round_type_i18n_serv_type === 'WinLose'">{{item.team_name}} Win {{item.team_score}}</span>
             <span class="dropdown_list_l" v-else>{{item.team_name}} Win {{item.team_score}} Score</span>
+            <span class="win_status" style="color:rgba(205, 89, 48, 1)" v-if="item.user_win_status === 'win'"><i class="iconfont">&#xe604;</i></span>
+            <span class="win_status" style="color:#777777;" v-else-if="item.user_win_status === 'lose'"><i class="iconfont">&#xe605;</i></span>
+            <span class="win_status" style="color:#ecc22f;" v-else-if="item.user_win_status === 'returned'"><i class="iconfont">&#xe72d;</i></span>
+            <span class="win_status" style="color:#ecc22f;" v-else-if="item.user_win_status === 'wait'"><i class="iconfont">&#xe621;</i></span>
+            <span class="win_status" style="color:#ecc22f;" v-else-if="item.user_win_status === 'awarded'"><i class="iconfont">&#xe621;</i></span>
+            <span class="win_status" style="color:#ecc22f;" v-else><i class="iconfont">&#xe7e1;</i></span>
             <span class="dropdown_list_r">{{item.share}}</span>
           </div>
         </div>
@@ -328,16 +341,16 @@ export default {
                       });
                     }
                     else if(response.errno== 401){
-                      this.$message.error('Sorry, You are not login, Please Login!');
+                      this.$message.error('Sorry, You are not login, Please Login!Error:',response.error);
 
 
                     }
                     else if(response.errno== 400){
-                      this.$message.error('Sorry, Network latency, Please try again later!');
+                      this.$message.error('Sorry, Network latency, Please try again later!Error:',response.error);
 
                     }
                     else{
-                      this.$message.error('Sorry, Network error, Please try again later!');
+                      this.$message.error('Sorry, Network error, Please try again later!Error:',response.error);
                     }
 
 
@@ -496,9 +509,23 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @baseBackgroundColor: #333333;
 @baseBorderColor: #777777;
+@font-face {
+  font-family: 'iconfont';  /* project id 954268 */
+  src: url('//at.alicdn.com/t/font_954268_beyg4imydd4.eot');
+  src: url('//at.alicdn.com/t/font_954268_beyg4imydd4.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_954268_beyg4imydd4.woff') format('woff'),
+  url('//at.alicdn.com/t/font_954268_beyg4imydd4.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_954268_beyg4imydd4.svg#iconfont') format('svg');
+}
+  .iconfont{
+      font-family:"iconfont" !important;
+      font-size:50px;font-style:normal;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-stroke-width: 0.2px;
+      -moz-osx-font-smoothing: grayscale;}
 [v-cloak] {
   display: none;
 }
@@ -1195,12 +1222,17 @@ export default {
       border-style: solid;
       border-color: rgba(119, 119, 119, 1);
       height: 86px;
-
+      .win_status{
+       color: #777777;
+      }
       .box_bottom_l {
         margin-left: 40px;
+        width: 40%;
       }
       .box_bottom_r {
         margin-right: 40px;
+        width: 40%;
+        text-align: right;
       }
     }
     .bottom_more {
@@ -1240,9 +1272,12 @@ export default {
           border-color: rgba(119, 119, 119, 1);
           .dropdown_list_l {
             margin-left: 40px;
+            width: 40%;
           }
           .dropdown_list_r {
             margin-right: 40px;
+            width: 40%;
+            text-align: right;
           }
         }
       }

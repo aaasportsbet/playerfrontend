@@ -63,13 +63,13 @@ export default {
 </script>
 
 <style lang="less">
-    @font-face {
+   @font-face {
       font-family: 'iconfont';  /* project id 954268 */
-      src: url('//at.alicdn.com/t/font_954268_mym5nfp1ym.eot');
-      src: url('//at.alicdn.com/t/font_954268_mym5nfp1ym.eot?#iefix') format('embedded-opentype'),
-      url('//at.alicdn.com/t/font_954268_mym5nfp1ym.woff') format('woff'),
-      url('//at.alicdn.com/t/font_954268_mym5nfp1ym.ttf') format('truetype'),
-      url('//at.alicdn.com/t/font_954268_mym5nfp1ym.svg#iconfont') format('svg');
+      src: url('//at.alicdn.com/t/font_954268_beyg4imydd4.eot');
+      src: url('//at.alicdn.com/t/font_954268_beyg4imydd4.eot?#iefix') format('embedded-opentype'),
+      url('//at.alicdn.com/t/font_954268_beyg4imydd4.woff') format('woff'),
+      url('//at.alicdn.com/t/font_954268_beyg4imydd4.ttf') format('truetype'),
+      url('//at.alicdn.com/t/font_954268_beyg4imydd4.svg#iconfont') format('svg');
     }
   .iconfont{
       font-family:"iconfont" !important;

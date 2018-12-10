@@ -41,8 +41,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 import Info from "components/info/Info.vue";
 import SwitchButton from "components/switchbutton/SwitchButton.vue";
 import { mapGetters, mapActions } from "vuex";
@@ -55,7 +53,7 @@ export default {
   data() {
     return {
       display_O_H: false,
-      homelist: [],
+      //homelist: [],
       meongoinglists: [],
       mehistorylists: [],
       mesum:{
@@ -68,17 +66,7 @@ export default {
   },
 
   created() {
-    axios
-      .get("/api/home")
-      .then(res => {
-        res = res.data;
-        if (res.errno === ERR_OK) {
-          this.homelist = res.data;
-        }
-      })
-      .catch(error => {
-        console.warn(error);
-      });
+
     if (this.$store.getters.isLogin == true) {
       getPlayerIdentity()
         .then(identity => {
