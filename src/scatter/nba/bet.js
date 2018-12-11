@@ -25,6 +25,14 @@ export function playerBetWinStatus(bet) {
   }
 }
 
+export function playerBetWinStatusLeft(round, bet) {
+  if (round.result === bet.bet_val) {
+    return 'win';
+  }
+
+  return 'lose';
+}
+
 // get bet list
 export function getPlayerRoundBets(player, round) {
   console.log('getPlayerRoundBets player: ', player);
