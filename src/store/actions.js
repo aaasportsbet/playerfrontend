@@ -84,3 +84,8 @@ export const  goDetailPage = ({commit},payload) => {
 export const  toggleLove = ({commit}) => {
   commit(types.TOGGLE_LOVE)
 }
+
+// 切换语言
+export const changeLanguage = ({commit}, lan) => {
+  commit(types.CHANGE_LANGUAGE, lan);
+}

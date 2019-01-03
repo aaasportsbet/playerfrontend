@@ -24,7 +24,8 @@ const state = {
   isfollow: false,
   followcount: 101,
   isLove: false,
-  lovecount: 12
+  lovecount: 12,
+  currentLanguage: "en",
 }
 
 export default state

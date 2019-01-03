@@ -2,19 +2,19 @@
   <div class="home">
     <div class="top_sum">
       <div class="ts_join_times">
-        <div class="ts_join_times_text">Join Times</div>
+        <div class="ts_join_times_text">{{ l("Join Times") }}</div>
         <div class="ts_join_times_num">{{mesum.game_join_times_serv_times}}</div>
       </div>
       <div class="ts_win">
-        <div class="ts_win_text">Win Times</div>
+        <div class="ts_win_text">{{ l("Win Times") }}</div>
         <div class="ts_win_num">{{mesum.game_join_win_times_serv_win_times}}</div>
       </div>
       <div class="ts_payout">
-        <div class="ts_payout_text">Payout(EOS)</div>
+        <div class="ts_payout_text">{{ l("Payout(EOS)") }}</div>
         <div class="ts_payout_num">{{mesum.game_payout_serv_payout}}</div>
       </div>
       <div class="ts_get">
-        <div class="ts_get_text">Get(EOS)</div>
+        <div class="ts_get_text">{{ l("Get(EOS)") }}</div>
         <div class="ts_get_num">{{mesum.game_get_serv_get}}</div>
       </div>
     </div>
@@ -22,11 +22,11 @@
       <div
         :class="[this.display_O_H === true ? 'list_ongoing' : 'list_history']"
         @click="ListChangeTab('ongoing')"
-      >Ongoing</div>
+      >{{ l("Ongoing") }}</div>
       <div
         :class="[this.display_O_H === false ? 'list_ongoing' : 'list_history']"
         @click="ListChangeTab('history')"
-      >History</div>
+      >{{ l("History") }}</div>
     </div>
 
     <div class="info-container" v-for="item in meongoinglists" v-show="display_O_H === false">
@@ -47,6 +47,7 @@ import { mapGetters, mapActions } from "vuex";
 import { getMeRoundList } from "../../scatter/nba/round";
 import { getPlayerIdentity, login, logout } from "../../scatter/player";
 import { betRound } from "../../scatter/nba/bet";
+import applyLang from '../../lang/apply'
 
 const ERR_OK = 0;
 export default {
@@ -97,6 +98,9 @@ export default {
         this.display_O_H = true;
         console.log(this.display_O_H);
       }
+    },
+    l(val) {
+      return applyLang( this.$store.state.currentLanguage, val );
     }
   }
 };

@@ -86,4 +86,11 @@ export default {
     state.isLove = !state.isLove
   },
 
+  [types.CHANGE_LANGUAGE](state, lan) {
+    if ( lan == "en" || lan == "zhcn" ) {
+      state.currentLanguage = lan;
+    } else {
+      console.info( "error language of " + lan );
+    }
+  },
 }

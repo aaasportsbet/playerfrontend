@@ -9,12 +9,12 @@
       </div>
       <div class="me_set">
         <div class="login_me_lan">
-          <div class="login_me_lan_zhcn">简</div>
-          <div class="login_me_lan_en">En</div>
+          <div :class="switch_lan == 'zhcn' ? 'login_me_lan_choose' : 'login_me_lan_normal'" @click="switchToChinese">简</div>
+          <div :class="switch_lan == 'en' ? 'login_me_lan_choose' : 'login_me_lan_normal'" @click="switchToEnglish">En</div>
         </div>
         <div class="login_me_uid"  v-show="this.me_set_login === true">{{me_set_uid}}</div>
-        <div class="login_me_set" v-if="this.me_set_login === true" @click="act_me_set()">Logout</div>
-        <div class="login_me_set" v-if="this.me_set_login === false" @click="act_me_set()">Login</div>
+        <div class="login_me_set" v-if="this.me_set_login === true" @click="act_me_set()">{{ l('Logout') }}</div>
+        <div class="login_me_set" v-if="this.me_set_login === false" @click="act_me_set()">{{ l('Login') }}</div>
       </div>
     </header>
     <topnav></topnav>
@@ -27,11 +27,13 @@ import { mapGetters, mapActions } from "vuex";
 import Nav from "../nav/Nav.vue";
 import store from '../../store/index.js';
 import { login, logout, getPlayerIdentity } from "../../scatter/player";
+import applyLang from "../../lang/apply";
 //import router from '../../router/routes.js';
 export default {
   data() {
     return {
         me_set_display_info: "",
+        switch_lan: "en"
     }
 
   },
@@ -46,6 +48,17 @@ export default {
   methods: {
     toggleSlideBar() {
       this.$store.dispatch("toggleSlideBar");
+    },
+    switchToEnglish() {
+      this.switch_lan = "en";
+      store.dispatch("changeLanguage", this.switch_lan);
+    },
+    switchToChinese() {
+      this.switch_lan = "zhcn";
+      store.dispatch("changeLanguage", this.switch_lan);
+    },
+    l(val) {
+      return applyLang( this.$store.state.currentLanguage, val );
     },
     act_me_set() {
       if(this.me_set_login == true){
@@ -178,17 +191,16 @@ export default {
       border-radius: 4px;
       border-width: 2px;
       border-style: solid;
-      .login_me_lan_zhcn{
+
+      .login_me_lan_normal{
         text-align: center;
         width: 40px;
         font-size: 30px;
         line-height: 40px;
         height: 40px;
         color: #2b2b2b;
-
-
       }
-      .login_me_lan_en{
+      .login_me_lan_choose{
         text-align: center;
         width: 40px;
         font-size: 30px;

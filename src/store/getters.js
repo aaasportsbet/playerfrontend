@@ -16,5 +16,3 @@ export const isfollow = state => state.isfollow
 export const followcount = state => state.followcount
 export const isLove = state => state.isLove
 export const lovecount = state => state.lovecount
-
-

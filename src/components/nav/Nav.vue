@@ -1,19 +1,20 @@
 <template>
   <div class="top_nav">
     <div class="nav_HS" @click="goHomePage" tabindex="1">
-     <span class="nav_text" :class="[$route.name === 'home' ? 'curpage_color' : '']">Hot Sports</span>
+     <span class="nav_text" :class="[$route.name === 'home' ? 'curpage_color' : '']">{{ l("Hot Sports") }}</span>
     </div>
     <div class="nav_S" tabindex="2">
-      <div class="nav_text" :class="[$route.name === 'schedule' ? 'curpage_color' : '']">Rules</div>
+      <div class="nav_text" :class="[$route.name === 'schedule' ? 'curpage_color' : '']">{{ l("Rules") }}</div>
     </div>
     <div class="nav_M" @click="goPersonalPages(9)" tabindex="3">
-      <div class="nav_text" :class="[$route.name === 'personal' ? 'curpage_color' : '']">Me</div>
+      <div class="nav_text" :class="[$route.name === 'personal' ? 'curpage_color' : '']">{{ l("Me") }}</div>
     </div>
   </div>
 </template>
 
 <script>
 import VueRouter from '../../router/routes.js'
+import applyLang from '../../lang/apply'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -31,7 +32,9 @@ export default {
         }
       }
     },
-
+    l(val) {
+      return applyLang( this.$store.state.currentLanguage, val );
+    },
     goHomePage(){
       if (this.$route.name !== 'home'){
       this.$store.dispatch('goHomePage')

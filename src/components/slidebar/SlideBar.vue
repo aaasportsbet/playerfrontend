@@ -11,10 +11,10 @@
           </div>
         </div>
         <el-menu class="el-menu-vertical-demo" @select="handleSelect">
-          <el-menu-item index="1"><i class="iconfont">&#xe735;</i><div class="navtext">Me</div></el-menu-item>
-          <el-menu-item index="2"><i class="iconfont">&#xe726;</i><div class="navtext">NBA</div></el-menu-item>
-          <el-menu-item index="3"><i class="iconfont">&#xe6b6;</i><div class="navtext">World Cup</div></el-menu-item>
-          <el-menu-item index="4"><i class="iconfont">&#xe726;</i><div class="navtext">CBA</div></el-menu-item>
+          <el-menu-item index="1"><i class="iconfont">&#xe735;</i><div class="navtext">{{ l("Me") }}</div></el-menu-item>
+          <el-menu-item index="2"><i class="iconfont">&#xe726;</i><div class="navtext">{{ l("NBA") }}</div></el-menu-item>
+          <el-menu-item index="3"><i class="iconfont">&#xe6b6;</i><div class="navtext">{{ l("World Cup") }}</div></el-menu-item>
+          <el-menu-item index="4"><i class="iconfont">&#xe726;</i><div class="navtext">{{ l("CBA") }}</div></el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="10" class="right" ><div @click="toggleSlideBar" class="rightEvent"></div></el-col>
@@ -24,6 +24,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import applyLang from '../../lang/apply'
 
 export default {
   computed: {
@@ -57,6 +58,9 @@ export default {
         let errorImgUrl = require('../../assets/image/img_error_avatar.png')
         this.$refs.sliderbaravatar.src = errorImgUrl
      })
+    },
+    l(val) {
+      return applyLang( this.$store.state.currentLanguage, val );
     }
   }
 }
