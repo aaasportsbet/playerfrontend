@@ -39,12 +39,12 @@
     <div class="box">
       <div class="vs_play">
         <div class="left_vs_play">
-          <span class="left_text_i18n">{{info.game_info_left_i18n_serv_awayteam}}</span>
+          <span class="left_text_i18n">{{ l(info.game_info_left_i18n_serv_awayteam) }}</span>
           <span class="left_text_abbr">({{info.game_info_left_abbr}})</span>
         </div>
         <div class="icon_vs_play">VS</div>
         <div class="right_vs_play">
-          <span class="right_text_i18n">{{info.game_info_right_i18n_serv_hometeam}}</span>
+          <span class="right_text_i18n">{{ l(info.game_info_right_i18n_serv_hometeam) }}</span>
           <span class="right_text_abbr">({{info.game_info_right_abbr}})</span>
         </div>
       </div>
@@ -52,10 +52,10 @@
         <div class="detail_play">
           <span
             class="detail_play_top"
-          >[{{info.game_contract_type}}&nbsp;{{info.game_round_type_i18n_serv_type}}]</span>
+          >[{{info.game_contract_type}}&nbsp;{{ l(info.game_round_type_i18n_serv_type) }}]</span>
           <span
             class="detail_play_bottom"
-          >Match Time: {{info.game_count_down_time_serv_bet_end_time}}</span>
+          >{{ l("Match Time") }}: {{info.game_count_down_time_serv_bet_end_time}}</span>
           <span class="detail_play_bottom">{{ l("Join with") }} {{info.game_join_bet_serv_bet_unit}}</span>
         </div>
         <div
@@ -178,12 +178,12 @@
         <span
           class="box_bottom_l"
           v-if="info.game_round_type_i18n_serv_type === 'WinLose'"
-        >{{local_game_joined_latest.team_name}} Win {{local_game_joined_latest.team_score}}</span>
+        >{{local_game_joined_latest.team_name}} {{ l("Win") }} {{local_game_joined_latest.team_score}}</span>
 
         <span
           class="box_bottom_l"
           v-else
-        >{{local_game_joined_latest.team_name}} Win {{local_game_joined_latest.team_score}} Score</span>
+        >{{local_game_joined_latest.team_name}} {{ l("Win") }} {{local_game_joined_latest.team_score}} {{ l("Score") }}</span>
             <span class="win_status" style="color:rgba(205, 89, 48, 1)" v-if="local_game_joined_latest.user_win_status === 'win'"><i class="iconfont">&#xe604;</i></span>
             <span class="win_status" style="color:#777777;" v-else-if="local_game_joined_latest.user_win_status === 'lose'"><i class="iconfont">&#xe605;</i></span>
             <span class="win_status" style="color:#ecc22f;" v-else-if="local_game_joined_latest.user_win_status === 'returned'"><i class="iconfont">&#xe72d;</i></span>
