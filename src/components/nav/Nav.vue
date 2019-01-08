@@ -3,7 +3,7 @@
     <div class="nav_HS" @click="goHomePage" tabindex="1">
      <span class="nav_text" :class="[$route.name === 'home' ? 'curpage_color' : '']">{{ l("Hot Sports") }}</span>
     </div>
-    <div class="nav_S" tabindex="2">
+    <div class="nav_S" @click='prompt' tabindex="2">
       <div class="nav_text" :class="[$route.name === 'schedule' ? 'curpage_color' : '']">{{ l("Rules") }}</div>
     </div>
     <div class="nav_M" @click="goPersonalPages(9)" tabindex="3">
@@ -22,6 +22,13 @@ export default {
   methods: {
     toggleSlideBar () {
       this.$store.dispatch('toggleSlideBar')
+    },
+    prompt () {
+      this.$message({
+        message: this.l('We are working on it.'),
+        center: true,
+        type:'success'
+      })
     },
     goPersonalPages (uid) {
       if (this.$route.name !== 'personal'){

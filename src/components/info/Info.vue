@@ -73,7 +73,7 @@
           <div
             class="joined_info_bottom"
             v-if="info.game_joined_status.index !== 0"
-          >{{info.game_joined_status.value}}</div>
+          >{{ l(info.game_joined_status.value) }}</div>
           <div
             class="joined_info_bottom joined_info_bottom_f"
             @click="act_join_A('right')"
@@ -160,7 +160,7 @@
         <div class="bet_act_BP_betinfo">
           <div class="bet_act_BP_beinfo_label">{{ l("Bet Detail") }}</div>
           <div class="bet_act_BP_beinfo_value">
-            <span v-show="joindata.act_game_win_welcome === '1'">{{ l("You bet") }} {{joindata.act_game_pay_total}} {{ l("for") }} {{joindata.act_game_winner_team_abbr}} {{ l("Win") }} {{joindata.act_game_win_info}}</span>
+            <span v-show="joindata.act_game_win_welcome === '1'">{{ l("You bet") }} {{joindata.act_game_pay_total}} {{ l("for") }} {{joindata.act_game_winner_team_abbr}} {{ l("Win") }} {{joindata.act_game_win_info}} {{ l('Score') }}</span>
             <span v-show="joindata.act_game_win_welcome === '0'">{{ l(joindata.act_game_win_welcome_text) }}</span>
             </div>
           </div>
@@ -204,8 +204,8 @@
           </div>
         <div class="dropdown_show" v-show="show">
           <div class="dropdown_list" v-for="item in list_playmore">
-            <span class="dropdown_list_l" v-if="info.game_round_type_i18n_serv_type === 'WinLose'">{{item.team_name}} Win {{item.team_score}}</span>
-            <span class="dropdown_list_l" v-else>{{item.team_name}} Win {{item.team_score}} Score</span>
+            <span class="dropdown_list_l" v-if="info.game_round_type_i18n_serv_type === 'WinLose'">{{item.team_name}} {{l('Win')}} {{item.team_score}}</span>
+            <span class="dropdown_list_l" v-else>{{l(item.team_name)}} {{l('Win')}} {{item.team_score}} {{l('Score')}}</span>
             <span class="win_status" style="color:rgba(205, 89, 48, 1)" v-if="item.user_win_status === 'win'"><i class="iconfont">&#xe604;</i></span>
             <span class="win_status" style="color:#777777;" v-else-if="item.user_win_status === 'lose'"><i class="iconfont">&#xe605;</i></span>
             <span class="win_status" style="color:#ecc22f;" v-else-if="item.user_win_status === 'returned'"><i class="iconfont">&#xe72d;</i></span>
@@ -343,19 +343,18 @@ export default {
                       });
                     }
                     else if(response.errno== 401){
-                      this.$message.error(l('Sorry, You are not login, Please Login!Error:'),response.error);
-
-
+                      this.$message.error(this.l('Sorry, You are not login, Please Login! Error:') + response.errno);
                     }
                     else if(response.errno== 400){
-                      this.$message.error(l('Sorry, Network latency, Please try again later!Error:'),response.error);
-
+                      this.$message.error(this.l('Sorry, Network latency, Please try again later! Error:') + response.errno);
+                    }
+                    else if(response.errno==500){
+                      console.info( response.errno );
+                      this.$message.error(this.l('Sorry, Network error, may due to the insufficient fund! Error:') + response.errno);
                     }
                     else{
-                      this.$message.error(l('Sorry, Network error, Please try again later!Error:'),response.error);
+                      this.$message.error(this.l('Sorry, Internal service error, Please try again later! Error:') + response.errno);
                     }
-
-
                 })
                 .catch(error => {
                   console.error(error);
@@ -372,7 +371,7 @@ export default {
       console.log(this.joindata.act_game_win_welcome);
       this.joindata.act_game_range = info_act_game_range;
       this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
-      this.joindata.act_game_win_info =info_act_game_info + ' Score';
+      this.joindata.act_game_win_info =info_act_game_info;
       console.log(info_act_game_range);
       console.log("this.joindata.act_game_point",this.joindata.act_game_point);
     },
@@ -404,10 +403,10 @@ export default {
              info_act_game_info='20+';
         }
         console.log("ct_this.joindata.act_game_range ",this.joindata.act_game_range );
-        this.joindata.act_game_win_info = info_act_game_info  + ' Score';
+        this.joindata.act_game_win_info = info_act_game_info;
       }
       else{
-        this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
+        this.joindata.act_game_win_info = this.joindata.act_game_point;
       }
 
 
@@ -431,13 +430,13 @@ export default {
         if(this.joindata.act_game_point > 98){
           this.joindata.act_game_point = 99;
           this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
-          this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
+          this.joindata.act_game_win_info = this.joindata.act_game_point;
           console.log(this.joindata.act_game_point);
         }
         else{
         this.joindata.act_game_point++;
         this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
-        this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
+        this.joindata.act_game_win_info = this.joindata.act_game_point;
         console.log(this.joindata.act_game_point);
         }
       }
@@ -462,11 +461,11 @@ export default {
           console.log(this.joindata.act_game_point);
           this.joindata.act_game_point= 1;
           this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
-          this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
+          this.joindata.act_game_win_info = this.joindata.act_game_point;
         }
         else{
           this.joindata.act_game_point--;
-          this.joindata.act_game_win_info = this.joindata.act_game_point  + ' Score';
+          this.joindata.act_game_win_info = this.joindata.act_game_point;
           this.joindata.act_game_pay_total = calcBetTotal(this.info.game_server_obj.bet_unit, this.joindata.act_game_bet_multiple,false,2);
           console.log(this.joindata.act_game_point);
         }
