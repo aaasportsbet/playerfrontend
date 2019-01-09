@@ -67,7 +67,15 @@ export default {
   },
 
   created() {
+    // 用于界面刷新
+    if (this.$store.state.routerRefreshing === true) {
+      this.$store.dispatch('routerRefreshing', false)
+      this.$store.dispatch('updatePage')
+      return
+    }
 
+    // 从Scatter加载正式数据
+    console.info( "切换到 PERSONAL" )
     if (this.$store.getters.isLogin == true) {
       getPlayerIdentity()
         .then(identity => {

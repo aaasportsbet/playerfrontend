@@ -26,24 +26,33 @@ export default {
   },
 
   created() {
-      let acc_player=this.$store.getters.accountName;
-      let acc_isLogin= this.$store.getters.isLogin;
-      if(acc_isLogin){
-        getHomeRoundList(acc_player).then(response => {
-        this.homelists = response.data;
-        console.log("homelists :", response.data);
-        console.log("scatter01 login status is true:",this.$store.state.scatter);
-        })
-        .catch(error => {console.log("home-created-error-login-status-is-true",error)});
-      }
-      if(!acc_isLogin){
-        getHomeRoundList(acc_player).then(response => {
-        this.homelists = response.data;
-        console.log("homelists :", response.data);
-        console.log("scatter01 login status is false:",this.$store.state.scatter);
-        })
-        .catch(error => {console.log("home-created-error-login-status-is-false",error)});
-      }
+    // 用于界面刷新
+    if (this.$store.state.routerRefreshing === true) {
+      this.$store.dispatch('routerRefreshing', false)
+      this.$store.dispatch('updatePage')
+      return
+    }
+
+    // 从Scatter加载正式数据
+    console.info( "切换到 HOME" )
+    let acc_player=this.$store.getters.accountName;
+    let acc_isLogin= this.$store.getters.isLogin;
+    if(acc_isLogin){
+      getHomeRoundList(acc_player).then(response => {
+      this.homelists = response.data;
+      console.log("homelists :", response.data);
+      console.log("scatter01 login status is true:",this.$store.state.scatter);
+      })
+      .catch(error => {console.log("home-created-error-login-status-is-true",error)});
+    }
+    if(!acc_isLogin){
+      getHomeRoundList(acc_player).then(response => {
+      this.homelists = response.data;
+      console.log("homelists :", response.data);
+      console.log("scatter01 login status is false:",this.$store.state.scatter);
+      })
+      .catch(error => {console.log("home-created-error-login-status-is-false",error)});
+    }
   },
   components: {
     info: Info,

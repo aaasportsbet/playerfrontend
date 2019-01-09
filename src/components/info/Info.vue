@@ -296,10 +296,10 @@ export default {
       console.log("act_game_winner_team_id", this.joindata.act_game_winner_team_id);
       console.log("act_game_point", this.joindata.act_game_point);
       console.log("act_game_pay_total", this.joindata.act_game_pay_total);
-      if(this.joindata.act_game_winner_team_id == '') {
+      if(this.joindata.act_game_winner_team_id === '') {
         this.joindata.act_pay_err='Please Choose Win Team';
       }
-      else if(this.joindata.act_game_range == '' && this.info.game_round_type_i18n_serv_type == 'Range'){
+      else if(this.joindata.act_game_range === '' && this.info.game_round_type_i18n_serv_type === 'Range'){
         this.joindata.act_pay_err='Please Choose Bet Range';
       }
       else{
@@ -349,11 +349,15 @@ export default {
                       this.$message.error(this.l('Sorry, Network latency, Please try again later! Error:') + response.errno);
                     }
                     else if(response.errno==500){
-                      console.info( response.errno );
-                      this.$message.error(this.l('Sorry, Network error, may due to the insufficient fund! Error:') + response.errno);
+                      let error = JSON.parse(response.error)
+                      if (error.message === 'Internal Service Error') {
+                        this.$message.error(this.l('Sorry, Internal service error, may due to the insufficient fund or the contract\'s bug! Error:') + response.errno);
+                      } else {
+                        this.$message.error(this.l('Sorry, Network error, Please try again later! Error:') + response.errno);
+                      }
                     }
                     else{
-                      this.$message.error(this.l('Sorry, Internal service error, Please try again later! Error:') + response.errno);
+                      this.$message.error(this.l('Sorry, Network error, Please try again later! Error:') + response.errno);
                     }
                 })
                 .catch(error => {

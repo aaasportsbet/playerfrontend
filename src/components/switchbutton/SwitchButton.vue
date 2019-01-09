@@ -8,8 +8,12 @@
 export default {
   methods: {
     goNextPage () {
+      this.$store.dispatch('routerRefreshing', true)
       this.$store.dispatch('updatePage')
       // this.$refs.iconLoop.style.transform = 'rotate(360deg)'
+      // this.$nextTick(() => {
+      //   setRefresh( true )
+      // })
     }
   }
 }

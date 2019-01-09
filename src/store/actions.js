@@ -89,3 +89,8 @@ export const  toggleLove = ({commit}) => {
 export const changeLanguage = ({commit}, lan) => {
   commit(types.CHANGE_LANGUAGE, lan);
 }
+
+// 标志是否界面刷新
+export const routerRefreshing = ({commit}, refresh) => {
+  commit(types.ROUTER_REFRESHING, refresh)
+}

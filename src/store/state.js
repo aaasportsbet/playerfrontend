@@ -4,7 +4,7 @@ const state = {
   pageIndex: 0,
   pageArray: [
     {headerTitle: '', routename: 'home'},
-    {headerTitle: '', routename: 'Personal'},
+    {headerTitle: '', routename: 'personal'},
   ],
   isSlideBarShow: false,
   isDetailHeader: false,
@@ -26,6 +26,7 @@ const state = {
   isLove: false,
   lovecount: 12,
   currentLanguage: "en",
+  routerRefreshing: false
 }
 
 export default state

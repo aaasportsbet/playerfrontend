@@ -52,12 +52,12 @@ export default {
     "Please Choose Win Team"  : "请选择获胜队伍",
     "Please Choose Bet Range" : "请选择下注范围",
 
-    "We are working on it."                                          : "正在制作，敬请期待",
-    "Congratulations, Pay Successfully!"                             : "恭喜，下注成功！",
-    "Sorry, You are not login, Please Login! Error:"                 : "抱歉，你还没有登陆，请先登录！错误码：",
-    "Sorry, Network latency, Please try again later! Error:"         : "抱歉，网络延迟，请稍后再试！错误码：",
-    "Sorry, Network error, may due to the insufficient fund! Error:" : "抱歉，网络错误，这可能源于您的资金不足！错误码：",
-    "Sorry, Internal service error, Please try again later! Error:"  : "抱歉，内部服务错误，请稍后再试！ 错误码：",
+    "We are working on it."                                  : "正在制作，敬请期待",
+    "Congratulations, Pay Successfully!"                     : "恭喜，下注成功！",
+    "Sorry, You are not login, Please Login! Error:"         : "抱歉，你还没有登陆，请先登录！错误码：",
+    "Sorry, Network latency, Please try again later! Error:" : "抱歉，网络延迟，请稍后再试！错误码：",
+    "Sorry, Network error, Please try again later! Error:"   : "抱歉，网络，请稍后再试！ 错误码：",
+    "Sorry, Internal service error, may due to the insufficient fund or the contract\'s bug! Error:" : "抱歉，网络内部错误，这可能源于您的资金不足或者合约BUG！错误码：",
 
     "San Antonio Spurs"      : "圣安东尼奥马刺",
     "Memphis Grizzlies"      : "孟菲斯灰熊",

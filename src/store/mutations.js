@@ -1,24 +1,30 @@
 import VueRouter from '../router/routes.js'
 
 import * as types from './mutation-types.js'
+import { TabbarItem } from 'vant';
+import { satisfies } from 'semver';
 
 export default {
   [types.UPDATE_NEXT_PAGE](state) {
-    if (state.pageIndex < state.pageArray.length - 1) {
-      state.pageIndex++
-    } else {
-      state.pageIndex = 0
-    }
+    // if (state.pageIndex < state.pageArray.length - 1) {
+    //   state.pageIndex++
+    // } else {
+    //   state.pageIndex = 0
+    // }
+    // VueRouter.push({path: '/' + state.pageArray[(state.pageIndex + 1) % 2].routename})
+    // console.info( state.pageIndex )
+    state.pageIndex = (state.pageIndex + 1) % 2
     VueRouter.push({path: '/' + state.pageArray[state.pageIndex].routename})
-
   },
 
   [types.GO_HOME_PAGE](state) {
+    state.pageIndex = 0
     VueRouter.push({name: 'home'})
     // name: 'personal', params: { userId: userId }
   },
 
   [types.GO_PERSONAL_PAGES](state, {userId}) {
+    state.pageIndex = 1
     VueRouter.push({name: 'personal', params: {userId: userId}})
     // name: 'personal', params: { userId: userId }
   },
@@ -93,4 +99,8 @@ export default {
       console.info( "error language of " + lan );
     }
   },
+
+  [types.ROUTER_REFRESHING](state, refresh) {
+    state.routerRefreshing = refresh
+  }
 }
