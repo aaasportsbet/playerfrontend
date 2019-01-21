@@ -205,7 +205,7 @@
         <div class="dropdown_show" v-show="show">
           <div class="dropdown_list" v-for="item in list_playmore">
             <span class="dropdown_list_l" v-if="info.game_round_type_i18n_serv_type === 'WinLose'">{{item.team_name}} {{l('Win')}} {{item.team_score}}</span>
-            <span class="dropdown_list_l" v-else>{{l(item.team_name)}} {{l('Win')}} {{item.team_score}} {{l('Score')}}</span>
+            <span class="dropdown_list_l" v-else>{{item.team_name}} {{l('Win')}} {{item.team_score}} {{l('Score')}}</span>
             <span class="win_status" style="color:rgba(205, 89, 48, 1)" v-if="item.user_win_status === 'win'"><i class="iconfont">&#xe604;</i></span>
             <span class="win_status" style="color:#777777;" v-else-if="item.user_win_status === 'lose'"><i class="iconfont">&#xe605;</i></span>
             <span class="win_status" style="color:#ecc22f;" v-else-if="item.user_win_status === 'returned'"><i class="iconfont">&#xe72d;</i></span>
@@ -320,7 +320,7 @@ export default {
                       this.JoinVisible=false;
                       this.Real_game_joined_status=this.info.game_joined_status.value;
                       this.$message({
-                        message: l('Congratulations, Pay Successfully!'),
+                        message: this.l('Congratulations, Pay Successfully!'),
                         center: true,
                         type:'success'
                       });
@@ -336,7 +336,10 @@ export default {
                           this.list_playmore = response.data.game_joined_more;
                           this.local_game_joined_latest=response.data.game_joined_latest;
                           this.Real_game_joined_more_display=response.data.game_joined_more_display;
-                        }
+
+                          // 刷新界面
+                          this.$store.dispatch('routerRefreshing', true)
+                          this.$store.dispatch('updatePage') }
                         else{
                           this.$message.error(response.error);
                         };
