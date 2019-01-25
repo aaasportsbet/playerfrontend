@@ -227,8 +227,7 @@ export async function betRound(
   }
 };
 
-export function calcBetTotal(
-    round_bet_unit, shares, original = true, fixed = 4) {
+export function calcBetTotal(round_bet_unit, shares, original = true, fixed = 4) {
   const units = round_bet_unit.split(' ', 2);
   if (units.length != 2) {
     return '';

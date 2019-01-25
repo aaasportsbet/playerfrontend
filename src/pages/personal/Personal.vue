@@ -30,10 +30,10 @@
     </div>
 
     <div class="info-container" v-for="item in meongoinglists" v-show="display_O_H === false">
-      <info :info="item" class="info"></info>
+      <info :info="item" :type="false" class="info"></info>
     </div>
     <div class="info-container" v-for="item in mehistorylists" v-show="display_O_H === true">
-      <info :info="item" class="info"></info>
+      <info :info="item" :type="false" class="info"></info>
     </div>
     <div style="height:16px;"></div>
     <switch-button></switch-button>

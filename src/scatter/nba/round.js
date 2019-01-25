@@ -82,7 +82,6 @@ export async function getHomeRoundList(player) {
   let displayrounds = [];
   rounds.forEach((r) => {
     const playerRoundBets = getPlayerRoundBets(player, r).reverse();
-
     displayrounds.push(formatHomeRound(r, playerRoundBets));
   });
 
@@ -163,7 +162,9 @@ function formatHomeRound(r, playerRoundBets) {
     game_info_result_players: r.shares,
     game_info_result_bonuspool: r.total,
     game_info_result_winner_num: r.shares_win,
-    game_info_result_winner_getuint: r.unit_award
+    game_info_result_winner_getuint: r.unit_award,
+    game_total_bets: r.bets,
+    game_bet_unit: r.bet_unit
   };
   }
 

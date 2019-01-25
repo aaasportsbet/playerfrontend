@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="info-container" v-for="item in homelists">
-      <info :info="item" class="info"></info>
+      <info :info="item" :type="true" class="info"></info>
     </div>
     <div style="height:16px;"></div>
 		<switch-button></switch-button>
@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       //homelist: [],
-      homelists: []
+      homelists: [],
     };
   },
 

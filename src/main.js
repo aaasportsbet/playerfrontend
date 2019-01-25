@@ -10,9 +10,10 @@ import App from './App.vue'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import ECharts from 'vue-echarts'
 
 Vue.use(ElementUI)
-
+Vue.component('v-chart', ECharts)
 
 
 new Vue({

@@ -201,8 +201,11 @@
         <div class="dropdown_menu" @click="show = !show">
           <span v-show="show">▲&nbsp;{{ l("More") }}</span>
           <span v-show="!show">▼&nbsp;{{ l("More") }}</span>
-          </div>
-        <div class="dropdown_show" v-show="show">
+        </div>
+        <div class="dropdown_show_chart" v-show="show && type">
+          <v-chart :options="chart_data_set"/>
+        </div>
+        <div class="dropdown_show_list" v-show="show && !type">
           <div class="dropdown_list" v-for="item in list_playmore">
             <span class="dropdown_list_l" v-if="info.game_round_type_i18n_serv_type === 'WinLose'">{{item.team_name}} {{l('Win')}} {{item.team_score}}</span>
             <span class="dropdown_list_l" v-else>{{item.team_name}} {{l('Win')}} {{item.team_score}} {{l('Score')}}</span>
@@ -221,12 +224,14 @@
 </template>
 
 <script>
+import 'echarts/lib/chart/bar'
 import astcountdown from "../astcountdown/astcountdown";
 import { getPlayerIdentity } from "../../scatter/player";
 import { getSingleRound } from "../../scatter/nba/round";
-import { betRound, calcBetTotal } from "../../scatter/nba/bet";
+import { betRound, calcBetTotal, asset2amount } from "../../scatter/nba/bet";
 import { error } from "util";
 import applyLang from '../../lang/apply'
+import fetchChartData from '../../chartdata'
 
 export default {
   data() {
@@ -261,9 +266,27 @@ export default {
   props: {
     info: {
       type: Object
+    },
+    type: {
+      type: Boolean
     }
   },
-  computed: {},
+  computed: {
+    chart_data_set() {
+      if (this.type) {
+        return fetchChartData(
+          this.info.game_total_bets, 
+          this.info.game_info_right_abbr, 
+          this.info.game_info_left_abbr, 
+          asset2amount(this.info.game_bet_unit, 0),
+          this.l('Win'),
+          this.l('Score')
+        )
+      } else {
+        return {}
+      }
+    }
+  },
   components: {
     astcountdown
   },
@@ -1270,7 +1293,7 @@ export default {
         user-select: none;
         line-height: 80px;
       }
-      .dropdown_show {
+      .dropdown_show_list {
         width: 100%;
         .dropdown_list {
           display: flex;
@@ -1290,6 +1313,17 @@ export default {
             width: 40%;
             text-align: right;
           }
+        }
+      }
+      .dropdown_show_chart {
+        display: flex;
+        width: 100%;
+        height: 500px;
+        align-items: center;
+        .echarts {
+          width: 1000px;
+          height: 550px;
+          font-size: 20px;
         }
       }
     }
