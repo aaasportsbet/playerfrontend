@@ -195,7 +195,8 @@
       <div style="height:16px;" v-show="local_game_joined_latest === 0"></div>
       <div
         class="bottom_more"
-        v-show="local_game_joined_latest !== 0 && Real_game_joined_more_display === true"
+        v-show="(!type && local_game_joined_latest !== 0 && Real_game_joined_more_display) 
+                || (type && Real_game_show_chart)"
         v-clickoutside="handleClose"
       >
         <div class="dropdown_menu" @click="show = !show">
@@ -247,6 +248,7 @@ export default {
       Real_game_joined_more_display: this.info.game_joined_more_display,
       Real_game_joined_status :this.info.game_joined_status.value,
       Real_game_detail_status :this.info.game_joined_status.value,
+      Real_game_show_chart :this.info.game_show_chart,
       joindata: {
         act_game_bet_multiple: 1,
         act_game_winner_team_id: "",

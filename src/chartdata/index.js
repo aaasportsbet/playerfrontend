@@ -22,7 +22,7 @@ export default function fetchChartData(bets, home, away, unit, win, score) {
   let bet = []
   let eos = []
   _(distribute)
-  .take(5)
+  .take(4)
   .values()
   .forEachRight(v => {
     if (v.bet > 0) {
@@ -34,7 +34,7 @@ export default function fetchChartData(bets, home, away, unit, win, score) {
   })
 
   let others = _(distribute)
-  .drop(5)
+  .drop(4)
   .values()
   .sumBy('eos')
 
@@ -47,15 +47,22 @@ export default function fetchChartData(bets, home, away, unit, win, score) {
   return {
     xAxis: {
       type: 'value',
-      name: 'EOS'
+      name: 'EOS',
+      axisLabel: {
+        fontSize: 17
+      }
     },
     yAxis: {
       type: 'category',
       name: 'BET',
       data: bet,
+      axisLabel: {
+        fontSize: 17
+      }
     },
     textStyle: {
-      color: "#DDDDDD"
+      color: "#DDDDDD",
+      fontSize: 18
     },
     series: [{
       data: eos,
