@@ -199,12 +199,13 @@
                 || (type && Real_game_show_chart)"
         v-clickoutside="handleClose"
       >
-        <div class="dropdown_menu" @click="show = !show">
+        <div class="dropdown_menu" @click="show = !show; showChart('chart' + info.game_serv_id)">
           <span v-show="show">▲&nbsp;{{ l("More") }}</span>
           <span v-show="!show">▼&nbsp;{{ l("More") }}</span>
         </div>
         <div class="dropdown_show_chart" v-show="show && type">
-          <v-chart :options="chart_data_set"/>
+          <!-- <v-chart :options="chart_data_set"/> -->
+          <div class='echarts' :id='"chart" + this.info.game_serv_id'></div>
         </div>
         <div class="dropdown_show_list" v-show="show && !type">
           <div class="dropdown_list" v-for="item in list_playmore">
@@ -520,6 +521,14 @@ export default {
     },
     l(val) {
       return applyLang( this.$store.state.currentLanguage, val );
+    },
+    showChart(domId) {
+      if ( this.show ) {
+        let dom = document.getElementById(domId)
+        let echart = echarts.init(dom, null, {'height': 255, 'width': 380})
+        echart.setOption(this.chart_data_set)
+        // echart.resize({'height': 225, 'width': 330})
+      }
     }
   },
   directives: {
@@ -1323,10 +1332,10 @@ export default {
         height: 500px;
         align-items: center;
         .echarts {
-          margin-left: 5%;
-          width: 900px;
-          height: 550px;
-          font-size: 20px;
+          margin-top: -20%;
+          margin-left: -3%;
+          width: 100%;
+          height: 100%;
         }
       }
     }

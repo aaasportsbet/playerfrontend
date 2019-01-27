@@ -49,7 +49,7 @@ export default function fetchChartData(bets, home, away, unit, win, score) {
       type: 'value',
       name: 'EOS',
       axisLabel: {
-        fontSize: 15
+        fontSize: 10
       }
     },
     yAxis: {
@@ -57,12 +57,12 @@ export default function fetchChartData(bets, home, away, unit, win, score) {
       name: 'BET',
       data: bet,
       axisLabel: {
-        fontSize: 15
+        show: false
       }
     },
     textStyle: {
       color: "#DDDDDD",
-      fontSize: 15
+      fontSize: 11
     },
     series: [{
       data: eos,
@@ -77,7 +77,7 @@ export default function fetchChartData(bets, home, away, unit, win, score) {
         show: true,
         formatter: (p) => {
           if (p.name == 'OTHER') {
-            return ''
+            return '...'
           } else {
             let name = p.name.replace(')', '').split('(');
             return name[0] + ' ' + win + ' ' + name[1] + ' ' + score;
