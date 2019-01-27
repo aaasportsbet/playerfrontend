@@ -1323,7 +1323,8 @@ export default {
         height: 500px;
         align-items: center;
         .echarts {
-          width: 1000px;
+          margin-left: 5%;
+          width: 900px;
           height: 550px;
           font-size: 20px;
         }

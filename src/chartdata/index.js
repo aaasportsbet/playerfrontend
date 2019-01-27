@@ -49,7 +49,7 @@ export default function fetchChartData(bets, home, away, unit, win, score) {
       type: 'value',
       name: 'EOS',
       axisLabel: {
-        fontSize: 17
+        fontSize: 15
       }
     },
     yAxis: {
@@ -57,12 +57,12 @@ export default function fetchChartData(bets, home, away, unit, win, score) {
       name: 'BET',
       data: bet,
       axisLabel: {
-        fontSize: 17
+        fontSize: 15
       }
     },
     textStyle: {
       color: "#DDDDDD",
-      fontSize: 18
+      fontSize: 15
     },
     series: [{
       data: eos,
